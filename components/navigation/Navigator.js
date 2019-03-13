@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import { Text } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Ionicons } from 'react-native-vector-icons';
-import Screen from '../Screen';
-import WalletScreen from '../WalletScreen';
+import Home from '../Home/Home';
+import Welcome from '../Welcome/Welcome';
+import Profile from '../Profile/Profile';
 
 const ACTIVE_TAB_COLOR = '#69A6F7';
 const INACTIVE_TAB_COLOR = '#aaa';
@@ -27,12 +27,12 @@ const Icon = ({ name, focused }) => (
 
 export default createBottomTabNavigator(
 	{
-		HOME       : {
+		HOME    : {
 			screen            : createStackNavigator({
-				Wallet : {
-					screen            : () => <WalletScreen />,
+				Home : {
+					screen            : () => <Home />,
 
-					path              : '/wallet/:selectedWalletId',
+					path              : '/home',
 
 					navigationOptions : {
 						title : 'Home',
@@ -42,50 +42,42 @@ export default createBottomTabNavigator(
 			}),
 
 			navigationOptions : {
-				tabBarLabel : 'wallet',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-list" focused={focused} />
+				tabBarLabel : 'Home',
+				tabBarIcon  : ({ focused }) => <Icon name="ios-home" focused={focused} />
 			}
 		},
 
-		SEND       : {
+		WELCOME : {
 			screen            : createStackNavigator({
-				Send : {
-					screen            : () => (
-						<Screen>
-							<Text style={{ textAlign: 'center' }}>Send Screen</Text>
-						</Screen>
-					),
-					path              : '/send',
+				Welcome : {
+					screen            : () => <Welcome />,
+					path              : '/welcome',
 					navigationOptions : {
-						title : 'Send',
+						title : 'Welcome',
 						...headerStyles
 					}
 				}
 			}),
 			navigationOptions : {
-				tabBarLabel : 'Send',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-send" focused={focused} />
+				tabBarLabel : 'Welcome',
+				tabBarIcon  : ({ focused }) => <Icon name="ios-list" focused={focused} />
 			}
 		},
 
-		ACTIVITIES : {
+		Profile : {
 			screen            : createStackNavigator({
-				Activities : {
-					screen            : () => (
-						<Screen>
-							<Text style={{ textAlign: 'center' }}>Activities Screen</Text>
-						</Screen>
-					),
-					path              : '/activities',
+				Profile : {
+					screen            : () => <Profile />,
+					path              : '/profile',
 					navigationOptions : {
-						title : 'Activities',
+						title : 'Profile',
 						...headerStyles
 					}
 				}
 			}),
 			navigationOptions : {
-				tabBarLabel : 'Activities',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-list" focused={focused} />
+				tabBarLabel : 'Profile',
+				tabBarIcon  : ({ focused }) => <Icon name="ios-contact" focused={focused} />
 			}
 		}
 	},
