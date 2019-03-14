@@ -13,17 +13,17 @@ class LoadingPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      _lineOne: new Animated.Value(6)
+      _lineOne: new Animated.Value(3)
     };
   }
 
   invokeAnimation = () => {
-    Animated.parallel([
+    Animated.loop(
       Animated.timing(this.state._lineOne, {
-        toValue: 0,
-        duration: 1000
+        toValue: 1,
+        duration: 2000
       })
-    ]).start();
+    ).start();
   };
 
   componentDidMount() {
@@ -47,7 +47,7 @@ class LoadingPage extends React.Component {
         >
           <G>
             <Path
-              stroke={"#85c4ea"}
+              stroke="white"
               strokeWidth={2}
               strokeLinecap="round"
               ref={ref => (this._lineOne = ref)}

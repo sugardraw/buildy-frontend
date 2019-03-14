@@ -38,9 +38,9 @@ export default createBottomTabNavigator(
     HOME: {
       screen: createStackNavigator({
         Home: {
-          screen: () => <Home />,
+          screen: () => <LoadingPage />,
 
-          path: "/Home",
+          path: "/LoadingPage",
 
           navigationOptions: {
             title: "Home",
