@@ -1,9 +1,18 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import AppNavigator from './components/navigation/Navigator';
+import Router from './Router';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers';
+import thunk from 'redux-thunk';
 
-const AppContainer = createAppContainer(AppNavigator);
+export default class App extends React.Component {
+	render() {
+		const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const App = () => <AppContainer />;
-
-export default App;
+		return (
+			<Provider store={store}>
+				<Router />
+			</Provider>
+		);
+	}
+}
