@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "homePage",
-    "slug": "homePage",
+    "name": "buildy",
+    "slug": "buildy",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
@@ -20,13 +20,15 @@
     "ios": {
       "supportsTablet": true
     },
-    "permissions": [
-      "CAMERA_ROLL",
-      "CAMERA",
-      "READ_INTERNAL_STORAGE",
-      "WRITE_INTERNAL_STORAGE",
-      "READ_EXTERNAL_STORAGE",
-      "WRITE_EXTERNAL_STORAGE"
-    ]
+    "android":{
+      "permissions": [
+        "CAMERA_ROLL",
+        "CAMERA",
+        "READ_INTERNAL_STORAGE",
+        "WRITE_INTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    }
   }
 }

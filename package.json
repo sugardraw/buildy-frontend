@@ -13,6 +13,8 @@
 		"react": "16.5.0",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
 		"react-native-button": "^2.3.0",
+		"react-native-image-picker": "^0.28.0",
+		"react-native-is-iphonex": "^1.0.1",
 		"react-native-router-flux": "^4.0.6",
 		"react-native-router-flux-cli": "0.0.1",
 		"react-native-vector-icons": "^6.4.1",
@@ -23,7 +25,6 @@
 		"redux-axios-middleware": "^4.0.0",
 		"redux-thunk": "^2.3.0",
 		"watchman": "^1.0.0",
-		"react-native-image-picker": "^0.28.0",
 		"wretch": "^1.5.0"
 	},
 	"devDependencies": {

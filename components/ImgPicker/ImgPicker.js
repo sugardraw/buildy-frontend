@@ -7,7 +7,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  CameraRoll
+  CameraRoll,
+  ImageEditor
 } from "react-native";
 
 export default class ImgPicker extends React.Component {
@@ -65,7 +66,9 @@ export default class ImgPicker extends React.Component {
   // When "Choose" is pressed, we show the user's image library
   // so they may show a photo from disk inside the image view.
   _onChoosePic = async () => {
-    const { cancelled, uri } = await Expo.ImagePicker.launchImageLibraryAsync();
+    const { cancelled, uri } = await Expo.ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true
+    });
     if (!cancelled) {
       this.setState({ imageUri: uri });
       // console.log(uri) // this logs correctly

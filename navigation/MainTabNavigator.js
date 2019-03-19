@@ -9,6 +9,7 @@ import Posts from "../components/Posts/Posts";
 import Welcome from "../components/Welcome/Welcome";
 import Login from "../components/Login/Login";
 import ImgPicker from "../components/ImgPicker/ImgPicker";
+import AdvancedCamera from "../components/AdvancedCamera/AdvancedCamera";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -38,7 +39,7 @@ LoginStack.navigationOptions = {
  *  */
 
 const ImgPickerStack = createStackNavigator({
-  screen: ImgPicker
+  screen: AdvancedCamera
 });
 
 ImgPickerStack.navigationOptions = {
