@@ -9,6 +9,7 @@ import Posts from "../components/Posts/Posts";
 import Welcome from "../components/Welcome/Welcome";
 import Login from "../components/Login/Login";
 import ImgPicker from "../components/ImgPicker/ImgPicker";
+import Canvas from "../components/CanvasComponent/CanvasComponent";
 import AdvancedCamera from "../components/AdvancedCamera/AdvancedCamera";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
@@ -47,6 +48,22 @@ ImgPickerStack.navigationOptions = {
   tabBarIcon: ({ focused }) => <Icon name="ios-camera" focused={focused} />
 };
 
+/**
+ * importing and testing canvas component
+ *
+ */
+
+const CanvasStack = createStackNavigator({
+  screen: Canvas
+});
+
+CanvasStack.navigationOptions = {
+  tabBarLabel: "canvas",
+  tabBarIcon: ({ focused }) => <Icon name="md-apps" focused={focused} />
+};
+
+///////////////////////*
+
 const HomeStack = createStackNavigator({
   Welcome: Welcome,
   Posts: Posts
@@ -61,7 +78,8 @@ export default createBottomTabNavigator(
   {
     HomeStack,
     LoginStack,
-    ImgPickerStack
+    ImgPickerStack,
+    CanvasStack
   },
   {
     tabBarPosition: "bottom",
