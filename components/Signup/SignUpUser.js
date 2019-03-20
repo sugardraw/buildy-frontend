@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -9,28 +9,50 @@ import {
 	TouchableHighlight
 } from 'react-native';
 
-export default class Login extends React.Component {
+export default class SignUpUser extends Component {
 
 	static navigationOptions = {
-		title: 'Login'
+		title: 'Signup'
 	};
 
 	constructor(props) {
 		super(props);
 		state = {
+			username: '',
+			service: '',
 			email: '',
 			password: ''
 		};
 	}
 
 	onClickListener = (viewId) => {
-		Alert.alert('Alert', 'Button pressed');
+		Alert.alert('Alert', 'Button pressed' + viewId);
 	};
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>LOGIN</Text>
+
+				<View style={styles.InputContainer}>
+					{/* <Image></Image> */}
+					<TextInput
+						style={styles.inputs}
+						placeholder="Username"
+						underlineColorAndroid="transparent"
+						onChangeText={(username => this.setState({ username }))}
+					/>
+				</View>
+
+				<View style={styles.InputContainer}>
+					{/* <Image></Image> */}
+					<TextInput
+						style={styles.inputs}
+						placeholder="Service you need"
+						underlineColorAndroid="transparent"
+						onChangeText={(service => this.setState({ service }))}
+					/>
+				</View>
+
 				<View style={styles.InputContainer}>
 					<Image
 						style={styles.inputIcon}
@@ -61,33 +83,24 @@ export default class Login extends React.Component {
 
 				<TouchableHighlight
 					style={[styles.buttonContainer, styles.loginButton]}
-					onPress={() => this.onClickListener('login')}
+					onPress={() => this.onClickListener('Signup')}
 				>
-					<Text style={styles.loginText}>Login</Text>
+					<Text style={styles.loginText}>Signup</Text>
 				</TouchableHighlight>
 
-				<TouchableHighlight
-					style={[styles.buttonContainer]}
-					onPress={() => this.onClickListener('restore_password')}
-				>
-					<Text style={styles.signupSmallLink}>Forgot your password?</Text>
-				</TouchableHighlight>
+				<View>
+					<Text>Already registered?</Text>
+					<Text style={styles.signupSmallLink}> Login</Text>
+				</View>
 
-				<TouchableHighlight
-					style={[styles.buttonContainer]}
-					onPress={() => this.onClickListener('register')}
-				>
-					<Text style={styles.signupSmallLink}>Register</Text>
-				</TouchableHighlight>
-
-			</View>
-		)
+			</View >
+		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		margin: 20,
+		marginTop: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: 'orange'

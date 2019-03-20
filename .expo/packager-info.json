@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 26244,
+  "expoServerNgrokUrl": "https://pp-erv.gaiadci.buildy-frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.pp-erv.gaiadci.buildy-frontend.exp.direct",
+  "ngrokPid": 26305,
+  "webpackServerPort": null
+}

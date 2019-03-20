@@ -10,14 +10,14 @@ const ACTIVE_TAB_COLOR = '#69A6F7';
 const INACTIVE_TAB_COLOR = '#aaa';
 
 const headerStyles = {
-	headerTintColor : '#fff',
-	headerStyle     : {
-		borderBottomWidth : 0,
-		backgroundColor   : ACTIVE_TAB_COLOR,
-		shadowColor       : '#000',
-		shadowOpacity     : 0.25,
-		shadowRadius      : 20,
-		shadowOffset      : { width: 0, height: 0 }
+	headerTintColor: '#fff',
+	headerStyle: {
+		borderBottomWidth: 0,
+		backgroundColor: ACTIVE_TAB_COLOR,
+		shadowColor: '#000',
+		shadowOpacity: 0.25,
+		shadowRadius: 20,
+		shadowOffset: { width: 0, height: 0 }
 	}
 };
 
@@ -27,77 +27,79 @@ const Icon = ({ name, focused }) => (
 
 export default createBottomTabNavigator(
 	{
-		HOME    : {
-			screen            : createStackNavigator({
-				Home : {
-					screen            : () => <Home />,
 
-					path              : '/home',
+		HOME: {
+			screen: createStackNavigator({
 
-					navigationOptions : {
-						title : 'Home',
+				Home: {
+					screen: () => <Home />,
+
+					path: '/home',
+
+					navigationOptions: {
+						title: 'Home',
 						...headerStyles
 					}
 				}
 			}),
 
-			navigationOptions : {
-				tabBarLabel : 'Home',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-home" focused={focused} />
+			navigationOptions: {
+				tabBarLabel: 'Home',
+				tabBarIcon: ({ focused }) => <Icon name="ios-home" focused={focused} />
 			}
 		},
 
-		WELCOME : {
-			screen            : createStackNavigator({
-				Welcome : {
-					screen            : () => <Welcome />,
-					path              : '/welcome',
-					navigationOptions : {
-						title : 'Welcome',
+		WELCOME: {
+			screen: createStackNavigator({
+				Welcome: {
+					screen: () => <Welcome />,
+					path: '/welcome',
+					navigationOptions: {
+						title: 'Welcome',
 						...headerStyles
 					}
 				}
 			}),
-			navigationOptions : {
-				tabBarLabel : 'Welcome',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-list" focused={focused} />
+			navigationOptions: {
+				tabBarLabel: 'Welcome',
+				tabBarIcon: ({ focused }) => <Icon name="ios-list" focused={focused} />
 			}
 		},
 
-		Profile : {
-			screen            : createStackNavigator({
-				Profile : {
-					screen            : () => <Profile />,
-					path              : '/profile',
-					navigationOptions : {
-						title : 'Profile',
+		Profile: {
+			screen: createStackNavigator({
+				Profile: {
+					screen: () => <Profile />,
+					path: '/profile',
+					navigationOptions: {
+						title: 'Profile',
 						...headerStyles
 					}
 				}
 			}),
-			navigationOptions : {
-				tabBarLabel : 'Profile',
-				tabBarIcon  : ({ focused }) => <Icon name="ios-contact" focused={focused} />
+			navigationOptions: {
+				tabBarLabel: 'Profile',
+				tabBarIcon: ({ focused }) => <Icon name="ios-contact" focused={focused} />
 			}
 		}
 	},
 	{
-		tabBarPosition   : 'bottom',
-		swipeEnabled     : false,
-		animationEnabled : false,
-		tabBarOptions    : {
-			activeTintColor   : ACTIVE_TAB_COLOR,
-			inactiveTintColor : INACTIVE_TAB_COLOR,
-			showLabel         : true,
-			style             : {
-				borderTopWidth : 0,
-				paddingTop     : 3,
-				paddingBottom  : 4,
-				height         : 60,
-				shadowColor    : '#000',
-				shadowOpacity  : 0.1,
-				shadowRadius   : 20,
-				shadowOffset   : { width: 0, height: 0 }
+		tabBarPosition: 'bottom',
+		swipeEnabled: false,
+		animationEnabled: false,
+		tabBarOptions: {
+			activeTintColor: ACTIVE_TAB_COLOR,
+			inactiveTintColor: INACTIVE_TAB_COLOR,
+			showLabel: true,
+			style: {
+				borderTopWidth: 0,
+				paddingTop: 3,
+				paddingBottom: 4,
+				height: 60,
+				shadowColor: '#000',
+				shadowOpacity: 0.1,
+				shadowRadius: 20,
+				shadowOffset: { width: 0, height: 0 }
 			}
 		}
 	}
