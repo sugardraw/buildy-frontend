@@ -1,17 +1,25 @@
-import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
-import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
-import { MaterialIcons } from '@expo/vector-icons';
-import Photo from './Photo';
+import React from "react";
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ScrollView
+} from "react-native";
+import { FileSystem, FaceDetector, MediaLibrary, Permissions } from "expo";
+const Expo = require("expo");
+import { MaterialIcons } from "@expo/vector-icons";
+import Photo from "./Photo";
 
-const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
+const PHOTOS_DIR = FileSystem.documentDirectory + "photos";
 
 export default class GalleryScreen extends React.Component {
   state = {
     faces: {},
     images: {},
     photos: [],
-    selected: [],
+    selected: []
   };
 
   componentDidMount = async () => {
@@ -31,31 +39,36 @@ export default class GalleryScreen extends React.Component {
 
   saveToGallery = async () => {
     const photos = this.state.selected;
-
     if (photos.length > 0) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-      if (status !== 'granted') {
-        throw new Error('Denied CAMERA_ROLL permissions!');
+      if (status !== "granted") {
+        throw new Error("Denied CAMERA_ROLL permissions!");
       }
-
       const promises = photos.map(photoUri => {
         return MediaLibrary.createAssetAsync(photoUri);
       });
-
       await Promise.all(promises);
-      alert('Successfully saved photos to user\'s gallery!');
+      alert("Successfully saved photos to user's gallery!");
     } else {
-      alert('No photos to save!');
+      alert("No photos to save!");
     }
   };
 
-  renderPhoto = fileName => 
+  editImage = async () => {
+    const photos = this.state.selected;
+    const { cancelled, uri } = await Expo.ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true
+    });
+    console.log(uri);
+  };
+
+  renderPhoto = fileName => (
     <Photo
       key={fileName}
       uri={`${PHOTOS_DIR}/${fileName}`}
       onSelectionToggle={this.toggleSelection}
-    />;
+    />
+  );
 
   render() {
     return (
@@ -66,6 +79,9 @@ export default class GalleryScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
             <Text style={styles.whiteText}>Save selected to gallery</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.editImage}>
+            <Text style={styles.whiteText}>Edit saved images</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
@@ -82,25 +98,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   navbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#4630EB',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#4630EB"
   },
   pictures: {
     flex: 1,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 8,
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 8
   },
   button: {
-    padding: 20,
+    padding: 8
   },
   whiteText: {
-    color: 'white',
+    color: "white"
   }
 });
