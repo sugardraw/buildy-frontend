@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { getPosts, getPost } from "../../actions";
-const Expo = require("expo");
 
 class Welcome extends Component {
   static navigationOptions = {
@@ -45,6 +44,7 @@ class Welcome extends Component {
 
   render() {
     const error = this.props.error;
+    console.log("##########", this.props);
 
     if (this.props.loading) {
       return (

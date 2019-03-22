@@ -8,9 +8,9 @@ import {
 import Posts from "../components/Posts/Posts";
 import Welcome from "../components/Welcome/Welcome";
 import Login from "../components/Login/Login";
-import ImgPicker from "../components/ImgPicker/ImgPicker";
 import Canvas from "../components/CanvasComponent/CanvasComponent";
 import AdvancedCamera from "../components/AdvancedCamera/AdvancedCamera";
+import LoadingAni from "../components/LoadingAni/LoadingAni";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -32,10 +32,8 @@ LoginStack.navigationOptions = {
   tabBarIcon: ({ focused }) => <Icon name="ios-contact" focused={focused} />
 };
 
-/**
- *
+/*
  *  create a test camera functionality
- *
  *
  *  */
 
@@ -50,7 +48,6 @@ ImgPickerStack.navigationOptions = {
 
 /**
  * importing and testing canvas component
- *
  */
 
 const CanvasStack = createStackNavigator({

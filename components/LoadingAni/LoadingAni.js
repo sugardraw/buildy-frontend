@@ -9,7 +9,7 @@ import {
 import { Svg } from "expo"; // Supported builtin module
 const { Line, G, Path } = Svg;
 
-class LoadingPage extends React.Component {
+export default class LoadingAni extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -37,7 +37,7 @@ class LoadingPage extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity style={styles.container}>
+      <View>
         <Svg
           height="25%"
           width="25%"
@@ -59,7 +59,7 @@ class LoadingPage extends React.Component {
             />
           </G>
         </Svg>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -72,5 +72,3 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
-
-export default LoadingPage;
