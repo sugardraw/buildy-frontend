@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://fv-j8v.anonymous.buildy-frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.fv-j8v.anonymous.buildy-frontend.exp.direct",
+  "ngrokPid": 17331,
   "webpackServerPort": null
 }

@@ -11,8 +11,13 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
-import PopUpMenu from "./PopUpMenu";
+import Menu, {
+  MenuItem,
+  MenuDivider,
+  Position
+} from "react-native-enhanced-popup-menu";
+
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 const isAndroid = Platform.OS === "android";
 function uuidv4() {
@@ -27,13 +32,22 @@ function uuidv4() {
 export default class ImageEditor extends Component {
   constructor() {
     super();
-    this.state = {
-      image: null,
-      appState: AppState.currentState,
-      strokeWidth: 10,
-      strokeColor: 0xffffff
-    };
+    this.textRef = React.createRef();
+    this.menuRef = null;
+
+    this.setMenuRef = ref => (this.menuRef = ref);
+    this.hideMenu = () => this.menuRef.hide();
+    this.showMenu = () =>
+      this.menuRef.show(this.textRef.current, (stickTo = Position.BOTTOM_LEFT));
+
+    this.onPressPop = () => this.showMenu();
   }
+  state = {
+    image: null,
+    appState: AppState.currentState,
+    strokeWidth: 10,
+    strokeColor: 0xffffff
+  };
 
   handleAppStateChangeAsync = nextAppState => {
     if (
@@ -77,7 +91,78 @@ export default class ImageEditor extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <PopUpMenu sketch={this.setRef} />
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "transparent",
+            justifyContent: "center"
+          }}
+        >
+          <TouchableOpacity
+            style={[styles.icon, styles.mainIcons]}
+            onPress={() => {
+              this.sketch.undo();
+            }}
+          >
+            <MaterialIcons name="undo" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.icon, styles.mainIcons]}
+            onPress={() => {
+              alert("tools");
+            }}
+          >
+            <MaterialIcons name="format-paint" size={25} color="white" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.icon, styles.mainIcons]}
+            onPress={this.onPressPop}
+          >
+            <MaterialIcons name="more-horiz" size={30} color="white" />
+          </TouchableOpacity>
+          <Text
+            ref={this.textRef}
+            style={{ fontSize: 1, textAlign: "center" }}
+          />
+
+          <Menu ref={this.setMenuRef}>
+            <View style={styles.icons}>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  alert("save file");
+                }}
+              >
+                <MaterialIcons name="file-download" size={25} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  alert("edit tools");
+                }}
+              >
+                <MaterialIcons name="share" size={25} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  alert("share");
+                }}
+              >
+                <MaterialIcons name="send" size={25} color="black" />
+              </TouchableOpacity>
+            </View>
+            <MenuDivider />
+            <MenuItem
+              style={{ position: "relative", left: 65, top: 5 }}
+              onPress={this.hideMenu}
+            >
+              <MaterialIcons name="close" size={30} color="black" />
+            </MenuItem>
+          </Menu>
+        </View>
+
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
             <ImageBackground
@@ -93,14 +178,6 @@ export default class ImageEditor extends Component {
                 onChange={this.onChangeAsync}
                 onReady={this.onReady}
               />
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={() => {
-                  this.sketch.undo();
-                }}
-              >
-                <MaterialIcons name="undo" size={25} color="black" />
-              </TouchableOpacity>
             </ImageBackground>
           </View>
         </View>
@@ -116,24 +193,25 @@ const styles = StyleSheet.create({
   sketch: {
     flex: 1
   },
+  mainIcons: {
+    marginLeft: 6,
+    marginRight: 6
+  },
   sketchContainer: {
     height: "100%",
     backgroundColor: "transparent"
   },
-  imageContainer: {
-    height: "100%",
-    borderTopWidth: 4,
-    borderTopColor: "#E44262"
+  icons: {
+    padding: 6,
+    borderRadius: 6,
+    flexDirection: "row"
   },
-  label: {
-    width: "100%",
-    padding: 5,
-    alignItems: "center"
+  icon: {
+    padding: 6
   },
   background: {
     flex: 1,
     width: "100%",
     height: "100%"
-  },
-  toggleButton: {}
+  }
 });

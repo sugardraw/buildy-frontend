@@ -26,6 +26,7 @@ const mapStateToProps = state => {
 
   return { posts, userLoggedIn, loading, error, post, postLoading };
 };
+import * as uri from "../../api/api.js";
 
 const mapDispatchToProps = {
   dispatchGetPosts: getPosts
@@ -59,7 +60,7 @@ class Welcome extends Component {
         <Card title={item.name}>
           <Image
             style={{ width: 300, height: 300 }}
-            source={{ uri: "http://10.0.1.5:3001" + item.avatar }}
+            source={{ uri: uri.api + item.avatar }}
           />
           <View>
             <Text>{item.email}</Text>
