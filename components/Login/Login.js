@@ -1,37 +1,45 @@
-import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	View,
-	TextInput,
-	Image,
-	Alert,
-	TouchableHighlight
-} from 'react-native';
+import React, { Component } from 'react';
+import axios from 'axios';
+import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
 
-export default class Login extends React.Component {
-
+export default class LoginView extends Component {
 	static navigationOptions = {
-		title: 'Login'
+		title            : 'Login',
+		headerStyle      : { backgroundColor: '#173746' },
+		headerTintColor  : 'white',
+		headerTitleStyle : { color: 'white' }
 	};
-
 	constructor(props) {
 		super(props);
 		state = {
-			email: '',
-			password: ''
+			email        : '',
+			password     : '',
+			userLoggedIn : false
 		};
 	}
 
+	onChangeText = (key, val) => {
+		this.setState({ [key]: val });
+	};
+
 	onClickListener = (viewId) => {
-		Alert.alert('Alert', 'Button pressed' + viewId);
+		Alert.alert('Alert', 'Button pressed ' + viewId);
+	};
+
+	login = () => {
+		console.log(this.state.email, this.state.password);
+		return axios
+			.post('http://localhost:3001/api/user/save', { email: this.state.email, password: this.state.password })
+			.then((result) => {
+				console.log(result.data.id);
+				this.setState({ loggedIn: true });
+			});
 	};
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>LOGIN</Text>
-				<View style={styles.InputContainer}>
+				<View style={styles.inputContainer}>
 					<Image
 						style={styles.inputIcon}
 						source={{ uri: 'https://png.icons8.com/message/ultraviolet/50/3498db' }}
@@ -41,11 +49,11 @@ export default class Login extends React.Component {
 						placeholder="Email"
 						keyboardType="email-address"
 						underlineColorAndroid="transparent"
-						onChangeText={(email => this.setState({ email }))}
+						onChangeText={(email) => this.setState({ email })}
 					/>
 				</View>
 
-				<View style={styles.InputContainer}>
+				<View style={styles.inputContainer}>
 					<Image
 						style={styles.inputIcon}
 						source={{ uri: 'https://png.icons8.com/key-2/ultraviolet/50/3498db' }}
@@ -55,83 +63,75 @@ export default class Login extends React.Component {
 						placeholder="Password"
 						secureTextEntry={true}
 						underlineColorAndroid="transparent"
-						onChangeText={(password => this.setState({ password }))}
+						onChangeText={(password) => this.setState({ password })}
 					/>
 				</View>
 
-				<TouchableHighlight
-					style={[styles.buttonContainer, styles.loginButton]}
-					onPress={() => this.onClickListener('login')}
-				>
+				<TouchableHighlight style={[ styles.buttonContainer, styles.loginButton ]} onPress={() => this.login()}>
 					<Text style={styles.loginText}>Login</Text>
 				</TouchableHighlight>
 
 				<TouchableHighlight
-					style={[styles.buttonContainer]}
+					style={styles.buttonContainer}
 					onPress={() => this.onClickListener('restore_password')}
 				>
-					<Text style={styles.signupSmallLink}>Forgot your password?</Text>
+					<Text>Forgot your password?</Text>
 				</TouchableHighlight>
 
 				<TouchableHighlight
-					style={[styles.buttonContainer]}
-					onPress={() => this.onClickListener('register')}
+					style={styles.buttonContainer}
+					onPress={() => this.props.navigation.navigate('SignUp')}
 				>
-					<Text style={styles.signupSmallLink}>Register</Text>
+					<Text>Register</Text>
 				</TouchableHighlight>
-
 			</View>
-		)
+		);
 	}
 }
 
 const styles = StyleSheet.create({
-	container: {
-		margin: 20,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'orange'
+	container       : {
+		flex            : 1,
+		justifyContent  : 'center',
+		alignItems      : 'center',
+		backgroundColor : '#DCDCDC'
 	},
-	InputContainer: {
-		borderBottomColor: '#F5FCFF',
-		backgroundColor: '#FFFFFF',
-		borderRadius: 30,
-		borderBottomWidth: 1,
-		width: 250,
-		height: 45,
-		margin: 20,
-		alignItems: 'center',
-		flexDirection: 'row'
+	inputContainer  : {
+		borderBottomColor : '#F5FCFF',
+		backgroundColor   : '#FFFFFF',
+		borderRadius      : 30,
+		borderBottomWidth : 1,
+		width             : 250,
+		height            : 45,
+		marginBottom      : 20,
+		flexDirection     : 'row',
+		alignItems        : 'center'
 	},
-	inputs: {
-		flex: 1,
-		height: 45,
-		marginLeft: 16,
-		borderBottomColor: '#FFFFFF'
+	inputs          : {
+		height            : 45,
+		marginLeft        : 16,
+		borderBottomColor : '#FFFFFF',
+		flex              : 1
 	},
-	inputIcon: {
-		width: 30,
-		height: 30,
-		marginLeft: 15,
-		justifyContent: 'center'
+	inputIcon       : {
+		width          : 30,
+		height         : 30,
+		marginLeft     : 15,
+		justifyContent : 'center'
 	},
-	buttonContainer: {
-		width: 250,
-		height: 45,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginBottom: 20,
-		borderRadius: 30
+	buttonContainer : {
+		height         : 45,
+		flexDirection  : 'row',
+		justifyContent : 'center',
+		alignItems     : 'center',
+		marginBottom   : 20,
+		width          : 250,
+		borderRadius   : 30
 	},
-	loginButton: {
-		backgroundColor: '#00b5ec'
+	loginButton     : {
+		backgroundColor : '#00b5ec'
 	},
-	loginText: {
-		color: 'white'
-	},
-	signupSmallLink: {
-		fontSize: 11,
-		fontWeight: '500'
+	loginText       : {
+		color : 'white'
 	}
 });

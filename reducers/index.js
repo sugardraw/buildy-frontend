@@ -1,22 +1,8 @@
 import { combineReducers } from 'redux';
 import posts from './posts';
-import comments from './comments';
-// import { LOG_OUT } from '../actions/types'
+import users from './users';
 
 export default (appReducer = combineReducers({
 	posts,
-	comments
+	users
 }));
-
-// const appReducer = combineReducers({
-//   posts,
-//   user
-// })
-
-// export default rootReducer = (state, action) => {
-//   if (action.type === LOG_OUT) {
-//     state = undefined
-//   }
-//
-//   return appReducer(state, action)
-// }

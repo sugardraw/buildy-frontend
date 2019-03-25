@@ -1,47 +1,55 @@
-import {
-  GET_POSTS,
-  GET_POSTS_SUCCESS,
-  GET_POSTS_FAILURE,
-  GET_POST,
-  GET_POST_SUCCESS,
-  GET_POST_FAILURE,
-  CLEAR_POST
-} from './types'
+import { GET_POSTS, GET_POSTS_SUCCESS, GET_POST, GET_POST_SUCCESS, GET_POST_FAILURE, CLEAR_POST } from './types';
+import axios from 'axios';
+import { api } from '../api/api';
 
-import api from '../utils/api'
+const config = {
+	headers : {
+		Accept         : 'application/json',
+		'Content-Type' : 'application/json'
+	}
+};
 
-const endpoint = '/posts'
-
+const endpoint = '/api/professional/listAll';
 export function getPosts() {
-  return (dispatch, getState) => {
-    dispatch({ type: GET_POSTS })
+	return (dispatch) => {
+		dispatch({ type: GET_POSTS });
 
-    api.url(endpoint)
-      .get()
-      .json((json) => {
-        dispatch({ type: GET_POSTS_SUCCESS, payload: json })
-      })
-      .catch((error) => {
-        dispatch({ type: GET_POSTS_FAILURE, payload: error })
-      })
-  }
+		return axios
+			.get(`${api}${endpoint}`, config)
+			.then((response) => {
+				dispatch({
+					type    : GET_POSTS_SUCCESS,
+					payload : response.data
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type    : GET_POSTS_SUCCESS,
+					payload : []
+				});
+				return null;
+			});
+	};
 }
 
-export function getPost(id) {
-  return (dispatch, getState) => {
-    dispatch({ type: GET_POST })
-
-    api.url(`${endpoint}/${id}`)
-      .get()
-      .json((json) => {
-        dispatch({ type: GET_POST_SUCCESS, payload: json })
-      })
-      .catch((error) => {
-        dispatch({ type: GET_POST_FAILURE, payload: error })
-      })
-  }
+export function getPost(_id) {
+	return (dispatch) => {
+		dispatch({ type: GET_POST });
+		axios
+			.get(`http://localhost:3001/${endpoint}/${_id}`, config)
+			.then((response) => {
+				console.log('posts actions', response.data);
+				dispatch({
+					type    : GET_POST_SUCCESS,
+					payload : response.data
+				});
+			})
+			.catch((error) => {
+				dispatch({ type: GET_POST_FAILURE, payload: error });
+			});
+	};
 }
 
 export function clearPost() {
-  return { type: CLEAR_POST }
+	return { type: CLEAR_POST };
 }

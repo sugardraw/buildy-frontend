@@ -17,8 +17,8 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  // console.log(action.type)
-  // console.log(action.payload)
+  console.log(action.type);
+  console.log(action.payload);
 
   switch (action.type) {
     case GET_POSTS:
