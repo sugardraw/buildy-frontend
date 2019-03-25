@@ -2,8 +2,6 @@ import Expo from "expo";
 import * as ExpoPixi from "expo-pixi";
 import React, { Component } from "react";
 import {
-  Image,
-  Button,
   Platform,
   AppState,
   StyleSheet,
@@ -13,7 +11,15 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import {
+  MenuProvider,
+  MenuTrigger,
+  MenuOptions,
+  MenuOption,
+  renderers,
+  Menu
+} from "react-native-popup-menu";
 
 const isAndroid = Platform.OS === "android";
 function uuidv4() {
@@ -28,22 +34,9 @@ function uuidv4() {
 export default class App extends Component {
   state = {
     image: null,
-    strokeColor: Math.random() * 0xffffff,
-    strokeWidth: Math.random() * 30 + 10,
-    lines: [
-      {
-        points: [
-          { x: 300, y: 300 },
-          { x: 600, y: 300 },
-          { x: 450, y: 600 },
-          { x: 300, y: 300 }
-        ],
-        color: 0xff00ff,
-        alpha: 1,
-        width: 10
-      }
-    ],
-    appState: AppState.currentState
+    appState: AppState.currentState,
+    strokeWidth: 10,
+    strokeColor: 0xffffff
   };
 
   handleAppStateChangeAsync = nextAppState => {
@@ -76,8 +69,8 @@ export default class App extends Component {
 
     this.setState({
       image: { uri },
-      strokeWidth: Math.random() * 30 + 10,
-      strokeColor: Math.random() * 0xffffff
+      strokeWidth: 10,
+      strokeColor: 0xffffff
     });
   };
 
@@ -88,12 +81,57 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.arrow}>
+        <MenuProvider style={{ flexDirection: "row", padding: 30 }}>
+          <MaterialIcons name="menu" size={25} color="white" />
+          <Menu onSelect={value => alert(`Selected number: ${value}`)}>
+            <MenuTrigger text="Select option" />
+            <MenuOptions>
+              <MenuOption value={1} text="One" />
+              <MenuOption value={2}>
+                <Text style={{ color: "red" }}>Two</Text>
+              </MenuOption>
+              <MenuOption value={3} disabled={true} text="Three" />
+            </MenuOptions>
+          </Menu>
+        </MenuProvider>
+        <View style={styles.icons}>
           <TouchableOpacity
             style={styles.buttonArrow}
             onPress={this.props.onPress}
           >
             <MaterialIcons name="arrow-back" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonArrow}
+            onPress={() => {
+              this.sketch.undo();
+            }}
+          >
+            <MaterialIcons name="undo" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonArrow}
+            onPress={() => {
+              alert("edit tools");
+            }}
+          >
+            <MaterialIcons name="edit" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonArrow}
+            onPress={() => {
+              alert("save file");
+            }}
+          >
+            <MaterialIcons name="file-download" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonArrow}
+            onPress={() => {
+              alert("share");
+            }}
+          >
+            <MaterialIcons name="send" size={25} color="white" />
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
@@ -110,19 +148,10 @@ export default class App extends Component {
                 strokeAlpha={1}
                 onChange={this.onChangeAsync}
                 onReady={this.onReady}
-                initialLines={this.state.lines}
               />
             </ImageBackground>
           </View>
         </View>
-        <Button
-          color={"blue"}
-          title="undo"
-          style={styles.button}
-          onPress={() => {
-            this.sketch.undo();
-          }}
-        />
       </View>
     );
   }
@@ -149,9 +178,11 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "center"
   },
-  arrow: {
+  icons: {
+    padding: 6,
     borderRadius: 6,
-    alignSelf: "flex-start"
+    alignSelf: "center",
+    flexDirection: "row"
   },
   buttonArrow: {
     margin: "auto",
@@ -162,13 +193,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  button: {
-    // position: 'absolute',
-    // bottom: 8,
-    // left: 8,
-    zIndex: 1,
-    padding: 12,
-    minWidth: 56,
-    minHeight: 48
-  }
+  toggleButton: {}
 });

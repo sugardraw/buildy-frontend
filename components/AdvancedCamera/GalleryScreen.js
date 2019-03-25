@@ -146,7 +146,6 @@ export default class GalleryScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     backgroundColor: "white"
   },
   navbar: {
@@ -175,11 +174,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   },
   buttonArrow: {
-    margin: "auto",
     padding: 6
   },
   buttonsView: {
-    marginTop: 3,
     marginBottom: 3,
     marginRight: 6
   },

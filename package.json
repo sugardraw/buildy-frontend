@@ -19,6 +19,7 @@
 		"react-native-image-picker": "^0.28.0",
 		"react-native-is-iphonex": "^1.0.1",
 		"react-native-photo-editor": "0.0.7",
+		"react-native-popup-menu": "^0.15.5",
 		"react-native-router-flux": "^4.0.6",
 		"react-native-router-flux-cli": "0.0.1",
 		"react-native-vector-icons": "^6.4.1",
