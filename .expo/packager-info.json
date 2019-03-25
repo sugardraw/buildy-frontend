@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19003,
-  "expoServerPort": 19004,
-  "packagerPort": 19005,
-  "packagerPid": 23199,
-  "expoServerNgrokUrl": "https://p3-23s.anonymous.buildy-frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.p3-23s.anonymous.buildy-frontend.exp.direct",
-  "ngrokPid": 23244,
+  "devToolsPort": 19002,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
