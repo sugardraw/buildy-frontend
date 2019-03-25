@@ -1,2 +1,2 @@
-export * from './PostActions'
-export * from './CommentActions'
+export * from './PostActions';
+export * from './UserActions';

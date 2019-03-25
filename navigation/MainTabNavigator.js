@@ -2,9 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 import { Ionicons } from 'react-native-vector-icons';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-import Posts from '../components/Posts/Posts';
+
 import Welcome from '../components/Welcome/Welcome';
+import Home from '../components/Home/Home';
 import Login from '../components/Login/Login';
+import SignUp from '../components/SignUp/SignUp';
+import Profile from '../components/Profile/Profile';
+import RequestFormular from '../components/Profile/RequestFormular';
 
 const ACTIVE_TAB_COLOR = '#69A6F7';
 const INACTIVE_TAB_COLOR = '#aaa';
@@ -14,47 +18,47 @@ const Icon = ({ name, focused }) => (
 );
 
 const LoginStack = createStackNavigator({
-	screen : Login
+	Login  : {
+		screen : Login
+	},
+	SignUp : {
+		screen : SignUp
+	}
 });
 
-LoginStack.navigationOptions = {
-	tabBarLabel : 'Login',
-	tabBarIcon  : ({ focused }) => <Icon name="ios-contact" focused={focused} />
-};
-
-const HomeStack = createStackNavigator({
-	Welcome : Welcome,
-	Posts   : Posts
+const WelcomeStack = createStackNavigator({
+	Welcome         : {
+		screen : Welcome
+	},
+	Profile         : {
+		screen : Profile
+	},
+	RequestFormular : {
+		screen : RequestFormular
+	}
 });
-
-HomeStack.navigationOptions = {
-	tabBarLabel : 'Posts',
-	tabBarIcon  : ({ focused }) => <Icon name="ios-home" focused={focused} />
-};
 
 export default createBottomTabNavigator(
 	{
-		HomeStack,
-		LoginStack
+		Home  : WelcomeStack,
+
+		Users : LoginStack
 	},
 	{
-		tabBarPosition   : 'bottom',
-		swipeEnabled     : false,
-		animationEnabled : false,
-		tabBarOptions    : {
-			activeTintColor   : ACTIVE_TAB_COLOR,
-			inactiveTintColor : INACTIVE_TAB_COLOR,
-			showLabel         : true,
-			style             : {
-				borderTopWidth : 0,
-				paddingTop     : 3,
-				paddingBottom  : 4,
-				height         : 60,
-				shadowColor    : '#000',
-				shadowOpacity  : 0.1,
-				shadowRadius   : 20,
-				shadowOffset   : { width: 0, height: 0 }
+		initialRouteName  : 'Home',
+		navigationOptions : ({ navigation }) => ({
+			tabBarIcon : ({ focused, horizontal, tintColor }) => {
+				const { routeName } = navigation.state;
+				console.log(routeName);
+				let iconName;
+				if (routeName === 'Home') {
+					iconName = 'ios-home';
+				} else if (routeName === 'Users') {
+					iconName = 'ios-options';
+				}
+
+				return <Icon name={iconName} size={25} color={tintColor} />;
 			}
-		}
+		})
 	}
 );
