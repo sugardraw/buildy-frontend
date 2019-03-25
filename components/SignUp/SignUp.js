@@ -23,66 +23,84 @@ export default class SignUp extends Component {
 						{({ onChangeValue, values }) => (
 							<View>
 								<ButtonSignup />
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('firstName', text)}
-									placeholder="Name"
-									value={values.firstName}
-									underlineColorAndroid="transparent"
-								/>
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('lastName', text)}
-									placeholder="Last name"
-									value={values.lastName}
-								/>
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('email', text)}
-									placeholder="Email"
-									value={values.email}
-									autoCapitalize="none"
-								/>
-								<TextInput
-									style={styles.textInputStyle}
-									secureTextEntry
-									onChangeText={(text) => onChangeValue('password', text)}
-									placeholder="Password"
-									value={values.password}
-								/>
-								<Text>Already registered?</Text>
-								<TouchableOpacity>
-									<Text style={styles.signupSmallLink}> Login</Text>
-								</TouchableOpacity>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('firstName', text)}
+										placeholder="Name"
+										value={values.firstName}
+										underlineColorAndroid="transparent"
+									/>
+								</View>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.textInputStyle}
+										onChangeText={(text) => onChangeValue('lastName', text)}
+										placeholder="Last name"
+										value={values.lastName}
+									/>
+								</View>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('email', text)}
+										placeholder="Email"
+										value={values.email}
+										autoCapitalize="none"
+									/>
+								</View>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										secureTextEntry
+										onChangeText={(text) => onChangeValue('password', text)}
+										placeholder="Password"
+										value={values.password}
+									/>
+								</View>
+
+								<TouchableHighlight
+									style={styles.buttonContainer}
+									onPress={() => this.props.navigation.navigate('Login')}
+								>
+									<Text>Already registered? Login</Text>
+								</TouchableHighlight>
 							</View>
 						)}
 					</Wizard.Step>
 					<Wizard.Step>
 						{({ onChangeValue, values }) => (
 							<View>
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('address', text)}
-									placeholder="Address"
-									value={values.address}
-								/>
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('city', text)}
-									placeholder="City"
-									value={values.city}
-								/>
-								<TextInput
-									style={styles.textInputStyle}
-									onChangeText={(text) => onChangeValue('zipCode', text)}
-									placeholder="Zip Code"
-									value={values.zipCode}
-								/>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('address', text)}
+										placeholder="Address"
+										value={values.address}
+									/>
+								</View>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('city', text)}
+										placeholder="City"
+										value={values.city}
+									/>
+								</View>
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('zipCode', text)}
+										placeholder="Zip Code"
+										value={values.zipCode}
+									/>
+								</View>
+
 								<TouchableHighlight
-									style={[ styles.buttonContainer, styles.loginButton ]}
+									style={[ styles.buttonContainer, styles.signupButton ]}
 									onPress={() => this.onClickListener('Signup')}
 								>
-									<Text style={styles.loginText}>Signup</Text>
+									<Text style={styles.signupText}>Signup</Text>
 								</TouchableHighlight>
 							</View>
 						)}
@@ -95,28 +113,47 @@ export default class SignUp extends Component {
 
 const styles = StyleSheet.create({
 	container       : {
-		flex           : 1,
-		alignItems     : 'center',
-		justifyContent : 'center'
-	},
-	textInputStyle  : {
-		padding     : 10,
-		borderColor : 'black',
-		borderWidth : 1,
-		width       : 200
-	},
-	buttonContainer : {
-		width           : 250,
-		height          : 45,
-		flexDirection   : 'row',
+		flex            : 1,
 		justifyContent  : 'center',
 		alignItems      : 'center',
-		marginBottom    : 20,
-		borderRadius    : 30,
+		backgroundColor : '#DCDCDC'
+	},
+	inputContainer  : {
+		borderBottomColor : '#F5FCFF',
+		backgroundColor   : '#FFFFFF',
+		borderRadius      : 30,
+		borderBottomWidth : 1,
+		width             : 250,
+		height            : 45,
+		marginBottom      : 20,
+		flexDirection     : 'row',
+		alignItems        : 'center'
+	},
+	inputs          : {
+		height            : 45,
+		marginLeft        : 16,
+		borderBottomColor : '#FFFFFF',
+		flex              : 1
+	},
+	inputIcon       : {
+		width          : 30,
+		height         : 30,
+		marginLeft     : 15,
+		justifyContent : 'center'
+	},
+	buttonContainer : {
+		height         : 45,
+		flexDirection  : 'row',
+		justifyContent : 'center',
+		alignItems     : 'center',
+		marginBottom   : 20,
+		width          : 250,
+		borderRadius   : 30
+	},
+	signupButton    : {
 		backgroundColor : '#00b5ec'
 	},
-	signupSmallLink : {
-		fontSize   : 11,
-		fontWeight : '500'
+	signupText      : {
+		color : 'white'
 	}
 });
