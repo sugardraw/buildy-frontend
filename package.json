@@ -18,6 +18,8 @@
 		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
 		"react-native-button": "^2.3.0",
 		"react-native-elements": "^1.1.0",
+		"react-native-enhanced-popup-menu": "^0.6.1",
+		"react-native-is-iphonex": "^1.0.1",
 		"react-native-radio-buttons-group": "^1.0.7",
 		"react-native-router-flux": "^4.0.6",
 		"react-native-router-flux-cli": "0.0.1",

@@ -1,12 +1,52 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React from "react";
+import { Button, View, Text, Image, StyleSheet } from "react-native";
 
-export default class Profile extends Component {
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+export default class Profile extends React.Component {
+  static navigationOptions = {
+    title: "About Us",
+    headerStyle: { backgroundColor: "#173746" },
+    headerTintColor: "white",
+    headerTitleStyle: { color: "white" }
+  };
   render() {
     return (
-      <View>
-        <Text>PROFILE</Text>
-      </View>
+      <KeyboardAwareScrollView
+        ref="scrollView"
+        contentContainerStyle={styles.scrollstyle}
+      >
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <View style={styles.headerContent}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri:
+                  "https://cdn.dribbble.com/users/255/screenshots/2260728/avatar-colored-d.png"
+              }}
+            />
+          </View>
+          <View style={styles.bodyContentProfile}>
+            <Text style={styles.username}>Company name</Text>
+            <Text style={styles.shortDescription}>
+              Short description Company
+            </Text>
+            <Text style={styles.longDescription}>
+              service offer, service offer, service offer
+            </Text>
+            <Text style={styles.longDescription}>
+              Description Company: Lorem ipsum dolor sit amet, voluptate velit
+              esse cillum dolore eu fugiat nulla pariatur.
+            </Text>
+          </View>
+          <Button
+            title="Make a price request"
+            onPress={() => this.props.navigation.navigate("RequestFormular")}
+          />
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

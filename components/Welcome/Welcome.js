@@ -59,7 +59,7 @@ class Welcome extends Component {
         <Card title={item.name}>
           <Image
             style={{ width: 300, height: 300 }}
-            source={{ uri: "http://10.0.1.130:3001" + item.avatar }}
+            source={{ uri: "http://10.0.1.5:3001" + item.avatar }}
           />
           <View>
             <Text>{item.email}</Text>

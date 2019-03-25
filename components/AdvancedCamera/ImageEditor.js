@@ -11,15 +11,8 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import {
-  MenuProvider,
-  MenuTrigger,
-  MenuOptions,
-  MenuOption,
-  renderers,
-  Menu
-} from "react-native-popup-menu";
+import { MaterialIcons } from "@expo/vector-icons";
+import PopUpMenu from "./PopUpMenu";
 
 const isAndroid = Platform.OS === "android";
 function uuidv4() {
@@ -31,13 +24,16 @@ function uuidv4() {
   });
 }
 
-export default class App extends Component {
-  state = {
-    image: null,
-    appState: AppState.currentState,
-    strokeWidth: 10,
-    strokeColor: 0xffffff
-  };
+export default class ImageEditor extends Component {
+  constructor() {
+    super();
+    this.state = {
+      image: null,
+      appState: AppState.currentState,
+      strokeWidth: 10,
+      strokeColor: 0xffffff
+    };
+  }
 
   handleAppStateChangeAsync = nextAppState => {
     if (
@@ -81,59 +77,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <MenuProvider style={{ flexDirection: "row", padding: 30 }}>
-          <MaterialIcons name="menu" size={25} color="white" />
-          <Menu onSelect={value => alert(`Selected number: ${value}`)}>
-            <MenuTrigger text="Select option" />
-            <MenuOptions>
-              <MenuOption value={1} text="One" />
-              <MenuOption value={2}>
-                <Text style={{ color: "red" }}>Two</Text>
-              </MenuOption>
-              <MenuOption value={3} disabled={true} text="Three" />
-            </MenuOptions>
-          </Menu>
-        </MenuProvider>
-        <View style={styles.icons}>
-          <TouchableOpacity
-            style={styles.buttonArrow}
-            onPress={this.props.onPress}
-          >
-            <MaterialIcons name="arrow-back" size={25} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonArrow}
-            onPress={() => {
-              this.sketch.undo();
-            }}
-          >
-            <MaterialIcons name="undo" size={25} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonArrow}
-            onPress={() => {
-              alert("edit tools");
-            }}
-          >
-            <MaterialIcons name="edit" size={25} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonArrow}
-            onPress={() => {
-              alert("save file");
-            }}
-          >
-            <MaterialIcons name="file-download" size={25} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonArrow}
-            onPress={() => {
-              alert("share");
-            }}
-          >
-            <MaterialIcons name="send" size={25} color="white" />
-          </TouchableOpacity>
-        </View>
+        <PopUpMenu sketch={this.setRef} />
         <View style={styles.container}>
           <View style={styles.sketchContainer}>
             <ImageBackground
@@ -149,6 +93,14 @@ export default class App extends Component {
                 onChange={this.onChangeAsync}
                 onReady={this.onReady}
               />
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => {
+                  this.sketch.undo();
+                }}
+              >
+                <MaterialIcons name="undo" size={25} color="black" />
+              </TouchableOpacity>
             </ImageBackground>
           </View>
         </View>
@@ -177,16 +129,6 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 5,
     alignItems: "center"
-  },
-  icons: {
-    padding: 6,
-    borderRadius: 6,
-    alignSelf: "center",
-    flexDirection: "row"
-  },
-  buttonArrow: {
-    margin: "auto",
-    padding: 6
   },
   background: {
     flex: 1,
