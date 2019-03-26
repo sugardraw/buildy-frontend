@@ -2,7 +2,11 @@ import React, { PureComponent } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 
 class Step extends PureComponent {
-	state = {};
+	constructor(props) {
+		super(props);
+		state = {};
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -65,7 +69,7 @@ export default class Wizard extends PureComponent {
 	};
 
 	render() {
-		console.log('values', this.state);
+		console.log('my data', this.state.values);
 		return (
 			<View>
 				{React.Children.map(this.props.children, (element, index) => {

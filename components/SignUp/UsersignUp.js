@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, TextInput, Picker, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity, TouchableHighlight } from 'react-native';
 
 import Wizard from './Wizard';
 
-export default class SignUp extends Component {
+export default class UsersignUp extends Component {
 	static navigationOptions = {
-		title            : 'Profi Register',
+		title            : 'User Register',
 		headerStyle      : { backgroundColor: '#173746' },
 		headerTintColor  : 'white',
 		headerTitleStyle : { color: 'white' }
@@ -27,7 +27,7 @@ export default class SignUp extends Component {
 		};
 		console.log('thats mine', values);
 		return axios
-			.post('http://10.0.1.130:3001/api/professional/save', values, config)
+			.post('http://10.0.1.130:3001/api/user/save', values, config)
 			.then((response) => {
 				this.setState({
 					signedUp : true
@@ -45,10 +45,11 @@ export default class SignUp extends Component {
 				<Wizard
 					initialValues={{
 						first_name : '',
+						last_name  : '',
 						street     : '',
 						email      : '',
 						password   : '',
-						services   : '',
+
 						city       : '',
 						zip        : '',
 						avatar     : ''
@@ -61,12 +62,20 @@ export default class SignUp extends Component {
 									<TextInput
 										style={styles.inputs}
 										onChangeText={(text) => onChangeValue('first_name', text)}
-										placeholder="Company Name"
+										placeholder="Name"
 										value={values.first_name}
 										underlineColorAndroid="transparent"
 									/>
 								</View>
-
+								<View style={styles.inputContainer}>
+									<TextInput
+										style={styles.inputs}
+										onChangeText={(text) => onChangeValue('last_name', text)}
+										placeholder="Last Name"
+										value={values.last_name}
+										underlineColorAndroid="transparent"
+									/>
+								</View>
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
@@ -85,20 +94,7 @@ export default class SignUp extends Component {
 										value={values.password}
 									/>
 								</View>
-								<View style={styles.inputContainer} placeholder="Services">
-									<Picker
-										mode="dropdown"
-										placeholder="Services"
-										style={styles.inputs}
-										selectedValue={values.services}
-										onValueChange={(value) => onChangeValue('services', value)}
-									>
-										<Picker.Item label="build" value="build" />
-										<Picker.Item label="paint" value="paint" />
-										<Picker.Item label="renovate" value="renovate" />
-										<Picker.Item label="buying" value="buying" />
-									</Picker>
-								</View>
+
 								<TouchableHighlight
 									style={styles.buttonContainer}
 									onPress={() => this.props.navigation.navigate('Login')}
