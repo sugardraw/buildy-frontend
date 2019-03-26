@@ -13,6 +13,7 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 /* import api from '../../api/api'; */
+import Profile from '../Profile/Profile';
 
 const mapStateToProps = state => {
   const {
@@ -92,6 +93,7 @@ class Welcome extends Component {
       } else {
         return (
           <View style={styles.container}>
+            <Profile />
             <FlatList
               contentContainerStyle={{ flexGrow: 1 }}
               data={this.props.posts}

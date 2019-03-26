@@ -2,6 +2,7 @@ import React from "react";
 import { Button, View, Text, Image, StyleSheet } from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import UploadImage from '../Profile/UploadImage';
 
 export default class Profile extends React.Component {
   static navigationOptions = {
@@ -19,15 +20,8 @@ export default class Profile extends React.Component {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-          <View style={styles.headerContent}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri:
-                  "https://cdn.dribbble.com/users/255/screenshots/2260728/avatar-colored-d.png"
-              }}
-            />
-          </View>
+          <UploadImage />
+
           <View style={styles.bodyContentProfile}>
             <Text style={styles.username}>Company name</Text>
             <Text style={styles.shortDescription}>
@@ -52,14 +46,6 @@ export default class Profile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  bodyProfile: {
-    alignSelf: "center",
-    marginTop: 200,
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
-    backgroundColor: "#ffffff"
-  },
   bodyContentProfile: {
     margin: 10,
     alignItems: "center"
@@ -80,16 +66,5 @@ const styles = StyleSheet.create({
     fontSize: 11,
     margin: 10,
     padding: 10
-  },
-  inputs: {
-    borderBottomColor: "black",
-    borderBottomWidth: 2
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderWidth: 3,
-    borderRadius: 50,
-    borderColor: "black"
   }
 });
