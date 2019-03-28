@@ -1,5 +1,11 @@
 import React from "react";
-import { Button, View, Text, Image, StyleSheet } from "react-native";
+import {
+  Button,
+  View,
+  Text,
+  Image,
+  StyleSheet
+} from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import UploadImage from '../Profile/UploadImage';
@@ -20,8 +26,11 @@ export default class Profile extends React.Component {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-          <UploadImage />
-
+          <UploadImage
+            payloadKey='file'
+            endpoint='http://10.0.1.195:3001/api/user/save_avatar'
+            callbackUrl='https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png'
+          />
           <View style={styles.bodyContentProfile}>
             <Text style={styles.username}>Company name</Text>
             <Text style={styles.shortDescription}>

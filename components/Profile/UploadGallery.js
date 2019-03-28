@@ -14,12 +14,12 @@ import {
 import { ImagePicker, Permissions } from 'expo';
 import uid from 'uuid/v4';
 
-export default class UploadImage extends React.Component {
+export default class UploadGallery extends React.Component {
     constructor(props) {
         super(props)
         this.askPermission = this.askPermission.bind(this);
         this.showAlert = this.showAlert.bind(this);
-        this.endpointTest = "http://10.0.1.195:3001/api/user/save_avatar"
+        this.endpointTest = "http://10.0.1.195:3001/api/user/save_gallery"
         this.state = {
             endpoint: this.endpointTest ? this.endpointTest : null,
             payloadKey: this.props.payloadKey ?
@@ -126,15 +126,16 @@ export default class UploadImage extends React.Component {
                 </View>
             )
         }
+
         return (
             <View style={style.imageWrapper}>
                 {this.props.callbackUrl != null ?
                     <Image
                         source={{ uri: this.state.uploaded_photo ? this.state.uploaded_photo : this.props.callbackUrl }}
-                        style={{ width: 80, height: 80, borderRadius: 50 }}
+                        style={{ width: 80, height: 80 }}
                     /> : <Image
-                        source={{ uri: 'https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png' }}
-                        style={{ width: 80, height: 80, borderRadius: 50 }} />
+                        source={{ uri: 'https://cdn0.iconfinder.com/data/icons/basic-outline/64/icon-basic-set_12-camera-512.png' }}
+                        style={{ width: 80, height: 80 }} />
                 }
                 <TouchableOpacity
                     style={style.circleWrapper}
@@ -148,15 +149,14 @@ export default class UploadImage extends React.Component {
     }
 }
 
+
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'yellow',
-        height: 30,
-        width: 30
+        backgroundColor: 'yellow'
     },
     imageWrapper: {
-        marginBottom: 80,
+        marginBottom: 20,
         position: 'relative',
         justifyContent: 'center',
         alignItems: 'center'
