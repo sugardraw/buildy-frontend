@@ -5,6 +5,7 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import { getPosts } from '../../actions';
 import Home from '../Home/Home';
 /* import api from '../../api/api'; */
+import EditProfile from '../Profile/EditProfile';
 
 const mapStateToProps = (state) => {
 	const { posts, userLoggedIn, loading, error, post, postLoading } = state.posts;
@@ -57,7 +58,6 @@ class Welcome extends Component {
 			</TouchableWithoutFeedback>
 		);
 	};
-
 	render() {
 		const error = this.props.error;
 		if (this.props.userLoggedIn) {
