@@ -29,10 +29,15 @@ export default class LoginView extends Component {
 	login = () => {
 		console.log(this.state.email, this.state.password);
 		return axios
-			.post('http://localhost:3001/api/user/save', { email: this.state.email, password: this.state.password })
-			.then((result) => {
-				console.log(result.data.id);
-				this.setState({ loggedIn: true });
+			.post('http://10.0.1.130:3001/api/user/login', { email: this.state.email, password: this.state.password })
+			.then((response) => {
+				this.setState({
+					loggedIn : true
+				});
+				return response;
+			})
+			.catch((error) => {
+				console.log(error.response);
 			});
 	};
 
@@ -73,16 +78,15 @@ export default class LoginView extends Component {
 
 				<TouchableHighlight
 					style={styles.buttonContainer}
-					onPress={() => this.onClickListener('restore_password')}
+					onPress={() => this.props.navigation.navigate('UsersignUp')}
 				>
-					<Text>Forgot your password?</Text>
+					<Text>Register as user</Text>
 				</TouchableHighlight>
-
 				<TouchableHighlight
 					style={styles.buttonContainer}
 					onPress={() => this.props.navigation.navigate('SignUp')}
 				>
-					<Text>Register</Text>
+					<Text>Register as profi</Text>
 				</TouchableHighlight>
 			</View>
 		);
