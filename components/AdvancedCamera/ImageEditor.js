@@ -1,5 +1,5 @@
 import Expo from "expo";
-import { FileSystem, takeSnapshotAsync } from "expo";
+import { FileSystem, takeSnapshotAsync, Permissions } from "expo";
 
 import * as ExpoPixi from "expo-pixi";
 import React, { Component } from "react";
@@ -10,8 +10,8 @@ import {
   AppState,
   StyleSheet,
   Text,
+  Dimensions,
   ImageBackground,
-  Permissions,
   PixelRatio,
   View,
   TouchableOpacity,
@@ -33,6 +33,7 @@ import {
 
 import Gestures from "react-native-easy-gestures";
 import ElementsViewer from "../ElementsViewer/ElementsViewer";
+import ColorPalette from "react-native-color-palette";
 
 const isAndroid = Platform.OS === "android";
 function uuidv4() {
@@ -76,12 +77,13 @@ export default class ImageEditor extends Component {
       image: null,
       appState: AppState.currentState,
       strokeWidth: 10,
-      strokeColor: 0xffffff,
       showElements: false,
       buildElement: null,
       lines: [],
-      cameraRollUri: null
+      cameraRollUri: null,
+      selectColor: false
     };
+    this.strokeColor = 0xffffff;
   }
 
   handleAppStateChangeAsync = nextAppState => {
@@ -140,46 +142,90 @@ export default class ImageEditor extends Component {
   };
 
   changeColor = () => {
-    this.setState(state => {
-      state.strokeColor = state.strokeColor * Math.random();
-      return state;
+    console.log("trying to change color");
+    this.setState({
+      selectColor: !this.state.selectColor
     });
   };
 
+  _renderColorPalette = selectedColor => {
+    if (this.state.selectColor) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            flexWrap: "wrap"
+          }}
+        >
+          <ColorPalette
+            onChange={color => {
+              let newSelectedColor = color.replace("#", "0x");
+              this.strokeColor = newSelectedColor;
+              selectedColor = color;
+              return selectedColor;
+            }}
+            value={selectedColor}
+            colors={[
+              "#C0392B",
+              "#E74C3C",
+              "#9B59B6",
+              "#8E44AD",
+              "#12045D",
+              "#2ed0B9",
+              "#98fff6",
+              "#8ff4AD",
+              "#1204AD",
+              "#2980B9",
+              "#1934B9"
+            ]}
+            title={"Controlled Color Palette:"}
+            icon={<MaterialIcons name="check" size={25} color={"black"} />}
+          />
+          <TouchableOpacity
+            style={{ padding: 5, alignItems: "center" }}
+            onPress={this.changeColor}
+          >
+            <SimpleLineIcons
+              style={{ margin: 5 }}
+              name="close"
+              size={30}
+              color="white"
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
   saveToCameraRollAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== "granted") {
+      throw new Error("Denied CAMERA_ROLL permissions!");
+      return;
+    }
+    const targetPixelCount = 720;
+    const pixelRatio = PixelRatio.get();
+
+    let result = await takeSnapshotAsync(this._container, {
+      result: "file",
+      quality: 1,
+      format: "png"
+    });
+
+    let saveResult = await CameraRoll.saveToCameraRoll(result, "photo");
+    this.setState({ cameraRollUri: saveResult });
     alert("Successfully saved selected to user's gallery!");
-    /**
-     * saving to own gallery
-     *
-     */
-
-    // const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    // if (status !== "granted") {
-    //   throw new Error("Denied CAMERA_ROLL permissions!");
-    //   return;
-    // }
-
-    // const targetPixelCount = 1080; // If you want full HD pictures
-    // const pixelRatio = PixelRatio.get(); // The pixel ratio of the device
-    // // pixels * pixelratio = targetPixelCount, so pixels = targetPixelCount / pixelRatio
-    // const pixels = targetPixelCount / pixelRatio;
-    // let result = await takeSnapshotAsync(this._container, {
-    //   result: "file",
-    //   height: pixels,
-    //   width: pixels,
-    //   quality: 1,
-    //   format: "png"
-    // });
-
-    // let saveResult = await CameraRoll.saveToCameraRoll(result, "photo");
-    // this.setState({ cameraRollUri: saveResult });
   };
 
   reset = async () => {
     this.sketch.deleteAll();
+    this.strokeColor = 0xffffff;
+
     this.setState(state => {
       state.strokeWidth = 10;
-      state.strokeColor = 0xffffff;
       state.buildElement = null;
       state.lines = [];
       return state;
@@ -192,13 +238,7 @@ export default class ImageEditor extends Component {
 
   render() {
     return (
-      <View
-        style={styles.container}
-        collapsable={false}
-        ref={view => {
-          this._container = view;
-        }}
-      >
+      <View style={styles.container}>
         <View
           style={{
             flexDirection: "row",
@@ -339,14 +379,16 @@ export default class ImageEditor extends Component {
           </Menu>
         </View>
 
-        <View style={styles.container}>
+        {this._renderColorPalette()}
+
+        <View
+          collapsable={false}
+          ref={view => {
+            this._container = view;
+          }}
+          style={styles.container}
+        >
           <View style={styles.sketchContainer}>
-            {/*
-              Add build elements with PIXI library
-             {this.state.showElements &&
-              <ElementsViewer />
-              } 
-             */}
             {this.state.showElements && (
               <View style={styles.draggableContainer}>
                 <Gestures>
@@ -357,7 +399,12 @@ export default class ImageEditor extends Component {
                 </Gestures>
               </View>
             )}
-
+            {/*
+              Add build elements with PIXI library
+             {this.state.showElements &&
+              <ElementsViewer />
+              } 
+             */}
             <ImageBackground
               source={{ uri: this.props.selected[0] }}
               style={styles.background}
@@ -365,7 +412,7 @@ export default class ImageEditor extends Component {
               <ExpoPixi.Sketch
                 ref={ref => (this.sketch = ref)}
                 style={styles.sketch}
-                strokeColor={this.state.strokeColor}
+                strokeColor={this.strokeColor}
                 strokeWidth={this.state.strokeWidth}
                 strokeAlpha={1}
                 onChange={this.onChangeAsync}
@@ -389,7 +436,7 @@ const styles = StyleSheet.create({
   draggableContainer: {
     flex: 1,
     position: "relative",
-    zIndex: 1
+    zIndex: 2
   },
   mainIcons: {
     marginLeft: 6,

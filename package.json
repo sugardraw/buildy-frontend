@@ -17,10 +17,12 @@
 		"react": "^16.5.0",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
 		"react-native-button": "^2.3.0",
+		"react-native-color-palette": "^2.0.3",
 		"react-native-easy-gestures": "^2.2.4",
 		"react-native-elements": "^1.1.0",
 		"react-native-enhanced-popup-menu": "^0.6.1",
 		"react-native-is-iphonex": "^1.0.1",
+		"react-native-material-menu": "^0.4.2",
 		"react-native-multiple-select": "^0.4.4",
 		"react-native-radio-buttons-group": "^1.0.7",
 		"react-native-router-flux": "^4.0.6",
@@ -36,8 +38,7 @@
 		"redux-saga": "^1.0.2",
 		"redux-thunk": "^2.3.0",
 		"watchman": "^1.0.0",
-		"wretch": "^1.5.0",
-		"react-native-material-menu": "^0.4.2"
+		"wretch": "^1.5.0"
 	},
 	"devDependencies": {
 		"babel-preset-expo": "^5.0.0"
