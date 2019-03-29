@@ -7,9 +7,10 @@ team: Ansumana Darboe, Gaia Cicaloni and Sergio Usle
 
 
 ## To run this project:
-1. ` npm install `
-2. then, go to node_modules/expo-pixi/components/sketch.js
-3. copy this function after the function undo():
+1. Clone the project
+2. ` npm install `
+3. then, go to node_modules/expo-pixi/components/sketch.js
+4. copy this function after the function undo():
 ``` 
 deleteAll = () => {
     if (!this.renderer) {
@@ -30,7 +31,7 @@ deleteAll = () => {
   }; 
   
   ```
-4. run ` expo start `
+5. run ` expo start `
 
 
 
