@@ -126,7 +126,7 @@ export default class UsersignUp extends Component {
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
-										onChangeText={(text) => onChangeValue('zipCode', text)}
+										onChangeText={(text) => onChangeValue('zip', text)}
 										placeholder="Zip Code"
 										value={values.zip}
 									/>

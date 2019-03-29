@@ -5,7 +5,6 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import { getPosts } from '../../actions';
 import Home from '../Home/Home';
 /* import api from '../../api/api'; */
-import EditProfile from '../Profile/EditProfile';
 
 const mapStateToProps = (state) => {
 	const { posts, userLoggedIn, loading, error, post, postLoading } = state.posts;
@@ -34,7 +33,9 @@ class Welcome extends Component {
 
 	componentDidMount() {
 		this.props.dispatchGetPosts();
-
+		this.setState = {
+			userLoggedIn : true
+		};
 		console.log('welcome', this.props.dispatchGetPosts());
 	}
 
@@ -51,7 +52,7 @@ class Welcome extends Component {
 							backgroundColor="#03A9F4"
 							buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
 							title="READ MORE"
-							onPress={() => this.props.navigation.navigate('Profile')}
+							onPress={() => this.props.navigation.navigate('ProfileCompany')}
 						/>
 					</View>
 				</Card>
@@ -59,25 +60,16 @@ class Welcome extends Component {
 		);
 	};
 	render() {
-		const error = this.props.error;
-		if (this.props.userLoggedIn) {
-			return <Home />;
-		} else {
-			if (error) {
-				return <Text>{error}</Text>;
-			} else {
-				return (
-					<View style={styles.container}>
-						<FlatList
-							contentContainerStyle={{ flexGrow: 1 }}
-							data={this.props.posts}
-							keyExtractor={this.keyExtractor}
-							renderItem={this.renderItem}
-						/>
-					</View>
-				);
-			}
-		}
+		return (
+			<View style={styles.container}>
+				<FlatList
+					contentContainerStyle={{ flexGrow: 1 }}
+					data={this.props.posts}
+					keyExtractor={this.keyExtractor}
+					renderItem={this.renderItem}
+				/>
+			</View>
+		);
 	}
 }
 

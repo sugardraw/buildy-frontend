@@ -7,7 +7,9 @@ import Welcome from '../components/Welcome/Welcome';
 import Login from '../components/Login/Login';
 import SignUp from '../components/SignUp/SignUp';
 import UsersignUp from '../components/SignUp/UsersignUp';
-import Profile from '../components/Profile/Profile';
+import UserProfile from '../components/Profile/UserProfile';
+import ProfileCompany from '../components/Profile/ProfileCompany';
+
 import RequestFormular from '../components/Profile/RequestFormular';
 
 const ACTIVE_TAB_COLOR = '#69A6F7';
@@ -34,8 +36,12 @@ const WelcomeStack = createStackNavigator({
 		screen : Welcome
 	},
 	Profile         : {
-		screen : Profile
+		screen : UserProfile
 	},
+	ProfileCompany  : {
+		screen : ProfileCompany
+	},
+
 	RequestFormular : {
 		screen : RequestFormular
 	}

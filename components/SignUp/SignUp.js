@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+
+import MultiSelect from 'react-native-multiple-select';
 import { StyleSheet, Text, View, TextInput, Picker, TouchableHighlight, Alert } from 'react-native';
 
 import Wizard from './Wizard';
@@ -40,18 +42,34 @@ export default class SignUp extends Component {
 	};
 
 	render() {
+		const service = [
+			{
+				name : 'building'
+			},
+			{
+				name : 'paint'
+			},
+			{
+				name : 'selling'
+			}
+		];
+
 		return (
 			<View style={styles.container}>
 				<Wizard
 					initialValues={{
-						first_name : '',
-						street     : '',
-						email      : '',
-						password   : '',
-						services   : '',
-						city       : '',
-						zip        : '',
-						avatar     : ''
+						name          : '',
+						password      : '',
+						services      : [],
+						email         : '',
+
+						address       : {
+							city   : '',
+							street : '',
+							zip    : ''
+						},
+						projectImages : [],
+						avatar        : ''
 					}}
 				>
 					<Wizard.Step>
@@ -60,9 +78,9 @@ export default class SignUp extends Component {
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
-										onChangeText={(text) => onChangeValue('first_name', text)}
+										onChangeText={(text) => onChangeValue('name', text)}
 										placeholder="Company Name"
-										value={values.first_name}
+										value={values.name}
 										underlineColorAndroid="transparent"
 									/>
 								</View>
@@ -85,8 +103,28 @@ export default class SignUp extends Component {
 										value={values.password}
 									/>
 								</View>
-								<View style={styles.inputContainer} placeholder="Services">
-									<Picker
+								<View>
+									<MultiSelect
+										onSelectedItemsChange={(text) => onChangeValue('services', text)}
+										value={values.services}
+										underlineColorAndroid="transparent"
+										items={service}
+										uniqueKey="name"
+										hideTags
+										ref={(component) => {
+											this.multiSelect = component;
+										}}
+										showDropDowns={true}
+										readOnlyHeadings={true}
+										displayKey="name"
+										selectText="Pick service"
+										searchInputPlaceholderText="Search Services..."
+										onChangeInput={(text) => console.log(text)}
+									/>
+									<View>
+										{this.multiSelect && this.multiSelect.getSelectedItemsExt(values.services)}
+									</View>
+									{/* <Picker
 										mode="dropdown"
 										placeholder="Services"
 										style={styles.inputs}
@@ -97,7 +135,7 @@ export default class SignUp extends Component {
 										<Picker.Item label="paint" value="paint" />
 										<Picker.Item label="renovate" value="renovate" />
 										<Picker.Item label="buying" value="buying" />
-									</Picker>
+									</Picker> */}
 								</View>
 								<TouchableHighlight
 									style={styles.buttonContainer}
@@ -114,9 +152,14 @@ export default class SignUp extends Component {
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
-										onChangeText={(text) => onChangeValue('city', text)}
+										/* onChangeText={(text) => onChangeValue('city', text)}
+										value={values.city} */
 										placeholder="City"
-										value={values.city}
+										value={values.address}
+										onChangeText={(text) => {
+											const newCity = Object.assign({}, values.address, { city: text });
+											this.setState({ address: newCity });
+										}}
 									/>
 								</View>
 								<View style={styles.inputContainer}>
@@ -130,7 +173,7 @@ export default class SignUp extends Component {
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
-										onChangeText={(text) => onChangeValue('zipCode', text)}
+										onChangeText={(text) => onChangeValue('zip', text)}
 										placeholder="Zip Code"
 										value={values.zip}
 									/>

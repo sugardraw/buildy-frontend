@@ -16,6 +16,7 @@
 		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
 		"react-native-button": "^2.3.0",
 		"react-native-elements": "^1.1.0",
+		"react-native-multiple-select": "^0.4.4",
 		"react-native-radio-buttons-group": "^1.0.7",
 		"react-native-router-flux": "^4.0.6",
 		"react-native-router-flux-cli": "0.0.1",
@@ -29,8 +30,7 @@
 		"redux-promise-middleware": "^6.1.0",
 		"redux-saga": "^1.0.2",
 		"redux-thunk": "^2.3.0",
-		"watchman": "^1.0.0",
-		"wretch": "^1.5.0"
+		"watchman": "^1.0.0"
 	},
 	"devDependencies": {
 		"babel-preset-expo": "^5.0.0"

@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 19676,
-  "expoServerNgrokUrl": "https://my-35t.gaiadci.buildy-frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.my-35t.gaiadci.buildy-frontend.exp.direct",
-  "ngrokPid": 19718,
+  "packagerPort": 19004,
+  "packagerPid": 17324,
+  "expoServerNgrokUrl": "https://my-35t.anonymous.buildy-frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.my-35t.anonymous.buildy-frontend.exp.direct",
+  "ngrokPid": 17373,
   "webpackServerPort": null
 }

@@ -67,9 +67,16 @@ export default class Wizard extends PureComponent {
 			}
 		}));
 	};
+	/* 
+	_onChangeAddress = (name, value) => {
+		const value = Object.assign({}, values.address, { city: text });
+		this.setState({ [name] : value });
+	
+	}; */
 
 	render() {
-		console.log('my data', this.state.values);
+		console.log('wizard data', this.state);
+
 		return (
 			<View>
 				{React.Children.map(this.props.children, (element, index) => {
