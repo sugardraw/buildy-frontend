@@ -23,6 +23,9 @@ const LoginStack = createStackNavigator({
 	Login      : {
 		screen : Login
 	},
+	Profile    : {
+		screen : UserProfile
+	},
 	SignUp     : {
 		screen : SignUp
 	},
@@ -34,9 +37,6 @@ const LoginStack = createStackNavigator({
 const WelcomeStack = createStackNavigator({
 	Welcome         : {
 		screen : Welcome
-	},
-	Profile         : {
-		screen : UserProfile
 	},
 	ProfileCompany  : {
 		screen : ProfileCompany

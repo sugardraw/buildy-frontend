@@ -31,6 +31,14 @@ export default class ProfileCompany extends React.Component {
 						</Text>
 					</View>
 					<PortfolioGallery />
+					<View>
+						<Button
+							backgroundColor="#03A9F4"
+							buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+							title="SEND A REQUEST"
+							onPress={() => this.props.navigation.navigate('RequestFormular')}
+						/>
+					</View>
 				</View>
 			</KeyboardAwareScrollView>
 		);
