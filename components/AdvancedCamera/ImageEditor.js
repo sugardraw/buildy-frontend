@@ -148,6 +148,10 @@ export default class ImageEditor extends Component {
 
   saveToCameraRollAsync = async () => {
     alert("Successfully saved selected to user's gallery!");
+    /**
+     * saving to own gallery
+     *
+     */
 
     // const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     // if (status !== "granted") {
