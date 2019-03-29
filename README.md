@@ -10,8 +10,7 @@ team: Ansumana Darboe, Gaia Cicaloni and Sergio Usle
 1. ` npm install `
 2. then, go to node_modules/expo-pixi/components/sketch.js
 3. copy this function after undo():
-`
-  deleteAll = () => {
+` deleteAll = () => {
     if (!this.renderer) {
       return null;
     }
@@ -27,8 +26,7 @@ team: Ansumana Darboe, Gaia Cicaloni and Sergio Usle
     } else if (this.points.length > 0) {
       return this.deleteAll();
     }
-  };
-`
+  }; `
 4. run ` expo start `
 
 
