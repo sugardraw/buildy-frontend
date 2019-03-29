@@ -9,7 +9,7 @@ team: Ansumana Darboe, Gaia Cicaloni and Sergio Usle
 ## To run this project:
 1. ` npm install `
 2. then, go to node_modules/expo-pixi/components/sketch.js
-3. copy this function after undo():
+3. copy this function after the function undo():
 ``` 
 deleteAll = () => {
     if (!this.renderer) {
