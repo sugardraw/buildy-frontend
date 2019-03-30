@@ -16,7 +16,8 @@ import {
   View,
   TouchableOpacity,
   TouchableHighlight,
-  CameraRoll
+  CameraRoll,
+  ScrollView
 } from "react-native";
 
 import Menu, {
@@ -44,6 +45,22 @@ function uuidv4() {
     return v.toString(16);
   });
 }
+
+const images = [0, 1, 2, 3, 4];
+const { elements } = require("../../assets/elements/elementsExporter");
+import { api } from "../../api/api";
+
+furnitureNames = ["chair_1.png", "table_1.png"];
+architectureNames = [
+  "door_1.png",
+  "door_2.png",
+  "stairs_1.png",
+  "window_1.png"
+];
+
+console.log("######################", elements);
+
+const deviceWidth = Dimensions.get("window").width;
 
 export default class ImageEditor extends Component {
   constructor() {
@@ -78,7 +95,8 @@ export default class ImageEditor extends Component {
       appState: AppState.currentState,
       strokeWidth: 10,
       showElements: false,
-      buildElement: null,
+      show: false,
+      elementUri: null,
       lines: [],
       cameraRollUri: null,
       selectColor: false
@@ -106,13 +124,6 @@ export default class ImageEditor extends Component {
   componentDidMount() {
     AppState.addEventListener("change", this.handleAppStateChangeAsync);
   }
-
-  uploadFurniture = () => {
-    this.setState({
-      buildElement: require("../../assets/furniture/table_1.png"),
-      showElements: true
-    });
-  };
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this.handleAppStateChangeAsync);
@@ -148,6 +159,20 @@ export default class ImageEditor extends Component {
     });
   };
 
+  openElementsPanel = () => {
+    this.setState({
+      showElements: !this.state.showElements
+    });
+  };
+
+  addToScene = uri => {
+    this.setState({
+      elementUri: uri,
+      showElements: !this.state.showElements,
+      show: !this.state.show
+    });
+  };
+
   _renderColorPalette = selectedColor => {
     if (this.state.selectColor) {
       return (
@@ -169,6 +194,7 @@ export default class ImageEditor extends Component {
             colors={[
               "#C0392B",
               "#E74C3C",
+              "#0015aC",
               "#9B59B6",
               "#8E44AD",
               "#12045D",
@@ -193,6 +219,86 @@ export default class ImageEditor extends Component {
               color="white"
             />
           </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  _renderElementsPanel = () => {
+    let furnitureArray = [];
+    let architectureArray = [];
+
+    furnitureNames.forEach((image, i) => {
+      console.log(image, i);
+      let thisImage = (
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() =>
+            this.addToScene(api + "/uploads/elements/furniture/" + image)
+          }
+          uri={api + "/uploads/elements/furniture/" + image}
+        >
+          <Image
+            key={`image${i}`}
+            source={{ uri: api + "/uploads/elements/furniture/" + image }}
+            style={{ width: 80, height: 80, margin: 6 }}
+          />
+        </TouchableOpacity>
+      );
+      furnitureArray.push(thisImage);
+    });
+
+    architectureNames.forEach((image, i) => {
+      console.log(image, i);
+      let thisImage = (
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() =>
+            this.addToScene(api + "/uploads/elements/architecture/" + image)
+          }
+          uri={api + "/uploads/elements/architecture/" + image}
+        >
+          <Image
+            key={`image${i}`}
+            source={{ uri: api + "/uploads/elements/architecture/" + image }}
+            style={{ width: 80, height: 80, margin: 6 }}
+          />
+        </TouchableOpacity>
+      );
+      architectureArray.push(thisImage);
+    });
+    if (this.state.showElements) {
+      return (
+        <View
+          style={{
+            flex: 2,
+            justifyContent: "flex-start"
+          }}
+        >
+          <Text style={{ color: "white", alignSelf: "center", fontSize: 15 }}>
+            Basic furniture elements
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={10}
+            pagingEnabled
+          >
+            {furnitureArray}
+          </ScrollView>
+          <Text style={{ color: "white", alignSelf: "center", fontSize: 15 }}>
+            Basic arquitecture elements
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={10}
+            pagingEnabled
+          >
+            {architectureArray}
+          </ScrollView>
         </View>
       );
     } else {
@@ -226,8 +332,7 @@ export default class ImageEditor extends Component {
 
     this.setState(state => {
       state.strokeWidth = 10;
-      state.buildElement = null;
-      state.lines = [];
+      (state.elementUri = null), (state.show = !state.show), (state.lines = []);
       return state;
     });
   };
@@ -356,7 +461,7 @@ export default class ImageEditor extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.icon}
-                onPress={this.uploadFurniture}
+                onPress={this.openElementsPanel}
               >
                 <MaterialIcons name="insert-photo" size={25} color="black" />
               </TouchableOpacity>
@@ -380,6 +485,7 @@ export default class ImageEditor extends Component {
         </View>
 
         {this._renderColorPalette()}
+        {this._renderElementsPanel()}
 
         <View
           collapsable={false}
@@ -389,12 +495,12 @@ export default class ImageEditor extends Component {
           style={styles.container}
         >
           <View style={styles.sketchContainer}>
-            {this.state.showElements && (
+            {this.state.show && (
               <View style={styles.draggableContainer}>
                 <Gestures>
                   <Image
                     style={{ width: 200, height: 200 }}
-                    source={this.state.buildElement}
+                    source={{ uri: this.state.elementUri }}
                   />
                 </Gestures>
               </View>

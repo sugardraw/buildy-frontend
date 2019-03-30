@@ -7,8 +7,8 @@ import { resolveAsync } from "expo-asset-utils";
 
 //import elements
 
-const table1 = require("../../assets/furniture/table_1.png");
-const mask_table1 = require("../../assets/furniture/table_1_mask.png");
+const table1 = require("../../assets/elements/furniture/table_1.png");
+const mask_table1 = require("../../assets/elements/furniture/table_1_mask.png");
 
 export default class ElementsViewer extends React.Component {
   render() {
