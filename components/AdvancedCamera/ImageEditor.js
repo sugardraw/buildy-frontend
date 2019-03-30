@@ -332,7 +332,9 @@ export default class ImageEditor extends Component {
 
     this.setState(state => {
       state.strokeWidth = 10;
-      (state.elementUri = null), (state.show = !state.show), (state.lines = []);
+      state.elementUri = null;
+      state.show = !state.show;
+      state.lines = [];
       return state;
     });
   };
