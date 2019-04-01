@@ -1,8 +1,11 @@
 import Expo from "expo";
-import { FileSystem, takeSnapshotAsync, Permissions } from "expo";
+const ExpoImagePicker = require("expo").ImagePicker;
+import { FileSystem, takeSnapshotAsync, Permissions, ImagePicker } from "expo";
+const chalk = require("chalk");
 
 import * as ExpoPixi from "expo-pixi";
 import React, { Component } from "react";
+import axios from "axios";
 
 import {
   Image,
@@ -35,6 +38,9 @@ import {
 import Gestures from "react-native-easy-gestures";
 import ElementsViewer from "../ElementsViewer/ElementsViewer";
 import ColorPalette from "react-native-color-palette";
+import FileSystemRN from "react-native-filesystem";
+
+import uid from "uuid/v4";
 
 const isAndroid = Platform.OS === "android";
 function uuidv4() {
@@ -57,8 +63,6 @@ architectureNames = [
   "stairs_1.png",
   "window_1.png"
 ];
-
-console.log("######################", elements);
 
 const deviceWidth = Dimensions.get("window").width;
 
@@ -99,7 +103,9 @@ export default class ImageEditor extends Component {
       elementUri: null,
       lines: [],
       cameraRollUri: null,
-      selectColor: false
+      selectColor: false,
+      requestData: null,
+      photo: null
     };
     this.strokeColor = 0xffffff;
   }
@@ -123,6 +129,14 @@ export default class ImageEditor extends Component {
 
   componentDidMount() {
     AppState.addEventListener("change", this.handleAppStateChangeAsync);
+    this.setState({
+      requestData: this.props.requestData
+    });
+    FileSystem.makeDirectoryAsync(
+      FileSystem.documentDirectory + "requestData"
+    ).catch(e => {
+      console.log(e, "Directory exists");
+    });
   }
 
   componentWillUnmount() {
@@ -131,10 +145,6 @@ export default class ImageEditor extends Component {
 
   onChangeAsync = async () => {
     const { uri } = await this.sketch.takeSnapshotAsync();
-    for (let line of this.sketch.lines) {
-      console.log(line.points);
-    }
-    console.log(uri);
   };
 
   incrementWidth = () => {
@@ -231,7 +241,6 @@ export default class ImageEditor extends Component {
     let architectureArray = [];
 
     furnitureNames.forEach((image, i) => {
-      console.log(image, i);
       let thisImage = (
         <TouchableOpacity
           style={styles.icon}
@@ -251,7 +260,6 @@ export default class ImageEditor extends Component {
     });
 
     architectureNames.forEach((image, i) => {
-      console.log(image, i);
       let thisImage = (
         <TouchableOpacity
           style={styles.icon}
@@ -306,7 +314,7 @@ export default class ImageEditor extends Component {
     }
   };
 
-  saveToCameraRollAsync = async () => {
+  _saveEditedImage = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       throw new Error("Denied CAMERA_ROLL permissions!");
@@ -314,16 +322,68 @@ export default class ImageEditor extends Component {
     }
     const targetPixelCount = 720;
     const pixelRatio = PixelRatio.get();
-
-    let result = await takeSnapshotAsync(this._container, {
+    let image = await takeSnapshotAsync(this._container, {
       result: "file",
       quality: 1,
       format: "png"
     });
+    let saveImage = await CameraRoll.saveToCameraRoll(image, "photo");
+    this.setState({ cameraRollUri: saveImage });
+  };
 
-    let saveResult = await CameraRoll.saveToCameraRoll(result, "photo");
-    this.setState({ cameraRollUri: saveResult });
-    alert("Successfully saved selected to user's gallery!");
+  _uploadImageAsync = async uri => {
+    const uriParts = uri.split(".");
+    const fileType = uriParts[uriParts.length - 1];
+
+    const formData = new FormData();
+    formData.append("estimationRequest", {
+      user: "5c9b833f0756b91851b783a4",
+      editedImages: {
+        uri,
+        name: "image_request" + uid(),
+        type: `image/${fileType}`
+      },
+      requestData: this.state.requestData
+    });
+
+    fetch(api + "/api/user/request/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    })
+      .then(response => console.log(response.json()))
+      .catch(err => console.log(err))
+      .done();
+  };
+
+  _saveToDB = async () => {
+    if (this.state.cameraRollUri === null) {
+      alert("please, save your edited image before you send it");
+      return;
+    } else {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        if (Platform.OS === "ios") this.showAlert();
+        return;
+      }
+
+      ExpoImagePicker.launchImageLibraryAsync({
+        mediaTypes: "Images"
+      })
+        .then(result => {
+          const file = result.uri;
+          if (!result.cancelled) {
+            uploadResponse = this._uploadImageAsync(result.uri).then(
+              response => {
+                this.setState({
+                  photo: file
+                });
+              }
+            );
+          }
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   reset = async () => {
@@ -389,24 +449,12 @@ export default class ImageEditor extends Component {
             <View style={styles.icons}>
               <TouchableOpacity
                 style={styles.icon}
-                onPress={this.saveToCameraRollAsync}
+                onPress={this._saveEditedImage}
               >
                 <MaterialIcons name="file-download" size={25} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={() => {
-                  alert("edit tools");
-                }}
-              >
-                <MaterialIcons name="share" size={25} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={() => {
-                  alert("share");
-                }}
-              >
+
+              <TouchableOpacity style={styles.icon} onPress={this._saveToDB}>
                 <MaterialIcons name="send" size={25} color="black" />
               </TouchableOpacity>
             </View>

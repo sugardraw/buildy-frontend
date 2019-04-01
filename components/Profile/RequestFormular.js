@@ -23,11 +23,18 @@ export default class RequestFormular extends React.Component {
   }
 
   takeAPicture = () => {
-    const { messageText } = this.state;
-    if (messageText == "") {
+    const { messageText, title } = this.state;
+    if (messageText == "" || title == "") {
       this.setState({ Error: "Please write a message for your recipient" });
     } else {
-      this.props.navigation.navigate("Camera");
+      this.props.navigation.navigate("Camera", {
+        requestData: {
+          title: this.state.title,
+          messageText: this.state.messageText,
+          budget: this.state.budget,
+          date: this.state.date
+        }
+      });
     }
   };
 
@@ -40,8 +47,15 @@ export default class RequestFormular extends React.Component {
         <View style={styles.container}>
           <Text>Please give some info to the company</Text>
           <Text style={{ color: "red" }}>{this.state.Error}</Text>
+          <Text>Give a title to your request</Text>
+          <TextInput
+            style={styles.inputs}
+            placeholder="Paint dinning room"
+            underlineColorAndroid="transparent"
+            onChangeText={editedText => this.setState({ title: editedText })}
+          />
 
-          <Text>Message</Text>
+          <Text>Description</Text>
           <TextInput
             placeholder="Describe your ideas"
             multiline={true}
@@ -66,6 +80,7 @@ export default class RequestFormular extends React.Component {
             style={styles.inputs}
             placeholder="5.000 Euro"
             underlineColorAndroid="transparent"
+            onChangeText={editedText => this.setState({ budget: editedText })}
           />
 
           <Text>Wenn will you start?</Text>
@@ -73,6 +88,7 @@ export default class RequestFormular extends React.Component {
             style={styles.inputs}
             placeholder="03/05/2020"
             underlineColorAndroid="transparent"
+            onChangeText={editedText => this.setState({ date: editedText })}
           />
 
           <Button title="Take a picture" onPress={this.takeAPicture} />

@@ -45,7 +45,6 @@ export function getPost(_id) {
     axios
       .get(`http://localhost:3001/${endpoint}/${_id}`, config)
       .then(response => {
-        console.log("posts actions", response.data);
         dispatch({
           type: GET_POST_SUCCESS,
           payload: response.data

@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
+		"chalk": "^2.4.2",
 		"expo": "^32.0.0",
 		"expo-asset-utils": "^1.0.0",
 		"expo-pixi": "^1.0.1",
@@ -21,6 +22,7 @@
 		"react-native-easy-gestures": "^2.2.4",
 		"react-native-elements": "^1.1.0",
 		"react-native-enhanced-popup-menu": "^0.6.1",
+		"react-native-filesystem": "^0.1.0",
 		"react-native-is-iphonex": "^1.0.1",
 		"react-native-material-menu": "^0.4.2",
 		"react-native-multiple-select": "^0.4.4",

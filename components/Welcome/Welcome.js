@@ -54,7 +54,6 @@ class Welcome extends Component {
     this.setState = {
       userLoggedIn: true
     };
-    console.log("welcome", this.props.dispatchGetPosts());
   }
 
   keyExtractor = (item, index) => String(item._id);
@@ -62,7 +61,6 @@ class Welcome extends Component {
     return (
       <TouchableWithoutFeedback>
         <Card title={item.name}>
-          {console.log(item.avatar)}
           <Image
             style={{ width: 300, height: 300 }}
             source={{ uri: api + item.avatar }}

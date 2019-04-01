@@ -43,24 +43,6 @@ export default class GalleryScreen extends React.Component {
     this.setState({ selected });
   };
 
-  saveToGallery = async () => {
-    const selected = this.state.selected;
-    if (selected.length > 0) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== "granted") {
-        throw new Error("Denied CAMERA_ROLL permissions!");
-      }
-      const promises = selected.map(photoUri => {
-        return MediaLibrary.createAssetAsync(photoUri);
-      });
-      await Promise.all(promises);
-
-      alert("Successfully saved selected to user's gallery!");
-    } else {
-      alert("No selected to save!");
-    }
-  };
-
   editImage = () => {
     let selected = this.state.selected;
 
@@ -99,7 +81,11 @@ export default class GalleryScreen extends React.Component {
   render() {
     if (this.state.renderEditor) {
       return (
-        <ImageEditor onPress={this.toggleView} selected={this.state.selected} />
+        <ImageEditor
+          requestData={this.props.requestData}
+          onPress={this.toggleView}
+          selected={this.state.selected}
+        />
       );
     } else {
       return (
@@ -121,12 +107,7 @@ export default class GalleryScreen extends React.Component {
               >
                 <Text style={styles.whiteText}>Delete selected</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={this.saveToGallery}
-              >
-                <Text style={styles.whiteText}>Save selected</Text>
-              </TouchableOpacity>
+
               <TouchableOpacity style={styles.button} onPress={this.editImage}>
                 <Text style={styles.whiteText}>Edit selected</Text>
               </TouchableOpacity>
