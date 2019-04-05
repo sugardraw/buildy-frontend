@@ -67,8 +67,8 @@ architectureNames = [
 const deviceWidth = Dimensions.get("window").width;
 
 export default class ImageEditor extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.textRefOne = React.createRef();
     this.textRefTwo = React.createRef();
 
@@ -132,11 +132,6 @@ export default class ImageEditor extends Component {
     this.setState({
       requestData: this.props.requestData
     });
-    FileSystem.makeDirectoryAsync(
-      FileSystem.documentDirectory + "requestData"
-    ).catch(e => {
-      console.log(e, "Directory exists");
-    });
   }
 
   componentWillUnmount() {
@@ -163,7 +158,6 @@ export default class ImageEditor extends Component {
   };
 
   changeColor = () => {
-    console.log("trying to change color");
     this.setState({
       selectColor: !this.state.selectColor
     });
@@ -331,22 +325,22 @@ export default class ImageEditor extends Component {
     this.setState({ cameraRollUri: saveImage });
   };
 
-  _uploadImageAsync = async uri => {
+  _uploadImageAsyncTest = async uri => {
     const uriParts = uri.split(".");
     const fileType = uriParts[uriParts.length - 1];
 
     const formData = new FormData();
     formData.append("estimationRequest", {
-      user: "5c9b833f0756b91851b783a4",
+      user: "5ca4e986ae89663d22b2ea0b",
       editedImages: {
         uri,
-        name: "image_request" + uid(),
+        name: "requesting-image-" + uid(),
         type: `image/${fileType}`
       },
       requestData: this.state.requestData
     });
 
-    fetch(api + "/api/user/request/save", {
+    return await fetch(api + "/api/user/request/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
@@ -368,18 +362,23 @@ export default class ImageEditor extends Component {
       }
 
       ExpoImagePicker.launchImageLibraryAsync({
-        mediaTypes: "Images"
+        mediaTypes: "Images",
+        base64: true
       })
         .then(result => {
           const file = result.uri;
           if (!result.cancelled) {
-            uploadResponse = this._uploadImageAsync(result.uri).then(
-              response => {
+            uploadResponse = this._uploadImageAsyncTest(result.uri)
+              .then(response => {
                 this.setState({
                   photo: file
                 });
-              }
-            );
+              })
+              .then(
+                this.props.navigation.navigate("SendEmail", {
+                  id: "5ca4e986ae89663d22b2ea0b"
+                })
+              );
           }
         })
         .catch(err => console.log(err));

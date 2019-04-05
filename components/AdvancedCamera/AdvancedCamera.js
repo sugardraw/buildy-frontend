@@ -205,6 +205,7 @@ export default class CameraScreen extends React.Component {
     const requestData = this.props.navigation.state.params;
     return (
       <GalleryScreen
+        navigation={navigation}
         requestData={requestData}
         onPress={this.toggleView.bind(this)}
       />

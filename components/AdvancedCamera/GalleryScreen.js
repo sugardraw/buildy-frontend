@@ -82,6 +82,7 @@ export default class GalleryScreen extends React.Component {
     if (this.state.renderEditor) {
       return (
         <ImageEditor
+          navigation={this.props.navigation}
           requestData={this.props.requestData}
           onPress={this.toggleView}
           selected={this.state.selected}

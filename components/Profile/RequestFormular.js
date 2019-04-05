@@ -14,7 +14,7 @@ export default class RequestFormular extends React.Component {
     super(props);
     this.state = {
       title: "",
-      messageText: "",
+      description: "",
       budget: "",
       date: "",
       height: 10,
@@ -25,12 +25,15 @@ export default class RequestFormular extends React.Component {
   takeAPicture = () => {
     const { messageText, title } = this.state;
     if (messageText == "" || title == "") {
-      this.setState({ Error: "Please write a message for your recipient" });
+      this.setState({
+        Error: "Please write a title and a description for your request"
+      });
     } else {
       this.props.navigation.navigate("Camera", {
+        navigation: this.props.navigation,
         requestData: {
           title: this.state.title,
-          messageText: this.state.messageText,
+          description: this.state.description,
           budget: this.state.budget,
           date: this.state.date
         }
@@ -60,9 +63,9 @@ export default class RequestFormular extends React.Component {
             placeholder="Describe your ideas"
             multiline={true}
             underlineColorAndroid="transparent"
-            value={this.state.messageText}
+            value={this.state.description}
             onChangeText={editedText =>
-              this.setState({ messageText: editedText })
+              this.setState({ description: editedText })
             }
             onContentSizeChange={e =>
               this.setState({ height: e.nativeEvent.contentSize.height })
@@ -91,7 +94,10 @@ export default class RequestFormular extends React.Component {
             onChangeText={editedText => this.setState({ date: editedText })}
           />
 
-          <Button title="Take a picture" onPress={this.takeAPicture} />
+          <Button
+            title="Add pictures to your request"
+            onPress={this.takeAPicture}
+          />
 
           {/* dann kommt die kamera */}
         </View>
