@@ -7,6 +7,7 @@ import {
 } from "react-navigation";
 
 import Welcome from "../components/Welcome/Welcome";
+import WelcomeAnimation from "../components/LoadingAni/LoadingAni";
 import Login from "../components/Login/Login";
 import SignUp from "../components/SignUp/SignUp";
 import UsersignUp from "../components/SignUp/UsersignUp";
@@ -58,16 +59,20 @@ const WelcomeStack = createStackNavigator({
   },
   SendEmail: {
     screen: SendEmail
+  },
+  welcomeAnimation:{
+    screen: WelcomeAnimation
   }
 });
 
 export default createBottomTabNavigator(
   {
+    Intro:WelcomeAnimation,
     Home: WelcomeStack,
     Users: LoginStack
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Intro",
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
@@ -79,7 +84,7 @@ export default createBottomTabNavigator(
           iconName = "ios-options";
         }
 
-        return <Icon name={iconName} size={25} color={tintColor} />;
+        return (routeName !== Animation && <Icon name={iconName} size={25} color={tintColor} />);
       }
     })
   }

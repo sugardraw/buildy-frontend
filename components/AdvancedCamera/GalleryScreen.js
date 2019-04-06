@@ -94,10 +94,11 @@ export default class GalleryScreen extends React.Component {
           <View style={styles.navbar}>
             <View style={styles.arrow}>
               <TouchableOpacity
-                style={styles.buttonArrow}
+                style={[styles.buttonArrow, {flexDirection:"row"}]}
                 onPress={this.props.onPress}
               >
                 <MaterialIcons name="arrow-back" size={25} color="white" />
+                <Text style={{color:"white"}}>Back to Camera</Text>
               </TouchableOpacity>
             </View>
 

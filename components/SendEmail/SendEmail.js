@@ -28,9 +28,10 @@ export default class SendEmail extends React.Component {
 
   componentWillMount() {
     const id = this.props.navigation.getParam("id", "no_id");
+    const title = this.props.navigation.getParam("title", "no_title");
 
     return axios
-      .get(api + "/api/user/request/showLast?id=" + id)
+      .get(api + "/api/user/request/showLast?id=" + id+"&title="+title)
       .then(response => {
         this.setState(state => {
           state.lastRequest = response.data;
@@ -87,7 +88,8 @@ export default class SendEmail extends React.Component {
     });
   };
   createNewReq = () => {
-    alert("createReq");
+    this.props.navigation.navigate("RequestFormular");
+
   };
 
   keyExtractor = (item, index) => String(item._id);

@@ -22,6 +22,9 @@ export default class RequestFormular extends React.Component {
     };
   }
 
+
+
+
   takeAPicture = () => {
     const { messageText, title } = this.state;
     if (messageText == "" || title == "") {

@@ -376,7 +376,8 @@ export default class ImageEditor extends Component {
               })
               .then(
                 this.props.navigation.navigate("SendEmail", {
-                  id: "5ca4e986ae89663d22b2ea0b"
+                  id: "5ca4e986ae89663d22b2ea0b",
+                  title: this.state.requestData.requestData.title
                 })
               );
           }
@@ -496,7 +497,7 @@ export default class ImageEditor extends Component {
                   color="black"
                 />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.icon}
                 onPress={() => {
                   alert("make measures");
@@ -507,7 +508,7 @@ export default class ImageEditor extends Component {
                   size={25}
                   color="black"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 style={styles.icon}
                 onPress={this.openElementsPanel}

@@ -8,25 +8,41 @@ import {
 } from "react-native";
 import { Svg } from "expo"; // Supported builtin module
 const { Line, G, Path } = Svg;
+import { Font } from "expo";
 
 export default class LoadingAni extends React.Component {
   constructor() {
     super();
     this.state = {
-      _lineOne: new Animated.Value(3)
+      _lineOne: new Animated.Value(5),
+      _fontLoaded: false
     };
   }
 
   invokeAnimation = () => {
     Animated.loop(
-      Animated.timing(this.state._lineOne, {
-        toValue: 1,
-        duration: 2000
-      })
-    ).start();
+      Animated.sequence([
+        Animated.timing(this.state._lineOne, {
+          toValue: 2,
+          duration: 800
+        }),
+        Animated.timing(this.state._lineOne, {
+          toValue: 5,
+          duration: 800
+        })
+      ]),
+      {
+        iterations: 3
+      }
+    ).start(() => this.props.navigation.navigate("Welcome"));
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    await Font.loadAsync({
+      "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf")
+    });
+    this.setState({ _fontLoaded: true });
+
     this.state._lineOne.addListener(progress => {
       this._lineOne.setNativeProps({
         strokeWidth: progress.value.toString()
@@ -37,7 +53,7 @@ export default class LoadingAni extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Svg
           height="25%"
           width="25%"
@@ -59,6 +75,18 @@ export default class LoadingAni extends React.Component {
             />
           </G>
         </Svg>
+
+        {this.state._fontLoaded ? (
+          <Text
+            style={{
+              fontFamily: "Roboto-Medium",
+              fontSize: 26,
+              color: "#85c4ea"
+            }}
+          >
+            BUILDY
+          </Text>
+        ) : null}
       </View>
     );
   }
