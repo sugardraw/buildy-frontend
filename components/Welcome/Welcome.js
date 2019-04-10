@@ -14,6 +14,9 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
+import EditProfileCompany from "../Profile/EditProfileCompany";
+import EditUserProfile from "../Profile/EditUserProfile";
+import UserProfile from "../Profile/UserProfile";
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -89,12 +92,14 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
+        <UserProfile />
+        {/* <EditUserProfile /> */}
+        {/* <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-        />
+        /> */}
       </View>
     );
   }

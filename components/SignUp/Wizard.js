@@ -11,8 +11,8 @@ class Step extends PureComponent {
 		return (
 			<View style={styles.container}>
 				{this.props.children({
-					onChangeValue : this.props.onChangeValue,
-					values        : this.props.values
+					onChangeValue: this.props.onChangeValue,
+					values: this.props.values
 				})}
 				<View style={styles.buttonWrapper}>
 					<Button
@@ -37,8 +37,8 @@ export default class Wizard extends PureComponent {
 	static Step = (props) => <Step {...props} />;
 
 	state = {
-		index  : 0,
-		values : {
+		index: 0,
+		values: {
 			...this.props.initialValues
 		}
 	};
@@ -46,7 +46,7 @@ export default class Wizard extends PureComponent {
 	_nextStep = () => {
 		if (this.state.index !== this.props.children.length - 1) {
 			this.setState((prevState) => ({
-				index : prevState.index + 1
+				index: prevState.index + 1
 			}));
 		}
 	};
@@ -54,16 +54,16 @@ export default class Wizard extends PureComponent {
 	_prevStep = () => {
 		if (this.state.index !== 0) {
 			this.setState((prevState) => ({
-				index : prevState.index - 1
+				index: prevState.index - 1
 			}));
 		}
 	};
 
 	_onChangeValue = (name, value) => {
 		this.setState((prevState) => ({
-			values : {
+			values: {
 				...prevState.values,
-				[name] : value
+				[name]: value
 			}
 		}));
 	};
@@ -82,12 +82,12 @@ export default class Wizard extends PureComponent {
 				{React.Children.map(this.props.children, (element, index) => {
 					if (index === this.state.index) {
 						return React.cloneElement(element, {
-							currentIndex  : this.state.index,
-							nextStep      : this._nextStep,
-							prevStep      : this._prevStep,
-							isLast        : this.state.index === this.props.children.length - 1,
-							onChangeValue : this._onChangeValue,
-							values        : this.state.values
+							currentIndex: this.state.index,
+							nextStep: this._nextStep,
+							prevStep: this._prevStep,
+							isLast: this.state.index === this.props.children.length - 1,
+							onChangeValue: this._onChangeValue,
+							values: this.state.values
 						});
 					}
 					return null;
@@ -98,16 +98,16 @@ export default class Wizard extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-	container     : {
-		flex           : 1,
-		alignItems     : 'center',
-		justifyContent : 'center'
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
-	buttonWrapper : {
-		flexDirection : 'row',
-		padding       : 30
+	buttonWrapper: {
+		flexDirection: 'row',
+		padding: 30
 	},
-	button        : {
-		margin : 30
+	button: {
+		margin: 30
 	}
 });

@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
-
+import ShowPassword from './ShowPassword';
+import { api } from '../../api/api'
 export default class LoginView extends Component {
 	static navigationOptions = {
-		title            : 'Login',
-		headerStyle      : { backgroundColor: '#173746' },
-		headerTintColor  : 'white',
-		headerTitleStyle : { color: 'white' }
+		title: 'Login',
+		headerStyle: { backgroundColor: '#173746' },
+		headerTintColor: 'white',
+		headerTitleStyle: { color: 'white' }
 	};
 	constructor(props) {
 		super(props);
 		state = {
-			email        : '',
-			password     : '',
-			userLoggedIn : false
+			email: '',
+			password: '',
+			userLoggedIn: false,
 		};
 	}
 
@@ -29,10 +30,10 @@ export default class LoginView extends Component {
 	login = () => {
 		console.log(this.state.email, this.state.password);
 		return axios
-			.post('http://10.0.1.130:3001/api/user/login', { email: this.state.email, password: this.state.password })
+			.post(api + '/api/user/login', { email: this.state.email, password: this.state.password })
 			.then((response) => {
 				this.setState({
-					loggedIn : true
+					loggedIn: true
 				});
 				return response;
 			})
@@ -54,6 +55,7 @@ export default class LoginView extends Component {
 						placeholder="Email"
 						keyboardType="email-address"
 						underlineColorAndroid="transparent"
+						autoCapitalize="none"
 						onChangeText={(email) => this.setState({ email })}
 					/>
 				</View>
@@ -68,11 +70,15 @@ export default class LoginView extends Component {
 						placeholder="Password"
 						secureTextEntry={true}
 						underlineColorAndroid="transparent"
+						autoCapitalize="none"
 						onChangeText={(password) => this.setState({ password })}
 					/>
+					{/* <ShowPassword /> */}
 				</View>
 
-				<TouchableHighlight style={[ styles.buttonContainer, styles.loginButton ]} onPress={() => this.login()}>
+				<TouchableHighlight
+					style={[styles.buttonContainer, styles.loginButton]}
+					onPress={() => this.login()}>
 					<Text style={styles.loginText}>Login</Text>
 				</TouchableHighlight>
 
@@ -82,6 +88,7 @@ export default class LoginView extends Component {
 				>
 					<Text>Register as user</Text>
 				</TouchableHighlight>
+
 				<TouchableHighlight
 					style={styles.buttonContainer}
 					onPress={() => this.props.navigation.navigate('SignUp')}
@@ -94,48 +101,48 @@ export default class LoginView extends Component {
 }
 
 const styles = StyleSheet.create({
-	container       : {
-		flex            : 1,
-		justifyContent  : 'center',
-		alignItems      : 'center',
-		backgroundColor : '#DCDCDC'
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#DCDCDC'
 	},
-	inputContainer  : {
-		borderBottomColor : '#F5FCFF',
-		backgroundColor   : '#FFFFFF',
-		borderRadius      : 30,
-		borderBottomWidth : 1,
-		width             : 250,
-		height            : 45,
-		marginBottom      : 20,
-		flexDirection     : 'row',
-		alignItems        : 'center'
+	inputContainer: {
+		borderBottomColor: '#F5FCFF',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 30,
+		borderBottomWidth: 1,
+		width: 250,
+		height: 45,
+		marginBottom: 20,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
-	inputs          : {
-		height            : 45,
-		marginLeft        : 16,
-		borderBottomColor : '#FFFFFF',
-		flex              : 1
+	inputs: {
+		height: 45,
+		marginLeft: 16,
+		borderBottomColor: '#FFFFFF',
+		flex: 1
 	},
-	inputIcon       : {
-		width          : 30,
-		height         : 30,
-		marginLeft     : 15,
-		justifyContent : 'center'
+	inputIcon: {
+		width: 30,
+		height: 30,
+		marginLeft: 15,
+		justifyContent: 'center'
 	},
-	buttonContainer : {
-		height         : 45,
-		flexDirection  : 'row',
-		justifyContent : 'center',
-		alignItems     : 'center',
-		marginBottom   : 20,
-		width          : 250,
-		borderRadius   : 30
+	buttonContainer: {
+		height: 45,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 20,
+		width: 250,
+		borderRadius: 30
 	},
-	loginButton     : {
-		backgroundColor : '#00b5ec'
+	loginButton: {
+		backgroundColor: '#00b5ec'
 	},
-	loginText       : {
-		color : 'white'
+	loginText: {
+		color: 'white'
 	}
 });

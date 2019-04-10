@@ -1,63 +1,107 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity, TouchableHighlight } from 'react-native';
-
 import Wizard from './Wizard';
+
+import { api } from "../../api/api";
+import axios from 'axios';
+import UploadAvatar from "../Profile/UploadAvatar";
 
 export default class UsersignUp extends Component {
 	static navigationOptions = {
-		title            : 'User Register',
-		headerStyle      : { backgroundColor: '#173746' },
-		headerTintColor  : 'white',
-		headerTitleStyle : { color: 'white' }
+		title: 'User Register',
+		headerStyle: { backgroundColor: '#173746' },
+		headerTintColor: 'white',
+		headerTitleStyle: { color: 'white' }
 	};
 	constructor(props) {
 		super(props);
-		state = {
-			signedUp : false
+		this.state = {
+			avatar: {},
+			first_name: "",
+			last_name: "",
+			email: "",
+			password: "",
 		};
 	}
 
-	signUp = (values) => {
-		const config = {
-			headers : {
-				Accept         : 'application/json',
-				'Content-Type' : 'application/json'
-			}
-		};
-		console.log('thats mine', values);
-		return axios
-			.post('http://10.0.1.130:3001/api/user/save', values, config)
-			.then((response) => {
-				this.setState({
-					signedUp : true
-				});
-				return response;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+	submit = () => {
+		axios
+			.post(api + `api/user/save`, values, config)
+			.then(response => this.setState({
+				response: response
+			}))
+			.catch(error => this.setState({
+				error: error
+			}))
+	}
+
+	_uploadImageAsyncTest = async uri => {
+		const uriParts = uri.split(".");
+		const fileType = uriParts[uriParts.length - 1];
+
+		const takeAvatar = new takeAvatar();
+
+		takeAvatar.append("saveAvatar", {
+			user: "",
+			editedAvatar: {
+				uri,
+				name: "save-avatar" + uid(),
+				type: `image/${filetype}`
+			},
+			avatar: this.state.avatar
+		});
+
+		return await fetch(api + "/api/user/save", {
+			method: "POST",
+			body: JSON.stringify(formData)
+		})
+			.then(response => console.log("returned something"))
+			.catch(err => console.log(err))
+			.done();
 	};
+
+	// signUp = (values) => {
+	// 	const config = {
+	// 		headers: {
+	// 			Accept: 'application/json',
+	// 			'Content-Type': 'application/json'
+	// 		}
+	// 	};
+	// 	console.log('thats mine', values);
+	// 	return axios
+	// 		.post('http://10.0.1.130:3001/api/user/save', values, config)
+	// 		.then((response) => {
+	// 			this.setState({
+	// 				signedUp: true
+	// 			});
+	// 			return response;
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// };
 
 	render() {
 		return (
 			<View style={styles.container}>
 				<Wizard
 					initialValues={{
-						first_name : '',
-						last_name  : '',
-						street     : '',
-						email      : '',
-						password   : '',
-
-						city       : '',
-						zip        : '',
-						avatar     : ''
+						avatar: {},
+						first_name: "",
+						last_name: "",
+						email: "",
+						password: "",
 					}}
 				>
 					<Wizard.Step>
 						{({ onChangeValue, values }) => (
 							<View>
+								<Text>user sign up</Text>
+								<UploadAvatar
+									payloadKey='file'
+									endpoint={api + '/api/user/save_avatar'}
+									callbackUrl='https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png'
+								/>
 								<View style={styles.inputContainer}>
 									<TextInput
 										style={styles.inputs}
@@ -84,6 +128,10 @@ export default class UsersignUp extends Component {
 										value={values.email}
 										autoCapitalize="none"
 									/>
+								</View>
+								<View>
+									<Text style={styles.small}
+									>We'll never share your email with anyone else.</Text>
 								</View>
 								<View style={styles.inputContainer}>
 									<TextInput
@@ -133,7 +181,7 @@ export default class UsersignUp extends Component {
 								</View>
 
 								<TouchableHighlight
-									style={[ styles.buttonContainer, styles.signupButton ]}
+									style={[styles.buttonContainer, styles.signupButton]}
 									onPress={() => this.signUp(values)}
 								>
 									<Text style={styles.signupText}>Sign up</Text>
@@ -148,48 +196,51 @@ export default class UsersignUp extends Component {
 }
 
 const styles = StyleSheet.create({
-	container       : {
-		flex            : 1,
-		justifyContent  : 'center',
-		alignItems      : 'center',
-		backgroundColor : '#DCDCDC'
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#DCDCDC'
 	},
-	inputContainer  : {
-		borderBottomColor : '#F5FCFF',
-		backgroundColor   : '#FFFFFF',
-		borderRadius      : 30,
-		borderBottomWidth : 1,
-		width             : 250,
-		height            : 45,
-		marginBottom      : 20,
-		flexDirection     : 'row',
-		alignItems        : 'center'
+	inputContainer: {
+		borderBottomColor: '#F5FCFF',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 30,
+		borderBottomWidth: 1,
+		width: 250,
+		height: 45,
+		marginBottom: 20,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
-	inputs          : {
-		height            : 45,
-		marginLeft        : 16,
-		borderBottomColor : '#FFFFFF',
-		flex              : 1
+	small: {
+		fontSize: 9,
 	},
-	inputIcon       : {
-		width          : 30,
-		height         : 30,
-		marginLeft     : 15,
-		justifyContent : 'center'
+	inputs: {
+		height: 45,
+		marginLeft: 16,
+		borderBottomColor: '#FFFFFF',
+		flex: 1
 	},
-	buttonContainer : {
-		height         : 45,
-		flexDirection  : 'row',
-		justifyContent : 'center',
-		alignItems     : 'center',
-		marginBottom   : 20,
-		width          : 250,
-		borderRadius   : 30
+	inputIcon: {
+		width: 30,
+		height: 30,
+		marginLeft: 15,
+		justifyContent: 'center'
 	},
-	signupButton    : {
-		backgroundColor : '#00b5ec'
+	buttonContainer: {
+		height: 45,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 20,
+		width: 250,
+		borderRadius: 30
 	},
-	signupText      : {
-		color : 'white'
+	signupButton: {
+		backgroundColor: '#00b5ec'
+	},
+	signupText: {
+		color: 'white'
 	}
 });

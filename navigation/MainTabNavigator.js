@@ -14,6 +14,9 @@ import UserProfile from "../components/Profile/UserProfile";
 import ProfileCompany from "../components/Profile/ProfileCompany";
 import Camera from "../components/AdvancedCamera/AdvancedCamera";
 import RequestFormular from "../components/Profile/RequestFormular";
+import Register from "../components/Profile/Register";
+import EditUserProfile from "../components/Profile/EditUserProfile";
+import { Drawer } from "react-native-router-flux";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -38,8 +41,23 @@ const LoginStack = createStackNavigator({
   },
   UsersignUp: {
     screen: UsersignUp
+  },
+  Register: {
+    screen: Register
+  },
+  EditUserProfile: {
+    screen: EditUserProfile
   }
 });
+
+// const ModifyStack = createStackNavigator({
+//   EditUserProfile: {
+//     screen: EditUserProfile
+//   },
+//   EditProfileCompany: {
+//     screen: EditProfileCompany
+//   }
+// });
 
 const WelcomeStack = createStackNavigator({
   Welcome: {

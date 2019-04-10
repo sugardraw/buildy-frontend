@@ -11,17 +11,20 @@ import {
     Linking
 } from 'react-native';
 
+import api from "../../api/api"
+
 import { ImagePicker, Permissions } from 'expo';
 import uid from 'uuid/v4';
+
 
 export default class UploadAvatar extends React.Component {
     constructor(props) {
         super(props)
         this.askPermission = this.askPermission.bind(this);
         this.showAlert = this.showAlert.bind(this);
-        this.endpointTest = "http://10.0.1.196:3001/api/user/save_avatar"
+        this.endpointTest = api + "/api/user/save_avatar"
         this.state = {
-            endpoint: this.endpointTest ? this.endpointTest : null,
+            endpoint: this.props.endpoint,
             payloadKey: this.props.payloadKey ?
                 this.props.payloadKey : null,
             token: this.props.token ? this.props.token : null,
@@ -95,6 +98,9 @@ export default class UploadAvatar extends React.Component {
     }
 
     async uploadImageAsync(uri) {
+
+        console.log(this.state.endpoint)
+
         const uriParts = uri.split('.');
         const fileType = uriParts[uriParts.length - 1];
         const { headers } = this.props;
@@ -122,28 +128,29 @@ export default class UploadAvatar extends React.Component {
         if (this.state.loading) {
             return (
                 <View style={[style.container]}>
-                    <ActivityIndicator size="large" color="yellow" />
+                    <ActivityIndicator size="large" color="green" />
                 </View>
             )
         }
         return (
             <View style={style.imageWrapper}>
-                {this.props.callbackUrl != null ?
-                    <Image
-                        source={{ uri: this.state.uploaded_photo ? this.state.uploaded_photo : this.props.callbackUrl }}
-                        style={{ width: 80, height: 80, borderRadius: 50 }}
-                    /> : <Image
-                        source={{ uri: 'https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png' }}
-                        style={{ width: 80, height: 80, borderRadius: 50 }}
-                    />
-                }
                 <TouchableOpacity
                     style={style.circleWrapper}
                     onPress={() => {
                         this.uploadResult()
                     }}
                 >
+                    {this.props.callbackUrl != null ?
+                        <Image
+                            source={{ uri: this.state.uploaded_photo ? this.state.uploaded_photo : this.props.callbackUrl }}
+                            style={{ width: 80, height: 80, borderRadius: 50 }}
+                        /> : <Image
+                            source={{ uri: 'https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png' }}
+                            style={{ width: 80, height: 80, borderRadius: 50 }}
+                        />
+                    }
                 </TouchableOpacity>
+
             </View >
         )
     }
@@ -157,19 +164,16 @@ const style = StyleSheet.create({
         width: 30
     },
     imageWrapper: {
-        marginBottom: 80,
+        marginBottom: 40,
         position: 'relative',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 40,
     },
     circleWrapper: {
-        backgroundColor: '#ffffff',
-        height: 20,
-        width: 20,
-        borderWidth: 3,
-        borderColor: 'black',
+        height: 60,
+        width: 60,
         borderRadius: 50,
-        marginLeft: 60,
-        marginTop: -60
+        marginTop: -70
     }
 })
