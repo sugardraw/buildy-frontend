@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput, Text, StyleSheet, Button } from "react-native";
+import { View, TextInput, Text, StyleSheet, Button, TouchableHighlight } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 /* import Camera from "../AdvancedCamera/AdvancedCamera"; */
 
@@ -46,12 +46,11 @@ export default class RequestFormular extends React.Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView
-        ref="scrollView"
-        contentContainerStyle={styles.scrollstyle}
-      >
+      <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text>Please give some info to the company</Text>
+          <Text>CONTACT FORM</Text>
+          <Text style={styles.required}></Text>
+
           <Text style={{ color: "red" }}>{this.state.Error}</Text>
           <Text>Give a title to your request</Text>
           <TextInput
@@ -81,7 +80,7 @@ export default class RequestFormular extends React.Component {
             ]} //height limitation between 20 to 120px (change dinamycally)
           />
 
-          <Text>Wich is your limit-budget?</Text>
+          <Text>Wich is your budget?</Text>
           <TextInput
             style={styles.inputs}
             placeholder="5.000 Euro"
@@ -98,11 +97,30 @@ export default class RequestFormular extends React.Component {
           />
 
           <Button
+<<<<<<< HEAD
             title="Add pictures to your request"
             onPress={this.takeAPicture}
           />
+=======
+            title="Take a picture"
+            onPress={this.takeAPicture}
+          />
 
-          {/* dann kommt die kamera */}
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.props.navigation.navigate('Login')}
+          >
+            <Text>Login</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.buttonContainer}
+            onPress={() => this.props.navigation.navigate('Register')}
+          >
+            <Text>Create an account</Text>
+          </TouchableHighlight>
+>>>>>>> 5f52bb67977a737482710faeb02bd122e5736d65
+
         </View>
       </KeyboardAwareScrollView>
     );
@@ -113,41 +131,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "yellow",
-    padding: 30
+    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  // bodyProfile: {
-  //     alignSelf: 'center',
-  //     marginTop: 200,
-  //     alignItems: 'center',
-  //     flexDirection: 'row',
-  //     position: 'absolute',
-  //     backgroundColor: "#ffffff"
-  // },
-  scrollStyle: {
-    flexGrow: 1
-  },
-  bodyContentProfile: {
-    flexGrow: 1,
-    margin: 10,
-    alignItems: "center"
-  },
-  username: {
-    fontSize: 15,
-    fontWeight: "800",
-    margin: 10
-  },
-  shortDescription: {
-    fontSize: 13,
-    margin: 5
-  },
-  longDescription: {
-    fontSize: 11,
-    margin: 10,
-    padding: 10
+  required: {
+    fontSize: 10,
+    margin: 2,
   },
   inputs: {
     borderBottomColor: "black",
     borderBottomWidth: 2,
-    backgroundColor: "white"
+    padding: 8,
+    backgroundColor: "white",
+    width: 200
+  },
+  buttonContainer: {
+    height: 45,
+    flexDirection: 'row',
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });

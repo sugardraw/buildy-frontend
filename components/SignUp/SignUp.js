@@ -2,29 +2,29 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import MultiSelect from 'react-native-multiple-select';
-import { StyleSheet, Text, View, TextInput, Picker, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Picker, TouchableHighlight } from 'react-native';
 
 import Wizard from './Wizard';
 
 export default class SignUp extends Component {
 	static navigationOptions = {
-		title            : 'Profi Register',
-		headerStyle      : { backgroundColor: '#173746' },
-		headerTintColor  : 'white',
-		headerTitleStyle : { color: 'white' }
+		title: 'Professional Sign Up',
+		headerStyle: { backgroundColor: '#173746' },
+		headerTintColor: 'white',
+		headerTitleStyle: { color: 'white' }
 	};
 	constructor(props) {
 		super(props);
 		state = {
-			signedUp : false
+			signedUp: false,
 		};
 	}
 
 	signUp = (values) => {
 		const config = {
-			headers : {
-				Accept         : 'application/json',
-				'Content-Type' : 'application/json'
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
 			}
 		};
 		console.log('thats mine', values);
@@ -32,7 +32,7 @@ export default class SignUp extends Component {
 			.post('http://10.0.1.130:3001/api/professional/save', values, config)
 			.then((response) => {
 				this.setState({
-					signedUp : true
+					signedUp: true
 				});
 				return response;
 			})
@@ -44,13 +44,13 @@ export default class SignUp extends Component {
 	render() {
 		const service = [
 			{
-				name : 'building'
+				name: 'building'
 			},
 			{
-				name : 'paint'
+				name: 'paint'
 			},
 			{
-				name : 'selling'
+				name: 'selling'
 			}
 		];
 
@@ -58,18 +58,17 @@ export default class SignUp extends Component {
 			<View style={styles.container}>
 				<Wizard
 					initialValues={{
-						name          : '',
-						password      : '',
-						services      : [],
-						email         : '',
-
-						address       : {
-							city   : '',
-							street : '',
-							zip    : ''
+						name: '',
+						email: '',
+						password: '',
+						services: [],
+						address: {
+							city: '',
+							street: '',
+							zip: ''
 						},
-						projectImages : [],
-						avatar        : ''
+						projectImages: [],
+						avatar: ''
 					}}
 				>
 					<Wizard.Step>
@@ -93,6 +92,10 @@ export default class SignUp extends Component {
 										value={values.email}
 										autoCapitalize="none"
 									/>
+								</View>
+								<View>
+									<Text style={styles.small}
+									>We'll never share your email with anyone else.</Text>
 								</View>
 								<View style={styles.inputContainer}>
 									<TextInput
@@ -180,7 +183,7 @@ export default class SignUp extends Component {
 								</View>
 
 								<TouchableHighlight
-									style={[ styles.buttonContainer, styles.signupButton ]}
+									style={[styles.buttonContainer, styles.signupButton]}
 									onPress={() => this.signUp(values)}
 								>
 									<Text style={styles.signupText}>Sign up</Text>
@@ -195,48 +198,51 @@ export default class SignUp extends Component {
 }
 
 const styles = StyleSheet.create({
-	container       : {
-		flex            : 1,
-		justifyContent  : 'center',
-		alignItems      : 'center',
-		backgroundColor : '#DCDCDC'
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#DCDCDC'
 	},
-	inputContainer  : {
-		borderBottomColor : '#F5FCFF',
-		backgroundColor   : '#FFFFFF',
-		borderRadius      : 30,
-		borderBottomWidth : 1,
-		width             : 250,
-		height            : 45,
-		marginBottom      : 20,
-		flexDirection     : 'row',
-		alignItems        : 'center'
+	inputContainer: {
+		borderBottomColor: '#F5FCFF',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 30,
+		borderBottomWidth: 1,
+		width: 250,
+		height: 45,
+		marginBottom: 20,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
-	inputs          : {
-		height            : 45,
-		marginLeft        : 16,
-		borderBottomColor : '#FFFFFF',
-		flex              : 1
+	small: {
+		fontSize: 9,
 	},
-	inputIcon       : {
-		width          : 30,
-		height         : 30,
-		marginLeft     : 15,
-		justifyContent : 'center'
+	inputs: {
+		height: 45,
+		marginLeft: 16,
+		borderBottomColor: '#FFFFFF',
+		flex: 1
 	},
-	buttonContainer : {
-		height         : 45,
-		flexDirection  : 'row',
-		justifyContent : 'center',
-		alignItems     : 'center',
-		marginBottom   : 20,
-		width          : 250,
-		borderRadius   : 30
+	inputIcon: {
+		width: 30,
+		height: 30,
+		marginLeft: 15,
+		justifyContent: 'center'
 	},
-	signupButton    : {
-		backgroundColor : '#00b5ec'
+	buttonContainer: {
+		height: 45,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 20,
+		width: 250,
+		borderRadius: 30
 	},
-	signupText      : {
-		color : 'white'
+	signupButton: {
+		backgroundColor: '#00b5ec'
+	},
+	signupText: {
+		color: 'white'
 	}
 });

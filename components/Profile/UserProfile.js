@@ -1,17 +1,34 @@
 import React from "react";
-import { Button, View, Text, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  TouchableHighlight,
+  View,
+  Text,
+  StyleSheet,
+  Image
+} from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import UploadAvatar from "./UploadAvatar";
-import { api } from "../../api/api";
+import UploadAvatar from "../Profile/UploadAvatar";
 
 export default class UserProfile extends React.Component {
   static navigationOptions = {
-    title: "About Us",
+    title: "User Profile",
     headerStyle: { backgroundColor: "#173746" },
     headerTintColor: "white",
     headerTitleStyle: { color: "white" }
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      avatar: {},
+      first_name: '',
+      last_name: '',
+      email: ''
+    }
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView
@@ -21,24 +38,28 @@ export default class UserProfile extends React.Component {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-          <UploadAvatar
-            payloadKey="file"
-            endpoint={api + "/api/user/save_avatar"}
-            callbackUrl="https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png"
-          />
           <View style={styles.bodyContentProfile}>
-            <Text style={styles.username}>User name</Text>
-            <Text style={styles.shortDescription}>
-              Short description Company
+            <UploadAvatar />
+            <Text
+              style={styles.name}
+            >
+              {state.first_name}
             </Text>
-            <Text style={styles.longDescription}>
-              service offer, service offer, service offer
+            <Text
+              style={styles.name}
+            >
+              lastname
+            </Text>
+            <Text>
+              email
             </Text>
           </View>
-          <Button
-            title="Make a price request"
-            onPress={() => this.props.navigation.navigate("RequestFormular")}
-          />
+          <TouchableHighlight
+            onPress={() => this.props.navigation.navigate('Edit User Profile')}
+          >
+            <Text>EDIT YOUR PROFILE</Text>
+
+          </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -53,7 +74,7 @@ const styles = StyleSheet.create({
   scrollStyle: {
     flexGrow: 1
   },
-  username: {
+  name: {
     fontSize: 15,
     fontWeight: "800",
     margin: 10
@@ -62,9 +83,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     margin: 5
   },
-  longDescription: {
-    fontSize: 11,
-    margin: 10,
-    padding: 10
+  buttonContainer: {
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30
   }
 });

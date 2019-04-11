@@ -7,12 +7,13 @@ import PortfolioGallery from '../CompanyPortfolio/PortfolioGallery';
 import { api } from "../../api/api";
 
 
+import api from "../../api/api"
 export default class ProfileCompany extends React.Component {
 	static navigationOptions = {
-		title            : 'About Us',
-		headerStyle      : { backgroundColor: '#173746' },
-		headerTintColor  : 'white',
-		headerTitleStyle : { color: 'white' }
+		title: 'About Us',
+		headerStyle: { backgroundColor: '#173746' },
+		headerTintColor: 'white',
+		headerTitleStyle: { color: 'white' }
 	};
 	render() {
 		return (
@@ -21,7 +22,7 @@ export default class ProfileCompany extends React.Component {
 					<Text>COMPANY PROFILE</Text>
 					<UploadAvatar
 						payloadKey="file"
-						endpoint={api+"/api/professional/save_avatar"}
+						endpoint={api + '/api/user/save_avatar'}
 						callbackUrl="https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png"
 					/>
 					<View style={styles.bodyContentProfile}>
@@ -48,26 +49,26 @@ export default class ProfileCompany extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	bodyContentProfile : {
-		margin          : 10,
-		alignItems      : 'center',
-		backgroundColor : 'white'
+	bodyContentProfile: {
+		margin: 10,
+		alignItems: 'center',
+		backgroundColor: 'white'
 	},
-	scrollStyle        : {
-		flexGrow : 1
+	scrollStyle: {
+		flexGrow: 1
 	},
-	username           : {
-		fontSize   : 15,
-		fontWeight : '800',
-		margin     : 10
+	username: {
+		fontSize: 15,
+		fontWeight: '800',
+		margin: 10
 	},
-	shortDescription   : {
-		fontSize : 13,
-		margin   : 5
+	shortDescription: {
+		fontSize: 13,
+		margin: 5
 	},
-	longDescription    : {
-		fontSize : 11,
-		margin   : 10,
-		padding  : 10
+	longDescription: {
+		fontSize: 11,
+		margin: 10,
+		padding: 10
 	}
 });
