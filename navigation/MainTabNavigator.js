@@ -53,14 +53,7 @@ const LoginStack = createStackNavigator({
   }
 });
 
-// const ModifyStack = createStackNavigator({
-//   EditUserProfile: {
-//     screen: EditUserProfile
-//   },
-//   EditProfileCompany: {
-//     screen: EditProfileCompany
-//   }
-// });
+
 
 const WelcomeStack = createStackNavigator({
   Welcome: {
@@ -87,6 +80,19 @@ const WelcomeStack = createStackNavigator({
   }
 });
 
+
+
+WelcomeStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 export default createBottomTabNavigator(
   {
     Intro:WelcomeAnimation,
@@ -96,9 +102,15 @@ export default createBottomTabNavigator(
   {
     initialRouteName: "Intro",
     navigationOptions: ({ navigation }) => ({
+
+      
+      
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        
+        
         const { routeName } = navigation.state;
-        console.log(routeName);
+
+   
         let iconName;
         if (routeName === "Home") {
           iconName = "ios-home";

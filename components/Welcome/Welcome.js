@@ -36,8 +36,14 @@ const mapDispatchToProps = {
 
 class Welcome extends Component {
   static navigationOptions = {
-    title: "Home",
-    headerStyle: { backgroundColor: "#173746" },
+    headerTitle: (
+      <Image
+        style={{ width: 42, height: 42, margin:10, marginTop:15, marginBottom:15}}
+        source={require("../../assets/logo/logo-buildy-4.png")}
+      />
+    ),
+
+    headerStyle: { backgroundColor: "#FFFfff" },
     headerTintColor: "white",
     headerTitleStyle: { color: "white" }
   };
@@ -77,7 +83,11 @@ class Welcome extends Component {
                 marginBottom: 0
               }}
               title="READ MORE"
-              onPress={() => this.props.navigation.navigate("ProfileCompany",{id:item._id})}
+              onPress={() =>
+                this.props.navigation.navigate("ProfileCompany", {
+                  id: item._id
+                })
+              }
             />
           </View>
         </Card>

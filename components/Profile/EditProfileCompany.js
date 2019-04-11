@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
 	bodyContentProfile: {
 		margin: 10,
 		alignItems: 'center',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		
 	},
 	scrollStyle: {
 		flexGrow: 1

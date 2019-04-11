@@ -18,6 +18,12 @@ import ImageEditor from "./ImageEditor";
 const PHOTOS_DIR = FileSystem.documentDirectory + "photos";
 
 export default class GalleryScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null
+  };
+
+
   state = {
     faces: {},
     images: {},
@@ -26,8 +32,7 @@ export default class GalleryScreen extends React.Component {
     renderEditor: false
   };
 
-  componentDidMount = async () => {
- 
+  componentDidMount = async () => { 
     const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
     this.setState({ photos });
   };
@@ -133,6 +138,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   navbar: {
+    padding:14,
+    paddingTop:30,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "flex-start",

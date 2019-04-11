@@ -214,9 +214,9 @@ export default class ImageEditor extends Component {
             }}
             value={selectedColor}
             colors={[
-              "#C0392B",
-              "#E74C3C",
-              "#0015aC",
+              "#ad0000",
+              "#ad8600",
+              "#000857",
               "#9B59B6",
               "#8E44AD",
               "#12045D",
@@ -421,17 +421,24 @@ export default class ImageEditor extends Component {
   };
 
   getCoordinates = touchObj => {
-    this.setState(state => {
-      state.coords.push(touchObj.locationX * 2);
-      state.coords.push(touchObj.locationY * 2);
-
-      return state;
-    });
-    console.log("get coords");
+    if (!this.state.showFillButton && !this.state.showPolyDrawer) {
+      console.log("get coords__1");
+      return null;
+    } else {
+      console.log("get coords__2");
+      this.setState(state => {
+        state.coords.push(touchObj.locationX * 2);
+        state.coords.push(touchObj.locationY * 2);
+        return state;
+      });
+    }
   };
 
-  drawPoly = () => {
-    if (!this.state.showPolyDrawer && !this.state.showFillButton) {
+  activateDrawPolyTool = () => {
+    if (
+      this.state.showPolyDrawer === false &&
+      this.state.showFillButton === false
+    ) {
       alert(
         'To draw a custom polygon, just press the screen once at different positions and press the button "fill"'
       );
@@ -448,16 +455,21 @@ export default class ImageEditor extends Component {
 
     this.setState(
       {
-        showPolyDrawer: !this.state.showPolyDrawer,
-        showFillButton: !this.state.showFillButton
+        showPolyDrawer: !this.state.showPolyDrawer
       },
       this.forceUpdate()
     );
-    setTimeout(() => {
-      this.setState({
+  };
+
+  deletePoly = () => {
+    console.log("delete poly");
+    this.setState(
+      {
+        showPolyDrawer: false,
         coords: []
-      });
-    }, 300);
+      },
+      this.forceUpdate()
+    );
   };
 
   onReady = () => {
@@ -490,7 +502,8 @@ export default class ImageEditor extends Component {
           style={{
             flexDirection: "row",
             backgroundColor: "transparent",
-            justifyContent: "center"
+            justifyContent: "center",
+            marginTop:40
           }}
         >
           <TouchableOpacity
@@ -583,7 +596,10 @@ export default class ImageEditor extends Component {
                   color="black"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.icon} onPress={this.drawPoly}>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={this.activateDrawPolyTool}
+              >
                 <MaterialCommunityIcons
                   name="drawing"
                   size={25}
@@ -618,12 +634,20 @@ export default class ImageEditor extends Component {
         {this._renderColorPalette()}
         {this._renderElementsPanel()}
         {this.state.showFillButton && (
-          <TouchableOpacity
-            style={{ padding: 5, alignItems: "center" }}
-            onPress={e => this.fillPoly(e)}
-          >
-            <Text style={{ color: "white" }}>FILL</Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <TouchableOpacity
+              style={{ padding: 5, alignItems: "center" }}
+              onPress={e => this.fillPoly(e)}
+            >
+              <Text style={{ color: "white" }}>FILL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 5, alignItems: "center" }}
+              onPress={e => this.deletePoly(e)}
+            >
+              <Text style={{ color: "white" }}>DELETE</Text>
+            </TouchableOpacity>
+          </View>
         )}
 
         <View

@@ -12,10 +12,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default class RequestFormular extends React.Component {
   static navigationOptions = {
-    title: "Request page",
-    headerStyle: { backgroundColor: "#173746" },
-    headerTintColor: "white",
-    headerTitleStyle: { color: "white" }
+    headerTransparent: true,
+    headerTintColor: "black",
+    headerTitleStyle: { color: "black" }
   };
   constructor(props) {
     super(props);

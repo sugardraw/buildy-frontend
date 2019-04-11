@@ -61,6 +61,11 @@ const wbIcons = {
 };
 
 export default class CameraScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null
+  };
+
   state = {
     flash: "off",
     zoom: 0,
@@ -99,8 +104,10 @@ export default class CameraScreen extends React.Component {
     return ratios;
   };
 
-  toggleView = () =>
-    this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
+  toggleView = () =>{
+
+    console.log("navigationOptions)",this.navigationOptions)
+    this.setState({ showGallery: !this.state.showGallery, newPhotos: false });}
 
   toggleMoreOptions = () =>
     this.setState({ showMoreOptions: !this.state.showMoreOptions });
