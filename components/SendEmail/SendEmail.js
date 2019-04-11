@@ -31,7 +31,7 @@ export default class SendEmail extends React.Component {
     const title = this.props.navigation.getParam("title", "no_title");
 
     return axios
-      .get(api + "/api/user/request/showLast?id=" + id+"&title="+title)
+      .get(api + "/api/user/request/showLast?id=" + id + "&title=" + title)
       .then(response => {
         this.setState(state => {
           state.lastRequest = response.data;
@@ -63,9 +63,7 @@ export default class SendEmail extends React.Component {
     await MailComposer.composeAsync({
       recipients: ["sergiousle@gmail.com"],
       subject: "estimation request from USER-TEST",
-      body: 
-      
-      `To Whom It May Concern,
+      body: `To Whom It May Concern,
       
       I would like to ask for a price estimation for an inner reform 
       in my house.
@@ -77,7 +75,7 @@ export default class SendEmail extends React.Component {
       Preferred starting date:${this.state.lastRequest.data.requestData.date}
       I attached to this email some pictures in order to illustrate better 
       my expectation.
-      I look forward to have new from you,
+      I look forward to have news from you,
       Thanks in advance, 
       TEST USER
 
@@ -87,9 +85,13 @@ export default class SendEmail extends React.Component {
       attachments: uriArray
     });
   };
+
+  sendAsEmailToMany = () => {
+    console.log("send to many");
+  };
+
   createNewReq = () => {
     this.props.navigation.navigate("RequestFormular");
-
   };
 
   keyExtractor = (item, index) => String(item._id);
@@ -155,6 +157,12 @@ export default class SendEmail extends React.Component {
               style={styles.button}
               title="Send"
               onPress={this.sendAsEmail}
+              color="#9FCBE5"
+            />
+            <Button
+              style={styles.button}
+              title="Send to several companies"
+              onPress={this.sendAsEmailToMany}
               color="#9FCBE5"
             />
           </View>

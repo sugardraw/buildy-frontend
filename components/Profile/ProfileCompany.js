@@ -4,6 +4,8 @@ import { Button, View, Text, Image, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import UploadAvatar from './UploadAvatar';
 import PortfolioGallery from '../CompanyPortfolio/PortfolioGallery';
+import { api } from "../../api/api";
+
 
 export default class ProfileCompany extends React.Component {
 	static navigationOptions = {
@@ -19,7 +21,7 @@ export default class ProfileCompany extends React.Component {
 					<Text>COMPANY PROFILE</Text>
 					<UploadAvatar
 						payloadKey="file"
-						endpoint="http://10.0.1.130:3001/api/user/save_avatar"
+						endpoint={api+"/api/professional/save_avatar"}
 						callbackUrl="https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png"
 					/>
 					<View style={styles.bodyContentProfile}>

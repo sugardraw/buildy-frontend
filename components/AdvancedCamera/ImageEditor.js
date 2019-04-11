@@ -2,8 +2,9 @@ import Expo from "expo";
 const ExpoImagePicker = require("expo").ImagePicker;
 import { FileSystem, takeSnapshotAsync, Permissions, ImagePicker } from "expo";
 const chalk = require("chalk");
-
 import * as ExpoPixi from "expo-pixi";
+
+import ExpoPIXI, { PIXI } from "expo-pixi";
 import React, { Component } from "react";
 import axios from "axios";
 
@@ -32,13 +33,14 @@ import Menu, {
 import {
   SimpleLineIcons,
   MaterialIcons,
-  MaterialCommunityIcons
+  MaterialCommunityIcons,
+  FontAwesome
 } from "@expo/vector-icons";
 
 import Gestures from "react-native-easy-gestures";
 import ElementsViewer from "../ElementsViewer/ElementsViewer";
+
 import ColorPalette from "react-native-color-palette";
-import FileSystemRN from "react-native-filesystem";
 
 import uid from "uuid/v4";
 
@@ -63,8 +65,6 @@ architectureNames = [
   "stairs_1.png",
   "window_1.png"
 ];
-
-const deviceWidth = Dimensions.get("window").width;
 
 export default class ImageEditor extends Component {
   constructor(props) {
@@ -99,15 +99,19 @@ export default class ImageEditor extends Component {
       appState: AppState.currentState,
       strokeWidth: 10,
       showElements: false,
+      showPolyDrawer: false,
       show: false,
       elementUri: null,
       lines: [],
       cameraRollUri: null,
       selectColor: false,
       requestData: null,
-      photo: null
+      photo: null,
+      showFillButton: false,
+      sketch: false,
+      coords: []
     };
-    this.strokeColor = 0xffffff;
+    (this.polyColor = "0xffffff"), (this.strokeColor = "0xffffff");
   }
 
   handleAppStateChangeAsync = nextAppState => {
@@ -128,6 +132,7 @@ export default class ImageEditor extends Component {
   };
 
   componentDidMount() {
+    console.log("component did mount", "ready");
     AppState.addEventListener("change", this.handleAppStateChangeAsync);
     this.setState({
       requestData: this.props.requestData
@@ -162,6 +167,17 @@ export default class ImageEditor extends Component {
       selectColor: !this.state.selectColor
     });
   };
+  showSketch = () => {
+    if (!this.state.sketch) {
+      alert("just draw on the screen");
+    } else {
+      alert("draw tool turned off");
+    }
+
+    this.setState({
+      sketch: !this.state.sketch
+    });
+  };
 
   openElementsPanel = () => {
     this.setState({
@@ -191,6 +207,8 @@ export default class ImageEditor extends Component {
             onChange={color => {
               let newSelectedColor = color.replace("#", "0x");
               this.strokeColor = newSelectedColor;
+              this.polyColor = newSelectedColor;
+
               selectedColor = color;
               return selectedColor;
             }}
@@ -322,7 +340,10 @@ export default class ImageEditor extends Component {
       format: "png"
     });
     let saveImage = await CameraRoll.saveToCameraRoll(image, "photo");
-    this.setState({ cameraRollUri: saveImage });
+    this.setState(
+      { cameraRollUri: saveImage },
+      alert("The edited image was successfully saved in your phone gallery")
+    );
   };
 
   _uploadImageAsyncTest = async uri => {
@@ -399,8 +420,67 @@ export default class ImageEditor extends Component {
     });
   };
 
+  getCoordinates = touchObj => {
+    this.setState(state => {
+      state.coords.push(touchObj.locationX * 2);
+      state.coords.push(touchObj.locationY * 2);
+
+      return state;
+    });
+    console.log("get coords");
+  };
+
+  drawPoly = () => {
+    if (!this.state.showPolyDrawer && !this.state.showFillButton) {
+      alert(
+        'To draw a custom polygon, just press the screen once at different positions and press the button "fill"'
+      );
+    }
+    console.log("draw poly");
+    this.setState({
+      coords: [],
+      showFillButton: !this.state.showFillButton
+    });
+  };
+
+  fillPoly = () => {
+    console.log("fill poly");
+
+    this.setState(
+      {
+        showPolyDrawer: !this.state.showPolyDrawer,
+        showFillButton: !this.state.showFillButton
+      },
+      this.forceUpdate()
+    );
+    setTimeout(() => {
+      this.setState({
+        coords: []
+      });
+    }, 300);
+  };
+
   onReady = () => {
     console.log("ready!");
+  };
+
+  updatePoly = async context => {
+    const app = new PIXI.Application({ context, transparent: true });
+    var container = new PIXI.Container();
+    container.interactive = true;
+
+    var graphics = new PIXI.Graphics();
+    // draw polygon
+    console.log("greetings from gl", this.state.coords, this.polyColor);
+    var path = this.state.coords;
+    var color = this.polyColor;
+
+    graphics.lineStyle(0);
+    graphics.beginFill(color, 1);
+    graphics.drawPolygon(path);
+    graphics.endFill();
+
+    app.stage.addChild(graphics);
   };
 
   render() {
@@ -478,6 +558,12 @@ export default class ImageEditor extends Component {
             <View style={styles.icons}>
               <TouchableHighlight
                 style={[styles.icon, styles.rotateIcon]}
+                onPress={this.showSketch}
+              >
+                <FontAwesome name="paint-brush" size={25} color="black" />
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[styles.icon, styles.rotateIcon]}
                 onPress={this.incrementWidth}
               >
                 <MaterialIcons name="line-weight" size={25} color="black" />
@@ -497,18 +583,13 @@ export default class ImageEditor extends Component {
                   color="black"
                 />
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={styles.icon}
-                onPress={() => {
-                  alert("make measures");
-                }}
-              >
+              <TouchableOpacity style={styles.icon} onPress={this.drawPoly}>
                 <MaterialCommunityIcons
-                  name="tape-measure"
+                  name="drawing"
                   size={25}
                   color="black"
                 />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.icon}
                 onPress={this.openElementsPanel}
@@ -536,11 +617,22 @@ export default class ImageEditor extends Component {
 
         {this._renderColorPalette()}
         {this._renderElementsPanel()}
+        {this.state.showFillButton && (
+          <TouchableOpacity
+            style={{ padding: 5, alignItems: "center" }}
+            onPress={e => this.fillPoly(e)}
+          >
+            <Text style={{ color: "white" }}>FILL</Text>
+          </TouchableOpacity>
+        )}
 
         <View
           collapsable={false}
           ref={view => {
             this._container = view;
+          }}
+          onTouchStart={e => {
+            this.getCoordinates(e.nativeEvent);
           }}
           style={styles.container}
         >
@@ -555,25 +647,26 @@ export default class ImageEditor extends Component {
                 </Gestures>
               </View>
             )}
-            {/*
-              Add build elements with PIXI library
-             {this.state.showElements &&
-              <ElementsViewer />
-              } 
-             */}
+
+            {this.state.showPolyDrawer && (
+              <ElementsViewer updatePoly={this.updatePoly} />
+            )}
+
             <ImageBackground
               source={{ uri: this.props.selected[0] }}
               style={styles.background}
             >
-              <ExpoPixi.Sketch
-                ref={ref => (this.sketch = ref)}
-                style={styles.sketch}
-                strokeColor={this.strokeColor}
-                strokeWidth={this.state.strokeWidth}
-                strokeAlpha={1}
-                onChange={this.onChangeAsync}
-                onReady={this.onReady}
-              />
+              {this.state.sketch && (
+                <ExpoPixi.Sketch
+                  ref={ref => (this.sketch = ref)}
+                  style={styles.sketch}
+                  strokeColor={this.strokeColor}
+                  strokeWidth={this.state.strokeWidth}
+                  strokeAlpha={1}
+                  onChange={this.onChangeAsync}
+                  onReady={this.onReady}
+                />
+              )}
             </ImageBackground>
           </View>
         </View>
@@ -584,7 +677,9 @@ export default class ImageEditor extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    width: "100%",
+    height: "100%"
   },
   sketch: {
     flex: 1

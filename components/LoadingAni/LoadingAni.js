@@ -66,6 +66,7 @@ export default class LoadingAni extends React.Component {
               stroke="white"
               strokeWidth={2}
               strokeLinecap="round"
+              
               ref={ref => (this._lineOne = ref)}
               fill="#85c4ea"
               d="M36.29,53.22c-0.47,0-0.94-0.16-1.31-0.48l-11.2-9.35H2.05C0.92,43.4,0,42.48,0,41.35V14.42

@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  Button,
-  View,
-  Text,
-  StyleSheet
-} from "react-native";
+import { Button, View, Text, StyleSheet } from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import UploadAvatar from './UploadAvatar';
+import UploadAvatar from "./UploadAvatar";
+import { api } from "../../api/api";
 
 export default class UserProfile extends React.Component {
   static navigationOptions = {
@@ -26,9 +22,9 @@ export default class UserProfile extends React.Component {
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
           <UploadAvatar
-            payloadKey='file'
-            endpoint='http://10.0.1.196:3001/api/user/save_avatar'
-            callbackUrl='https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png'
+            payloadKey="file"
+            endpoint={api + "/api/user/save_avatar"}
+            callbackUrl="https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png"
           />
           <View style={styles.bodyContentProfile}>
             <Text style={styles.username}>User name</Text>

@@ -16,6 +16,7 @@ import ProfileCompany from "../components/Profile/ProfileCompany";
 import Camera from "../components/AdvancedCamera/AdvancedCamera";
 import RequestFormular from "../components/Profile/RequestFormular";
 import SendEmail from "../components/SendEmail/SendEmail";
+import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -53,6 +54,9 @@ const WelcomeStack = createStackNavigator({
 
   RequestFormular: {
     screen: RequestFormular
+  },
+  ImageEditor: {
+    screen: ImageEditor
   },
   Camera: {
     screen: Camera

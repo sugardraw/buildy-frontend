@@ -14,14 +14,15 @@ import {
 import { ImagePicker, Permissions } from "expo";
 import uid from "uuid/v4";
 
+
 export default class UploadAvatar extends React.Component {
   constructor(props) {
     super(props);
     this.askPermission = this.askPermission.bind(this);
     this.showAlert = this.showAlert.bind(this);
-    this.endpointTest = "http://10.0.1.196:3001/api/user/save_avatar";
+
     this.state = {
-      endpoint: this.endpointTest ? this.endpointTest : null,
+      endpoint: this.props.endpoint ? this.props.endpoint : null,
       payloadKey: this.props.payloadKey ? this.props.payloadKey : null,
       token: this.props.token ? this.props.token : null,
       callbackUrl: this.props.callbackUrl ? this.props.callbackUrl : null,
@@ -68,6 +69,9 @@ export default class UploadAvatar extends React.Component {
   }
 
   uploadResult = async () => {
+
+    console.log(this.state.endpoint);
+    
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     const { onStartUpload } = this.props;
     if (status !== "granted") {

@@ -11,49 +11,66 @@ const table1 = require("../../assets/elements/furniture/table_1.png");
 const mask_table1 = require("../../assets/elements/furniture/table_1_mask.png");
 
 export default class ElementsViewer extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+
+      polyColor: "0x222222"
+    };
+
+    this._polyDrawer = React.createRef();
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     this.props.coordX !== prevProps.coordX &&
+  //     this.props.coordY !== prevProps.coordY
+  //   ) {
+  //     this.setState(state => {
+  //       state.coords.push(this.props.coordX * 2);
+  //       state.coords.push(this.props.coordY * 2);
+  //       state.polyColor = prevProps.polyColor;
+
+  //       return state;
+  //     });
+  //   }
+  // }
+
+
+
+  _context = async context => {
+    console.log(context);
+    const app = new PIXI.Application({ context, transparent: true });
+    var container = new PIXI.Container();
+    container.interactive = true;
+
+    var graphics = new PIXI.Graphics();
+    // draw polygon
+    console.log("greetings from gl", this.state.coords, this.state.polyColor);
+    var path = this.state.coords;
+    var color = this.state.polyColor;
+
+    graphics.lineStyle(0);
+    graphics.beginFill(color, 1);
+    graphics.drawPolygon(path);
+    graphics.endFill();
+
+
+
+    app.stage.addChild(graphics);
+  };
+
   render() {
     return (
       <GLView
+        ref={this._polyDrawer}
         style={{
           flex: 1,
           position: "relative",
           zIndex: 1
         }}
-        onContextCreate={async context => {
-          const app = new PIXI.Application({ context, transparent: true });
-          var container = new PIXI.Container();
-          container.interactive = true;
+        onContextCreate={this.props.updatePoly}
 
-          // const texture = await PIXI.Texture.fromExpoAsync('http://i.imgur.com/uwrbErh.png');
-          // const texture = await PIXI.Texture.from('http://i.imgur.com/uwrbErh.png');
-          // const sprite = await PIXI.Sprite.fromExpoAsync(
-          //   "http://i.imgur.com/uwrbErh.png"
-          // );
-          // const sprite = await PIXI.Texture.from(
-          //   "https://0201.nccdn.net/1_2/000/000/11a/e17/mask_table1-xxl.png"
-          // );
-
-          const mask = await PIXI.Sprite.from(mask_table1);
-          const spriteBg = await PIXI.Sprite.from(table1);
-
-          mask.width = spriteBg.width / 2;
-          mask.height = spriteBg.height / 2;
-
-          spriteBg.width = spriteBg.width / 2;
-          spriteBg.height = spriteBg.height / 2;
-
-          // enable the bunny to be interactive... this will allow it to respond to mouse and touch events
-
-          // Center on the screen
-          container.x = (app.renderer.width - container.width) / 3.3;
-          container.y = (app.renderer.height - container.height) / 2;
-
-          spriteBg.mask = mask;
-
-          container.addChild(mask);
-          container.addChild(spriteBg);
-          app.stage.addChild(container);
-        }}
       />
     );
   }

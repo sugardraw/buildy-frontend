@@ -25,6 +25,7 @@
 		"react-native-filesystem": "^0.1.0",
 		"react-native-is-iphonex": "^1.0.1",
 		"react-native-material-menu": "^0.4.2",
+		"react-native-material-ripple": "^0.8.0",
 		"react-native-multiple-select": "^0.4.4",
 		"react-native-radio-buttons-group": "^1.0.7",
 		"react-native-router-flux": "^4.0.6",
