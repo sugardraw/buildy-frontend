@@ -1,5 +1,12 @@
 import React from "react";
-import { View, TextInput, Text, StyleSheet, Button, TouchableHighlight } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  Button,
+  TouchableHighlight
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 /* import Camera from "../AdvancedCamera/AdvancedCamera"; */
 
@@ -21,9 +28,6 @@ export default class RequestFormular extends React.Component {
       renderCamera: false
     };
   }
-
-
-
 
   takeAPicture = () => {
     const { messageText, title } = this.state;
@@ -49,7 +53,7 @@ export default class RequestFormular extends React.Component {
       <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.container}>
           <Text>CONTACT FORM</Text>
-          <Text style={styles.required}></Text>
+          <Text style={styles.required} />
 
           <Text style={{ color: "red" }}>{this.state.Error}</Text>
           <Text>Give a title to your request</Text>
@@ -97,30 +101,23 @@ export default class RequestFormular extends React.Component {
           />
 
           <Button
-<<<<<<< HEAD
             title="Add pictures to your request"
-            onPress={this.takeAPicture}
-          />
-=======
-            title="Take a picture"
             onPress={this.takeAPicture}
           />
 
           <TouchableHighlight
             style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate('Login')}
+            onPress={() => this.props.navigation.navigate("Login")}
           >
             <Text>Login</Text>
           </TouchableHighlight>
 
           <TouchableHighlight
             style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate('Register')}
+            onPress={() => this.props.navigation.navigate("Register")}
           >
             <Text>Create an account</Text>
           </TouchableHighlight>
->>>>>>> 5f52bb67977a737482710faeb02bd122e5736d65
-
         </View>
       </KeyboardAwareScrollView>
     );
@@ -132,12 +129,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "yellow",
     padding: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   required: {
     fontSize: 10,
-    margin: 2,
+    margin: 2
   },
   inputs: {
     borderBottomColor: "black",
@@ -148,11 +145,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     height: 45,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
     width: 250,
     borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

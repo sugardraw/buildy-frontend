@@ -43,7 +43,7 @@ export default class UserProfile extends React.Component {
             <Text
               style={styles.name}
             >
-              {state.first_name}
+              first_name
             </Text>
             <Text
               style={styles.name}
@@ -55,7 +55,7 @@ export default class UserProfile extends React.Component {
             </Text>
           </View>
           <TouchableHighlight
-            onPress={() => this.props.navigation.navigate('Edit User Profile')}
+            onPress={() => this.props.navigation.navigate('EditUserProfile')}
           >
             <Text>EDIT YOUR PROFILE</Text>
 

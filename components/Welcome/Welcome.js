@@ -14,9 +14,6 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
-import EditProfileCompany from "../Profile/EditProfileCompany";
-import EditUserProfile from "../Profile/EditUserProfile";
-import UserProfile from "../Profile/UserProfile";
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -80,7 +77,7 @@ class Welcome extends Component {
                 marginBottom: 0
               }}
               title="READ MORE"
-              onPress={() => this.props.navigation.navigate("ProfileCompany")}
+              onPress={() => this.props.navigation.navigate("ProfileCompany",{id:item._id})}
             />
           </View>
         </Card>
@@ -90,14 +87,12 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <UserProfile />
-        {/* <EditUserProfile /> */}
-        {/* <FlatList
+        <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-        /> */}
+        />
       </View>
     );
   }
