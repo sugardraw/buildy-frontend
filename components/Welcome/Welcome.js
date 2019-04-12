@@ -14,6 +14,7 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
+import Geo from "../Geolocation/Geo";
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -83,11 +84,7 @@ class Welcome extends Component {
                 marginBottom: 0
               }}
               title="READ MORE"
-              onPress={() =>
-                this.props.navigation.navigate("ProfileCompany", {
-                  id: item._id
-                })
-              }
+              onPress={() => this.props.navigation.navigate("ProfileCompany", { id: item._id })}
             />
           </View>
         </Card>
@@ -97,12 +94,15 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
+
+        <Geo />
+
+        {/* <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-        />
+        /> */}
       </View>
     );
   }
