@@ -4,11 +4,14 @@ import {
     Image
 } from "react-native";
 
+
 export default class ImageElement extends React.Component {
+
+    
     render() {
         return (
             <Image
-                source={this.props.imgsource}
+                source={{uri:this.props.imgSource.uri}}
                 style={styles.singleImage}
             />
         )

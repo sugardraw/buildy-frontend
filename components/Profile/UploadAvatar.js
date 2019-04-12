@@ -143,7 +143,7 @@ export default class UploadAvatar extends React.Component {
                   ? this.state.uploaded_photo
                   : this.props.callbackUrl
               }}
-              style={{ width: 80, height: 80, borderRadius: 50 }}
+              style={{ width: 130, height: 130, borderRadius: 50 }}
             />
           ) : (
             <Image

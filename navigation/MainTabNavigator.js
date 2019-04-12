@@ -19,7 +19,7 @@ import SendEmail from "../components/SendEmail/SendEmail";
 import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
-import { Drawer } from "react-native-router-flux";
+import Geo from "../components/Geolocation/Geo";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -53,8 +53,6 @@ const LoginStack = createStackNavigator({
   }
 });
 
-
-
 const WelcomeStack = createStackNavigator({
   Welcome: {
     screen: Welcome
@@ -75,12 +73,13 @@ const WelcomeStack = createStackNavigator({
   SendEmail: {
     screen: SendEmail
   },
-  welcomeAnimation:{
+  welcomeAnimation: {
     screen: WelcomeAnimation
+  },
+  Geolocalitation: {
+    screen: Geo
   }
 });
-
-
 
 WelcomeStack.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
@@ -89,28 +88,22 @@ WelcomeStack.navigationOptions = ({ navigation }) => {
   }
 
   return {
-    tabBarVisible,
+    tabBarVisible
   };
 };
 
 export default createBottomTabNavigator(
   {
-    Intro:WelcomeAnimation,
+    Intro: WelcomeAnimation,
     Home: WelcomeStack,
     Users: LoginStack
   },
   {
     initialRouteName: "Intro",
     navigationOptions: ({ navigation }) => ({
-
-      
-      
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        
-        
         const { routeName } = navigation.state;
 
-   
         let iconName;
         if (routeName === "Home") {
           iconName = "ios-home";
@@ -118,7 +111,11 @@ export default createBottomTabNavigator(
           iconName = "ios-options";
         }
 
-        return (routeName !== Animation && <Icon name={iconName} size={25} color={tintColor} />);
+        return (
+          routeName !== Animation && (
+            <Icon name={iconName} size={25} color={tintColor} />
+          )
+        );
       }
     })
   }
