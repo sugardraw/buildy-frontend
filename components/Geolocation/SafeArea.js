@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { Location, Permissions } from "expo";
 import { Button } from 'react-native-elements';
 
@@ -112,13 +112,13 @@ export default class SafeArea extends Component {
         console.log("#######################", location, coffeeShops)
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Map
                     location={location}
                     places={coffeeShops}
                 />
                 <View style={styles.filters}>{this.renderFilterButtons()}</View>
-            </View>
+            </SafeAreaView>
         );
     }
 }

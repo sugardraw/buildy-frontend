@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { MapView } from "expo";
 import get from 'lodash/get';
 
+const Marker = MapView.Marker;
+
 const deltas = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
@@ -13,8 +15,6 @@ const initialRegion = {
     latitude: 37.321996988,
     longitude: -122.0325472123455
 };
-
-const Marker = MapView.Marker;
 
 export default class Map extends Component {
     renderMarkers() {
