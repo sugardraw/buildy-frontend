@@ -10,7 +10,7 @@ import {
   Dimensions
 } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import ImageElement from "../CompanyPortfolio/ImageElement";
 import { api } from "../../api/api";
 
@@ -22,7 +22,7 @@ export default class PortfolioGallery extends React.Component {
   };
 
   setModalVisible(visible, imgKey) {
-    console.log("/\/\/\/\//",this.state.projectImages[imgKey],imgKey )
+    console.log("//////", this.state.projectImages[imgKey], imgKey);
 
     this.setState({ imageModal: this.state.projectImages[imgKey] });
     this.setState({ visibleModal: visible });
@@ -34,7 +34,6 @@ export default class PortfolioGallery extends React.Component {
 
   render() {
     let images = this.state.projectImages.map((value, key) => {
-
       return (
         <TouchableWithoutFeedback
           key={key}
@@ -61,11 +60,12 @@ export default class PortfolioGallery extends React.Component {
               onPress={() => {
                 this.setModalVisible(false);
               }}
+              style={{ position: "absolute", left: 10, top: 10, zIndex: 2 }}
             >
-              <MaterialIcons name="close" size={30} color="black" />
+              <AntDesign name="closecircleo" size={50} color="white" />
             </TouchableOpacity>
-            {console.log(this.state.imageModal)}
-            <ImageElement imgSource={ {uri:api+this.state.imageModal} } />
+
+            <ImageElement imgSource={{ uri: api + this.state.imageModal }} />
           </View>
         </Modal>
         {images}
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexWrap: "wrap",
-    flexDirection: "row"
+    flexDirection: "row",
+    margin: 10
   },
   imgWrapper: {
     margin: 2,
@@ -89,8 +90,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     flex: 1,
-    paddingTop: 30,
-    padding: 20,
     backgroundColor: "white"
   }
 });

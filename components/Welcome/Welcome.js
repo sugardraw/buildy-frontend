@@ -14,6 +14,7 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
+import { AntDesign } from "@expo/vector-icons";
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -35,12 +36,11 @@ const mapDispatchToProps = {
 };
 
 class Welcome extends Component {
-
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: navigation.getParam("HeaderTitle", "TEST"),
       headerStyle: {
-        backgroundColor: navigation.getParam("BackgroundColor", "#E040FB")
+        backgroundColor: navigation.getParam("BackgroundColor", "#E050FB")
       },
       headerTintColor: navigation.getParam("HeaderTintColor", "#fff"),
       headerTitleStyle: {
@@ -69,14 +69,15 @@ class Welcome extends Component {
           >
             <Image
               style={{
-                width: 38,
-                height: 38,
+                width: 50,
+                height: 50,
                 margin: 10,
                 marginTop: 15,
                 marginBottom: 15
               }}
-              source={require("../../assets/logo/logo-buildy-4.png")}
+              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
             />
+
             <TouchableOpacity
               style={{
                 margin: 4,
@@ -86,11 +87,11 @@ class Welcome extends Component {
                 borderColor: "#85c4ea",
                 maxHeight: 60,
                 alignSelf: "center",
-                marginLeft: 240
+                marginLeft: 238
               }}
               onPress={() => this.props.navigation.navigate("Login")}
             >
-              <Text style={{ color: "#85c4ea" }}>Login</Text>
+              <AntDesign name="login" size={25} style={{ color: "#85c4ea" }} />
             </TouchableOpacity>
           </View>
         ),
@@ -109,25 +110,26 @@ class Welcome extends Component {
           >
             <Image
               style={{
-                width: 38,
-                height: 38,
+                width: 50,
+                height: 50,
                 margin: 10,
                 marginLeft: 12,
                 marginTop: 15,
                 marginBottom: 15
               }}
-              source={require("../../assets/logo/logo-buildy-4.png")}
+              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
             />
+
             <TouchableOpacity
               style={{
                 margin: 4,
                 padding: 5,
-                borderRadius: 50,
+                borderRadius: 6,
                 borderWidth: 2,
                 borderColor: "#85c4ea",
-                maxHeight: 100,
+                maxHeight: 60,
                 alignSelf: "center",
-                marginLeft: 228
+                marginLeft: 238
               }}
               onPress={() => this.props.navigation.navigate("UserProfile")}
             >
@@ -153,9 +155,6 @@ class Welcome extends Component {
     this.changeHeader(this.state.userLoggedIn);
   }
 
-
-
-
   keyExtractor = (item, index) => String(item._id);
   renderItem = ({ item }) => {
     return (
@@ -173,12 +172,12 @@ class Welcome extends Component {
             <Text>{item.email}</Text>
 
             <Button
-              backgroundColor="#03A9F4"
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
                 marginRight: 0,
-                marginBottom: 0
+                marginBottom: 0,
+                backgroundColor: "#85c4ea"
               }}
               title="READ MORE"
               onPress={() =>
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#DCDCDC"
+    backgroundColor: "#ebebeb"
   },
   card: {
     backgroundColor: "#fff",

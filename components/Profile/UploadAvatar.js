@@ -151,7 +151,7 @@ export default class UploadAvatar extends React.Component {
                 uri:
                   "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
               }}
-              style={{ width: 100, height: 100, borderRadius: 50 }}
+              style={{ width: 130, height: 130, borderRadius: 50 }}
             />
           )}
         </TouchableOpacity>
@@ -168,11 +168,13 @@ const style = StyleSheet.create({
     width: 30
   },
   imageWrapper: {
-    marginBottom: 40,
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40
+    marginTop: 25,
+    padding: 10,
+    paddingLeft: 95,
+    paddingRight: 95
   },
   circleWrapper: {
     borderRadius: 50,

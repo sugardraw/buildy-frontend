@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
@@ -18,7 +19,7 @@ export default class ProfileCompany extends React.Component {
   }
   static navigationOptions = {
     headerTransparent: true,
-    headerTintColor: "black",
+    headerTintColor: "#85c4ea",
     headerTitleStyle: { color: "black" }
   };
 
@@ -53,7 +54,6 @@ export default class ProfileCompany extends React.Component {
         <View
           style={{
             flex: 1,
-            alignItems: "center",
             justifyContent: "center",
             marginTop: 70
           }}
@@ -68,32 +68,73 @@ export default class ProfileCompany extends React.Component {
                     }}
                     key={i}
                   >
-                    <UploadAvatar
-                      payloadKey="file"
-                      endpoint={api + "/api/user/save_avatar"}
-                      callbackUrl={api + professional.avatar}
-                    />
-                    <Text style={{ fontFamily: "Roboto-Black", fontSize: 22 }}>
-                      {professional.name}
-                    </Text>
-
-                    <Text style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}>
-                      {professional.shortDescription}
-                    </Text>
-
-                    {professional.services.map((service,i) => (
-                      <Text key={i} style={styles.servicesList}>{service}</Text>
-                    ))}
-
-                    <Text
-                      style={{
-                        fontFamily: "Roboto-Light",
-                        textAlign: "center",
-                        padding: 20
-                      }}
+                    <View style={styles.main}>
+                      <UploadAvatar
+                        payloadKey="file"
+                        endpoint={api + "/api/user/save_avatar"}
+                        callbackUrl={api + professional.avatar}
+                      />
+                      <View style={styles.headInfos} />
+                      <Text
+                        style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
+                      >
+                        {professional.name}
+                      </Text>
+                      <Text
+                        style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
+                      >
+                        {professional.shortDescription}
+                      </Text>
+                    </View>
+                    <View style={styles.paragraphText}>
+                      <Text
+                        style={[
+                          styles.servicesList,
+                          { fontSize: 20, marginTop: 10 }
+                        ]}
+                      >
+                        Services
+                      </Text>
+                      {professional.services.map((service, i) => (
+                        <Text key={i} style={styles.servicesList}>
+                          {service}
+                        </Text>
+                      ))}
+                    </View>
+                    <View
+                      style={[
+                        styles.paragraphText,
+                        {
+                          fontFamily: "Roboto-Light"
+                        }
+                      ]}
                     >
-                      {professional.longDescription}
-                    </Text>
+                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                        Description
+                      </Text>
+                      <Text>{professional.longDescription}</Text>
+                    </View>
+                    <View style={styles.paragraphText}>
+                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                        Contact
+                      </Text>
+                      <Text style={styles.infoText}>
+                        {professional.address.street}
+                      </Text>
+                      <Text style={styles.infoText}>
+                        {professional.address.zip}
+                      </Text>
+                      <Text style={styles.infoText}>
+                        {professional.address.city}
+                      </Text>
+                      <Text style={styles.infoText}>{professional.email}</Text>
+                    </View>
+
+                    <View style={[styles.paragraphText, { paddingBottom: 10 }]}>
+                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                        Projects
+                      </Text>
+                    </View>
                     <PortfolioGallery projects={professional.projectImages} />
                   </View>
                 ))
@@ -102,7 +143,9 @@ export default class ProfileCompany extends React.Component {
 
           <View style={styles.button}>
             <Button
-              backgroundColor="#03A9F4"
+              buttonStyle={{
+                backgroundColor: "#85c4ea"
+              }}
               title="SEND A REQUEST"
               onPress={() => this.props.navigation.navigate("RequestFormular")}
             />
@@ -115,29 +158,46 @@ export default class ProfileCompany extends React.Component {
 
 const styles = StyleSheet.create({
   bodyContentProfile: {
-    margin: 20,
+    margin: 10,
+    marginTop: 25,
     alignItems: "center",
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderRadius: 2,
-    borderColor: "#ddd",
-    borderBottomWidth: 0,
-    shadowColor: "#000",
-    shadowOffset: { width: 5, height: 5 },
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-    elevation: 1
+    backgroundColor: "white"
   },
   servicesList: {
     textAlign: "left",
-    color: "#ffd4d4"
+    color: "#0ec485"
   },
   scrollStyle: {
     flexGrow: 1
   },
   button: {
+    alignSelf: "center",
     position: "relative",
     bottom: 20,
     width: "90%"
+  },
+  main: {
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#85c4ea",
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 0.6,
+    shadowRadius: 20,
+    elevation: 4
+  },
+  headInfos: {
+    marginTop: -10,
+    marginBottom: 10,
+    alignItems: "center"
+  },
+  paragraphText: {
+    textAlign: "left",
+    alignSelf: "flex-start",
+    padding: 10
+  },
+  infoText: {
+    fontFamily: "Roboto-Light",
+    textAlign: "left",
+    alignSelf: "flex-start"
   }
 });

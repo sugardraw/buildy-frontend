@@ -13,8 +13,6 @@ import {
 import ShowPassword from "./ShowPassword";
 import { api } from "../../api/api";
 
-import { MaterialIcons } from "@expo/vector-icons";
-
 export default class LoginView extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +27,7 @@ export default class LoginView extends Component {
     return {
       headerTitle: navigation.getParam("HeaderTitle", "BUILDY"),
       headerStyle: {
-        backgroundColor: navigation.getParam("BackgroundColor", "#E040FB")
+        backgroundColor: navigation.getParam("BackgroundColor", "#E050FB")
       },
       headerTintColor: navigation.getParam("HeaderTintColor", "#fff"),
       headerTitleStyle: {
@@ -47,13 +45,13 @@ export default class LoginView extends Component {
           >
             <Image
               style={{
-                width: 42,
-                height: 42,
+                width: 50,
+                height: 50,
                 margin: 10,
                 marginTop: 15,
                 marginBottom: 15
               }}
-              source={require("../../assets/logo/logo-buildy-4.png")}
+              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
             />
           </TouchableOpacity>
         ),
@@ -72,14 +70,14 @@ export default class LoginView extends Component {
           >
             <Image
               style={{
-				width: 38,
-                height: 38,
+                width: 50,
+                height: 50,
                 margin: 10,
                 marginLeft: 12,
                 marginTop: 15,
                 marginBottom: 15
               }}
-              source={require("../../assets/logo/logo-buildy-4.png")}
+              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
             />
             <TouchableOpacity
               style={{
@@ -172,12 +170,12 @@ export default class LoginView extends Component {
           />
           {/* <ShowPassword /> */}
         </View>
-          <TouchableHighlight
-            style={[styles.buttonContainer, styles.loginButton]}
-            onPress={() => this.login()}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableHighlight>
+        <TouchableHighlight
+          style={[styles.buttonContainer, styles.loginButton]}
+          onPress={() => this.login()}
+        >
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableHighlight>
 
         <Text style={{ color: "#85c4ea" }}>Are you already registered?</Text>
 
@@ -188,14 +186,12 @@ export default class LoginView extends Component {
         >
           <TouchableOpacity
             style={styles.buttonContainer}
-
             onPress={() => this.props.navigation.navigate("UsersignUp")}
           >
             <Text style={{ color: "#85c4ea" }}>Register as user</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonContainer}
-
             onPress={() => this.props.navigation.navigate("SignUp")}
           >
             <Text style={{ color: "#85c4ea" }}>Register as professional</Text>
@@ -211,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#DCDCDC"
+    backgroundColor: "#ebebeb"
   },
   inputContainer: {
     borderBottomColor: "#F5FCFF",
@@ -219,13 +215,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderBottomWidth: 1,
     width: 250,
-    height: 45,
+    height: 50,
     marginBottom: 20,
     flexDirection: "row",
     alignItems: "center"
   },
   inputs: {
-    height: 45,
+    height: 50,
     marginLeft: 16,
     borderBottomColor: "#FFFFFF",
     flex: 1
@@ -241,7 +237,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
     width: 250,
-
     margin: 4,
     padding: 5,
     borderRadius: 5,
