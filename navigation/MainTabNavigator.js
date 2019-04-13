@@ -82,7 +82,17 @@ const WelcomeStack = createStackNavigator({
 });
 
 WelcomeStack.navigationOptions = ({ navigation }) => {
-  let tabBarVisible = true;
+  let tabBarVisible = false;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible
+  };
+};
+LoginStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = false;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
   }

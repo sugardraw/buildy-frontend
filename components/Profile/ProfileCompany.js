@@ -81,8 +81,8 @@ export default class ProfileCompany extends React.Component {
                       {professional.shortDescription}
                     </Text>
 
-                    {professional.services.map(service => (
-                      <Text style={styles.servicesList}>{service}</Text>
+                    {professional.services.map((service,i) => (
+                      <Text key={i} style={styles.servicesList}>{service}</Text>
                     ))}
 
                     <Text
@@ -101,13 +101,11 @@ export default class ProfileCompany extends React.Component {
           </View>
 
           <View style={styles.button}>
-
-          <Button
-            backgroundColor="#03A9F4"
-
-            title="SEND A REQUEST"
-            onPress={() => this.props.navigation.navigate("RequestFormular")}
-          />
+            <Button
+              backgroundColor="#03A9F4"
+              title="SEND A REQUEST"
+              onPress={() => this.props.navigation.navigate("RequestFormular")}
+            />
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -132,14 +130,14 @@ const styles = StyleSheet.create({
   },
   servicesList: {
     textAlign: "left",
-    color: "#3456df"
+    color: "#ffd4d4"
   },
   scrollStyle: {
     flexGrow: 1
   },
-  button:{
-    position:"relative",
+  button: {
+    position: "relative",
     bottom: 20,
-    width:"90%"
+    width: "90%"
   }
 });

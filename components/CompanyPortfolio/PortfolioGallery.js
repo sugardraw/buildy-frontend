@@ -18,14 +18,6 @@ export default class PortfolioGallery extends React.Component {
   state = {
     imageModal: "",
     visibleModal: false,
-    images: [
-      require("../../assets/img/img1.png"),
-      require("../../assets/img/img2.png"),
-      require("../../assets/img/img3.png"),
-      require("../../assets/img/img4.png"),
-      require("../../assets/img/img5.png"),
-      require("../../assets/img/img6.png")
-    ],
     projectImages: this.props.projects
   };
 
@@ -42,14 +34,7 @@ export default class PortfolioGallery extends React.Component {
 
   render() {
     let images = this.state.projectImages.map((value, key) => {
-      {
-        console.log(
-          "#######################",
-          typeof api,
-          typeof value,
-          api + value
-        );
-      }
+
       return (
         <TouchableWithoutFeedback
           key={key}

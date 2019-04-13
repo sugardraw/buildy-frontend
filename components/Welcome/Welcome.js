@@ -5,8 +5,8 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   YellowBox
 } from "react-native";
 import { connect } from "react-redux";
@@ -14,7 +14,6 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
-
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -36,38 +35,134 @@ const mapDispatchToProps = {
 };
 
 class Welcome extends Component {
-  static navigationOptions = {
-    headerTitle: (
-      <Image
-        style={{ width: 42, height: 42, margin:10, marginTop:15, marginBottom:15}}
-        source={require("../../assets/logo/logo-buildy-4.png")}
-      />
-    ),
 
-    headerStyle: { backgroundColor: "#FFFfff" },
-    headerTintColor: "white",
-    headerTitleStyle: { color: "white" }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: navigation.getParam("HeaderTitle", "TEST"),
+      headerStyle: {
+        backgroundColor: navigation.getParam("BackgroundColor", "#E040FB")
+      },
+      headerTintColor: navigation.getParam("HeaderTintColor", "#fff"),
+      headerTitleStyle: {
+        color: navigation.getParam("Color", "#fff")
+      }
+    };
   };
 
   constructor(props) {
     super(props);
-    state = {
+    this.state = {
       userLoggedIn: false
     };
   }
 
+  changeHeader = isLogged => {
+    if (!isLogged) {
+      this.props.navigation.setParams({
+        HeaderTitle: (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          >
+            <Image
+              style={{
+                width: 38,
+                height: 38,
+                margin: 10,
+                marginTop: 15,
+                marginBottom: 15
+              }}
+              source={require("../../assets/logo/logo-buildy-4.png")}
+            />
+            <TouchableOpacity
+              style={{
+                margin: 4,
+                padding: 5,
+                borderRadius: 6,
+                borderWidth: 2,
+                borderColor: "#85c4ea",
+                maxHeight: 60,
+                alignSelf: "center",
+                marginLeft: 240
+              }}
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text style={{ color: "#85c4ea" }}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        ),
+        BackgroundColor: "#fff",
+        HeaderTintColor: "#fff"
+      });
+    } else {
+      this.props.navigation.setParams({
+        HeaderTitle: (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
+          >
+            <Image
+              style={{
+                width: 38,
+                height: 38,
+                margin: 10,
+                marginLeft: 12,
+                marginTop: 15,
+                marginBottom: 15
+              }}
+              source={require("../../assets/logo/logo-buildy-4.png")}
+            />
+            <TouchableOpacity
+              style={{
+                margin: 4,
+                padding: 5,
+                borderRadius: 50,
+                borderWidth: 2,
+                borderColor: "#85c4ea",
+                maxHeight: 100,
+                alignSelf: "center",
+                marginLeft: 228
+              }}
+              onPress={() => this.props.navigation.navigate("UserProfile")}
+            >
+              <Text style={{ color: "#85c4ea" }}>AVATAR</Text>
+            </TouchableOpacity>
+          </View>
+        ),
+        BackgroundColor: "#fff",
+        HeaderTintColor: "#fff"
+      });
+    }
+  };
+
   componentDidMount() {
     this.props.dispatchGetPosts();
-    this.setState = {
-      userLoggedIn: true
-    };
+
+    // this.setState(
+    //   {
+    //     userLoggedIn: true
+    //   }
+    // );
+
+    this.changeHeader(this.state.userLoggedIn);
   }
+
+
+
 
   keyExtractor = (item, index) => String(item._id);
   renderItem = ({ item }) => {
     return (
       <TouchableWithoutFeedback
-           onPress={() => this.props.navigation.navigate("ProfileCompany", { id: item._id })}
+        onPress={() =>
+          this.props.navigation.navigate("ProfileCompany", { id: item._id })
+        }
       >
         <Card title={item.name}>
           <Image
@@ -86,7 +181,11 @@ class Welcome extends Component {
                 marginBottom: 0
               }}
               title="READ MORE"
-              onPress={() => this.props.navigation.navigate("ProfileCompany", { id: item._id })}
+              onPress={() =>
+                this.props.navigation.navigate("ProfileCompany", {
+                  id: item._id
+                })
+              }
             />
           </View>
         </Card>
@@ -96,9 +195,6 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-
-
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}
