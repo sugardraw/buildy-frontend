@@ -18,7 +18,7 @@ export default class ProfileCompany extends React.Component {
     };
   }
   static navigationOptions = {
-    headerTransparent: true,
+
     headerTintColor: "#85c4ea",
     headerTitleStyle: { color: "black" }
   };
