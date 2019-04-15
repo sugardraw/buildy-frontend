@@ -103,7 +103,7 @@ export default class LoginView extends Component {
   };
 
   componentDidMount() {
-    console.log(this.state.userLoggedIn);
+
     this.changeHeader(this.state.userLoggedIn);
   }
 

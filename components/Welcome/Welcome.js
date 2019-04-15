@@ -7,7 +7,8 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  YellowBox
+  YellowBox,
+  AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
@@ -15,6 +16,7 @@ import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
 import { AntDesign } from "@expo/vector-icons";
+import { LOGOUT } from "../../actions/types";
 
 YellowBox.ignoreWarnings(["Require cycle:"]);
 
@@ -52,6 +54,8 @@ class Welcome extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: "",
+      loading: true,
       userLoggedIn: false
     };
   }
@@ -129,11 +133,25 @@ class Welcome extends Component {
                 borderColor: "#85c4ea",
                 maxHeight: 60,
                 alignSelf: "center",
-                marginLeft: 238
+                marginLeft: 160
               }}
               onPress={() => this.props.navigation.navigate("UserProfile")}
             >
               <Text style={{ color: "#85c4ea" }}>AVATAR</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                margin: 4,
+                padding: 5,
+                borderRadius: 6,
+                borderWidth: 2,
+                borderColor: "#85c4ea",
+                maxHeight: 60,
+                alignSelf: "center"
+              }}
+              onPress={() => this.logout()}
+            >
+              <AntDesign name="logout" size={25} style={{ color: "#85c4ea" }} />
             </TouchableOpacity>
           </View>
         ),
@@ -143,17 +161,51 @@ class Welcome extends Component {
     }
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.props.dispatchGetPosts();
+    try {
+      let tokenStorage = await AsyncStorage.getItem("id_token");
 
-    // this.setState(
-    //   {
-    //     userLoggedIn: true
-    //   }
-    // );
+      console.log("tokenStorage-------------", tokenStorage);
 
-    this.changeHeader(this.state.userLoggedIn);
+      if (tokenStorage !== null) {
+        this.setState(
+          {
+            token: tokenStorage,
+            userLoggedIn: true,
+            loading: false
+          },
+          this.changeHeader(true)
+        );
+      } else {
+        this.changeHeader(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  componentWillReceiveProps=async (nextProps) =>{
+    if (
+      this.props.navigation.state.params !== nextProps.navigation.state.params
+    ) {
+      let tokenStorage = await AsyncStorage.getItem("id_token");
+      if (tokenStorage !== null) {
+        this.changeHeader(true);
+      }
+    }
   }
+
+  logout = async () => {
+    try {
+      await AsyncStorage.removeItem("id_token");
+      console.log("token removed");
+      this.props.navigation.navigate("LogOutAnimation");
+      this.changeHeader(false);
+    } catch (err) {
+      console.log(`The error is: ${err}`);
+    }
+  };
 
   keyExtractor = (item, index) => String(item._id);
   renderItem = ({ item }) => {

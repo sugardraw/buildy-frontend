@@ -7,7 +7,6 @@ import {
 } from "react-navigation";
 
 import Welcome from "../components/Welcome/Welcome";
-import WelcomeAnimation from "../components/LoadingAni/LoadingAni";
 import Login from "../components/Login/Login";
 import SignUp from "../components/SignUp/SignUp";
 import UsersignUp from "../components/SignUp/UsersignUp";
@@ -20,6 +19,9 @@ import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
 import Geo from "../components/Geolocation/Geo";
+import WelcomeAnimation from "../components/Animations/LoadingAni";
+import LogOutAnimation from "../components/Animations/LogOutAnimation";
+import LoginAnimation from "../components/Animations/LoginAnimation";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -75,6 +77,12 @@ const WelcomeStack = createStackNavigator({
   },
   welcomeAnimation: {
     screen: WelcomeAnimation
+  },
+  LogOutAnimation: {
+    screen: LogOutAnimation
+  },
+  LoginAnimation: {
+    screen: LoginAnimation
   },
   Geolocalitation: {
     screen: Geo
