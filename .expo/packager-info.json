@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 22293,
-  "expoServerNgrokUrl": "https://ry-t4y.anonymous.buildy-frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.ry-t4y.anonymous.buildy-frontend.exp.direct",
-  "ngrokPid": 22335,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

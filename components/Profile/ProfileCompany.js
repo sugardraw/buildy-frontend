@@ -146,9 +146,12 @@ export default class ProfileCompany extends React.Component {
               buttonStyle={{
                 backgroundColor: "#85c4ea"
               }}
-              title="SEND A REQUEST"
+              title="SEND A REQUEST *"
               onPress={() => this.props.navigation.navigate("RequestFormular")}
             />
+            <View style={{ height: 40, padding: 10, marginBottom: 40 }}>
+              <Text>* Only for registered Users</Text>
+            </View>
           </View>
         </View>
       </KeyboardAwareScrollView>

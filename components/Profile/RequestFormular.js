@@ -73,7 +73,7 @@ export default class RequestFormular extends React.Component {
               this.setState({ description: editedText })
             }
             onContentSizeChange={e =>
-              this.setState({ height: e.nativeEvent.contentSize.height })
+              this.setState({ height: e.nativeEvent.contentSize.height + 20 })
             }
             style={[
               styles.inputs,
@@ -126,29 +126,39 @@ export default class RequestFormular extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "yellow",
-    padding: 30,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "#ebebeb"
   },
   required: {
     fontSize: 10,
     margin: 2
   },
+  textStyle: {
+    textAlign: "left"
+  },
   inputs: {
-    borderBottomColor: "black",
-    borderBottomWidth: 2,
-    padding: 8,
-    backgroundColor: "white",
-    width: 200
+    borderBottomColor: "#F5FCFF",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 5,
+    borderBottomWidth: 1,
+    width: 250,
+    height: 40,
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center"
   },
   buttonContainer: {
-    height: 45,
-    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 20,
     width: 250,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center"
+    margin: 4,
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#85c4ea",
+    maxHeight: 100,
+    alignSelf: "center"
   }
 });
