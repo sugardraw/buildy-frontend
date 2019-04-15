@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, AsyncStorage, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import UploadAvatar from "./UploadAvatar";
@@ -13,12 +13,12 @@ export default class ProfileCompany extends React.Component {
     super();
 
     this.state = {
+      id_token: null,
       _fontLoaded: false,
       professional: []
     };
   }
   static navigationOptions = {
-
     headerTintColor: "#85c4ea",
     headerTitleStyle: { color: "black" }
   };
@@ -29,7 +29,9 @@ export default class ProfileCompany extends React.Component {
       "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
       "Roboto-Light": require("../../assets/fonts/Roboto-Light.ttf")
     });
-    this.setState({ _fontLoaded: true });
+
+    let tokenStorage = await AsyncStorage.getItem("id_token");
+    this.setState({ _fontLoaded: true, id_token: tokenStorage });
 
     const id = this.props.navigation.state.params.id;
 
@@ -46,6 +48,8 @@ export default class ProfileCompany extends React.Component {
   };
 
   render() {
+    const { id_token } = this.state;
+    const isEnabled = id_token !== null;
     return (
       <KeyboardAwareScrollView
         ref="scrollView"
@@ -143,6 +147,7 @@ export default class ProfileCompany extends React.Component {
 
           <View style={styles.button}>
             <Button
+              disabled={!isEnabled}
               buttonStyle={{
                 backgroundColor: "#85c4ea"
               }}

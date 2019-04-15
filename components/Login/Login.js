@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import ShowPassword from "./ShowPassword";
 import { api } from "../../api/api";
+import deviceStorage from "../../services/deviceStorage";
 
 export default class LoginView extends Component {
   constructor(props) {
@@ -103,7 +104,6 @@ export default class LoginView extends Component {
   };
 
   componentDidMount() {
-
     this.changeHeader(this.state.userLoggedIn);
   }
 
@@ -111,25 +111,22 @@ export default class LoginView extends Component {
     this.setState({ [key]: val });
   };
 
-  onClickListener = viewId => {
-    Alert.alert("Alert", "Button pressed " + viewId);
-  };
-
   login = () => {
-    console.log(this.state.email, this.state.password);
     return axios
-      .post(api + "/api/user/login", {
+      .post(api + "/api/login", {
         email: this.state.email,
         password: this.state.password
       })
       .then(response => {
-        this.setState({
-          loggedIn: true
-        });
-        return response;
+        if (response.status === 200) {
+          deviceStorage.saveItem("id_token", response.data.token);
+          this.props.navigation.navigate("LoginAnimation", {
+            id_token: response.data.token
+          });
+        }
       })
       .catch(error => {
-        console.log(error.response);
+        throw error;
       });
   };
 

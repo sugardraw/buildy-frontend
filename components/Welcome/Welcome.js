@@ -185,16 +185,17 @@ class Welcome extends Component {
     }
   };
 
-  componentWillReceiveProps=async (nextProps) =>{
+  componentWillReceiveProps = async nextProps => {
     if (
       this.props.navigation.state.params !== nextProps.navigation.state.params
     ) {
       let tokenStorage = await AsyncStorage.getItem("id_token");
       if (tokenStorage !== null) {
+        console.log("component will receive props");
         this.changeHeader(true);
       }
     }
-  }
+  };
 
   logout = async () => {
     try {

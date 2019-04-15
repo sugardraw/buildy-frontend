@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   Animated,
-  TouchableOpacity
+  AsyncStorage
 } from "react-native";
 import { Svg } from "expo"; // Supported builtin module
 const { Line, G, Path } = Svg;
@@ -34,11 +34,10 @@ export default class LoginAnimation extends React.Component {
       {
         iterations: 2
       }
-    ).start(() =>
-      this.props.navigation.navigate("Welcome", {
-        id_token: 34
-      })
-    );
+    ).start(async () => {
+      let tokenStorage = await AsyncStorage.getItem("id_token");
+      this.props.navigation.navigate("Welcome", { id_token: tokenStorage });
+    });
   };
 
   async componentDidMount() {
@@ -90,7 +89,7 @@ export default class LoginAnimation extends React.Component {
               alignContent: "center"
             }}
           >
-            YOU ARE LOGGED IN
+            YOU LOGGED IN
           </Text>
         ) : null}
       </View>

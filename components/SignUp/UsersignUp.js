@@ -4,9 +4,8 @@ import {
   Text,
   View,
   TextInput,
-  Alert,
-  TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from "react-native";
 import Wizard from "./Wizard";
 
@@ -17,9 +16,8 @@ import deviceStorage from "../../services/deviceStorage";
 
 export default class UsersignUp extends Component {
   static navigationOptions = {
-    headerStyle: { backgroundColor: "white" },
-    headerTintColor: "#00b5ec",
-    headerTitleStyle: { color: "white" }
+    headerTransparent: true,
+    headerTintColor: "#00b5ec"
   };
   constructor(props) {
     super(props);
@@ -40,10 +38,9 @@ export default class UsersignUp extends Component {
     axios
       .post(api + "/api/user/save", this.state)
       .then(response => {
-
         deviceStorage.saveItem("id_token", response.data.token);
         this.props.navigation.navigate("LoginAnimation", {
-			id_token: response.data.token
+          id_token: response.data.token
         });
       })
       .catch(error =>
@@ -57,149 +54,156 @@ export default class UsersignUp extends Component {
     const uriParts = uri.split(".");
     const fileType = uriParts[uriParts.length - 1];
 
-    const takeAvatar = new takeAvatar();
-
-    takeAvatar.append("saveAvatar", {
-      user: "",
-      editedAvatar: {
+    const formData = new FormData();
+    formData.append("estimationRequest", {
+      user: "5ca4e986ae89663d22b2ea0b",
+      editedImages: {
         uri,
-        name: "save-avatar" + uid(),
-        type: `image/${filetype}`
+        name: "requesting-image-" + uid(),
+        type: `image/${fileType}`
       },
-      avatar: this.state.avatar
+      requestData: this.state.requestData
     });
 
-    return await fetch(api + "/api/user/save", {
+    return await fetch(api + "/api/user/request/save", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
     })
-      .then(response => console.log("returned something"))
+      .then(response => console.log(response.json()))
       .catch(err => console.log(err))
       .done();
   };
 
   render() {
-    console.log(this.state.token || null);
     return (
       <View style={styles.container}>
-        <Wizard
-          initialValues={{
-            avatar: {},
-            first_name: "",
-            last_name: "",
-            email: "",
-            password: "",
-            street: "",
-            city: "",
-            zip: ""
-          }}
-          collectData={this.collectData}
-        >
-          <Wizard.Step>
-            {({ onChangeValue, values }) => (
-              <View style={styles.container}>
-                <Text>user sign up</Text>
-                <UploadAvatar
-                  payloadKey="file"
-                  endpoint={api + "/api/user/save_avatar"}
-                  callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
-                />
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="first_name"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("first_name", text)}
-                    placeholder="Name"
-                    value={values.first_name}
-                    underlineColorAndroid="transparent"
-                  />
+        <ScrollView contentComponentStyle={{ flex: 1 }}>
+          <Wizard
+            initialValues={{
+              avatar: {},
+              first_name: "",
+              last_name: "",
+              email: "",
+              password: "",
+              street: "",
+              city: "",
+              zip: ""
+            }}
+            collectData={this.collectData}
+          >
+            <Wizard.Step>
+              {({ onChangeValue, values }) => (
+                <View style={styles.container}>
+                  <View style={{ marginTop: 30 }}>
+                    <UploadAvatar
+                      payloadKey="file"
+                      endpoint={api + "/api/user/save_avatar"}
+                      callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="first_name"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("first_name", text)}
+                      placeholder="Name"
+                      value={values.first_name}
+                      underlineColorAndroid="transparent"
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="last_name"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("last_name", text)}
+                      placeholder="Last Name"
+                      value={values.last_name}
+                      underlineColorAndroid="transparent"
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="email"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("email", text)}
+                      placeholder="Email"
+                      value={values.email}
+                      autoCapitalize="none"
+                    />
+                  </View>
+                  <View>
+                    <Text
+                      style={[
+                        styles.small,
+                        { paddingTop: 10, paddingBottom: 2 }
+                      ]}
+                    >
+                      We'll never share your email with anyone else.
+                    </Text>
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="password"
+                      style={styles.inputs}
+                      secureTextEntry
+                      onChangeText={text => onChangeValue("password", text)}
+                      placeholder="Password"
+                      value={values.password}
+                    />
+                  </View>
+
+                  <TouchableHighlight
+                    style={styles.buttonContainer}
+                    onPress={() => this.props.navigation.navigate("Login")}
+                  >
+                    <Text>Already registered? Login</Text>
+                  </TouchableHighlight>
                 </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="last_name"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("last_name", text)}
-                    placeholder="Last Name"
-                    value={values.last_name}
-                    underlineColorAndroid="transparent"
-                  />
-                </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="email"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("email", text)}
-                    placeholder="Email"
-                    value={values.email}
-                    autoCapitalize="none"
-                  />
-                </View>
+              )}
+            </Wizard.Step>
+            <Wizard.Step>
+              {({ onChangeValue, values, signUp }) => (
                 <View>
-                  <Text style={styles.small}>
-                    We'll never share your email with anyone else.
-                  </Text>
-                </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="password"
-                    style={styles.inputs}
-                    secureTextEntry
-                    onChangeText={text => onChangeValue("password", text)}
-                    placeholder="Password"
-                    value={values.password}
-                  />
-                </View>
+                  <View style={[styles.inputContainer, { marginTop: 100 }]}>
+                    <TextInput
+                      name="city"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("city", text)}
+                      placeholder="City"
+                      value={values.city}
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="street"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("street", text)}
+                      placeholder="Street"
+                      value={values.street}
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      name="zip"
+                      style={styles.inputs}
+                      onChangeText={text => onChangeValue("zip", text)}
+                      placeholder="Zip Code"
+                      value={values.zip}
+                    />
+                  </View>
 
-                <TouchableHighlight
-                  style={styles.buttonContainer}
-                  onPress={() => this.props.navigation.navigate("Login")}
-                >
-                  <Text>Already registered? Login</Text>
-                </TouchableHighlight>
-              </View>
-            )}
-          </Wizard.Step>
-          <Wizard.Step>
-            {({ onChangeValue, values, signUp }) => (
-              <View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="city"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("city", text)}
-                    placeholder="City"
-                    value={values.city}
-                  />
+                  <TouchableHighlight
+                    style={[styles.buttonContainer, styles.signupButton]}
+                    onPress={values => this.submitSignUp(values)}
+                  >
+                    <Text style={styles.signupText}>Sign up</Text>
+                  </TouchableHighlight>
                 </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="street"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("street", text)}
-                    placeholder="Street"
-                    value={values.street}
-                  />
-                </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    name="zip"
-                    style={styles.inputs}
-                    onChangeText={text => onChangeValue("zip", text)}
-                    placeholder="Zip Code"
-                    value={values.zip}
-                  />
-                </View>
-
-                <TouchableHighlight
-                  style={[styles.buttonContainer, styles.signupButton]}
-                  onPress={values => this.submitSignUp(values)}
-                >
-                  <Text style={styles.signupText}>Sign up</Text>
-                </TouchableHighlight>
-              </View>
-            )}
-          </Wizard.Step>
-        </Wizard>
+              )}
+            </Wizard.Step>
+          </Wizard>
+        </ScrollView>
       </View>
     );
   }
@@ -216,6 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   inputContainer: {
+    marginTop: 20,
     borderBottomColor: "#F5FCFF",
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
