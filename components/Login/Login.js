@@ -129,6 +129,7 @@ export default class LoginView extends Component {
               this.setState({
                 userLoggedIn: true
               });
+ 
               this.props.navigation.navigate("LoginAnimation", {
                 id_token: response.data.token
               });

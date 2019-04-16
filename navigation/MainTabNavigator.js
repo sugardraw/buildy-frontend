@@ -18,6 +18,7 @@ import SendEmail from "../components/SendEmail/SendEmail";
 import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
+import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
 
 import Geo from "../components/Geolocation/Geo";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
@@ -87,6 +88,9 @@ const WelcomeStack = createStackNavigator({
   },
   LoginAnimation: {
     screen: LoginAnimation
+  },
+  GalleryScreen: {
+    screen: GalleryScreen
   },
   Geolocalitation: {
     screen: Geo

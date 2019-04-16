@@ -171,6 +171,7 @@ class Welcome extends Component {
 
   componentDidMount = async () => {
     this.props.dispatchGetPosts();
+    this.props.navigation.setParams({ changeScreen: 0 });
     try {
       let tokenStorage = await AsyncStorage.getItem("id_token");
       let avatar = await AsyncStorage.getItem("avatar");
@@ -182,6 +183,7 @@ class Welcome extends Component {
             userLoggedIn: true,
             loading: false
           },
+
           this.changeHeader(true, avatar)
         );
       } else {
@@ -193,9 +195,12 @@ class Welcome extends Component {
   };
 
   componentWillReceiveProps = async nextProps => {
-    if (
-      this.props.navigation.state.params !== nextProps.navigation.state.params
-    ) {
+    let param_1 = this.props.navigation.getParam("changeScreen");
+    let param_2 = nextProps.navigation.getParam("changeScreen");
+    console.log(param_1, param_2);
+
+    if (param_1 !== param_2) {
+      console.log("componentWillReceiveProps_2");
       let tokenStorage = await AsyncStorage.getItem("id_token");
       if (tokenStorage !== null) {
         let avatar = await AsyncStorage.getItem("avatar");
@@ -210,6 +215,7 @@ class Welcome extends Component {
       await AsyncStorage.removeItem("avatar");
       console.log("token removed");
       this.props.navigation.navigate("LogOutAnimation");
+      this.props.navigation.setParams({ changeScreen: 0 });
       this.changeHeader(false, null);
     } catch (err) {
       console.log(`The error is: ${err}`);

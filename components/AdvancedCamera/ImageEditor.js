@@ -34,6 +34,7 @@ import {
   SimpleLineIcons,
   MaterialIcons,
   MaterialCommunityIcons,
+  AntDesign,
   FontAwesome
 } from "@expo/vector-icons";
 
@@ -69,35 +70,10 @@ architectureNames = [
 export default class ImageEditor extends Component {
   constructor(props) {
     super(props);
-    this.textRefOne = React.createRef();
-    this.textRefTwo = React.createRef();
-
-    this.menuRefOne = null;
-    this.menuRefTwo = null;
-
-    this.setMenuRefOne = ref => (this.menuRefOne = ref);
-    this.setMenuRefTwo = ref => (this.menuRefTwo = ref);
-    this.hideMenuOne = () => this.menuRefOne.hide();
-    this.hideMenuTwo = () => this.menuRefTwo.hide();
-    this.showMenuOne = () =>
-      this.menuRefOne.show(
-        this.textRefOne.current,
-        (stickTo = Position.BOTTOM_LEFT)
-      );
-
-    this.onPressPopOne = () => this.showMenuOne();
-
-    this.showMenuTwo = () =>
-      this.menuRefTwo.show(
-        this.textRefTwo.current,
-        (stickTo = Position.BOTTOM_LEFT)
-      );
-
-    this.onPressPopTwo = () => this.showMenuTwo();
     this.state = {
       image: null,
       appState: AppState.currentState,
-      strokeWidth: 10,
+      strokeWidth: 5,
       showElements: false,
       showPolyDrawer: false,
       show: false,
@@ -407,12 +383,20 @@ export default class ImageEditor extends Component {
     }
   };
 
-  reset = async () => {
-    this.sketch.deleteAll();
-    this.strokeColor = 0xffffff;
+  _cancel = () => {
+    console.log(this.props);
+    alert("Redirecting to Form");
+    this.props.navigation.navigate("RequestFormular");
+  };
 
+  reset = async () => {
+    if(this.sketch){
+     await this.sketch.deleteAll();
+
+    }
+    this.strokeColor = 0xffffff;
     this.setState(state => {
-      state.strokeWidth = 10;
+      state.strokeWidth = 5;
       state.elementUri = null;
       state.show = !state.show;
       state.lines = [];
@@ -514,121 +498,42 @@ export default class ImageEditor extends Component {
           >
             <MaterialIcons name="undo" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.icon, styles.mainIcons]}
-            onPress={this.onPressPopTwo}
+
+          <TouchableHighlight
+            style={[styles.icon, styles.rotateIcon]}
+            onPress={this.showSketch}
           >
-            <MaterialIcons name="format-paint" size={25} color="white" />
+            <FontAwesome name="paint-brush" size={25} color="white" />
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={[styles.icon, styles.rotateIcon]}
+            onPress={this.incrementWidth}
+          >
+            <MaterialIcons name="line-weight" size={25} color="white" />
+          </TouchableHighlight>
+
+          <TouchableOpacity style={styles.icon} onPress={this.decrementWidth}>
+            <MaterialIcons name="line-weight" size={25} color="white" />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.icon, styles.mainIcons]}
-            onPress={this.onPressPopOne}
-          >
-            <MaterialIcons name="more-horiz" size={30} color="white" />
+          <TouchableOpacity style={styles.icon} onPress={this.changeColor}>
+            <MaterialIcons name="format-color-fill" size={25} color="white" />
           </TouchableOpacity>
-          <Text
-            ref={this.textRefOne}
-            style={{ fontSize: 1, textAlign: "center" }}
-          />
-          <Text
-            ref={this.textRefTwo}
-            style={{ fontSize: 1, textAlign: "center" }}
-          />
-
-          {/* pop menus MENU1 */}
-
-          <Menu ref={this.setMenuRefOne}>
-            <View style={styles.icons}>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={this._saveEditedImage}
-              >
-                <MaterialIcons name="file-download" size={25} color="black" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.icon} onPress={this._saveToDB}>
-                <MaterialIcons name="send" size={25} color="black" />
-              </TouchableOpacity>
-            </View>
-            <MenuDivider />
-            <TouchableOpacity
-              style={{ padding: 5, alignItems: "center" }}
-              onPress={this.hideMenuOne}
-            >
-              <SimpleLineIcons
-                style={{ margin: 5 }}
-                name="close"
-                size={30}
-                color="black"
-              />
-            </TouchableOpacity>
-          </Menu>
-
-          {/* pop menus MENU2 */}
-
-          <Menu ref={this.setMenuRefTwo}>
-            <View style={styles.icons}>
-              <TouchableHighlight
-                style={[styles.icon, styles.rotateIcon]}
-                onPress={this.showSketch}
-              >
-                <FontAwesome name="paint-brush" size={25} color="black" />
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={[styles.icon, styles.rotateIcon]}
-                onPress={this.incrementWidth}
-              >
-                <MaterialIcons name="line-weight" size={25} color="black" />
-              </TouchableHighlight>
-
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={this.decrementWidth}
-              >
-                <MaterialIcons name="line-weight" size={25} color="black" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.icon} onPress={this.changeColor}>
-                <MaterialIcons
-                  name="format-color-fill"
-                  size={25}
-                  color="black"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={this.activateDrawPolyTool}
-              >
-                <MaterialCommunityIcons
-                  name="drawing"
-                  size={25}
-                  color="black"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={this.openElementsPanel}
-              >
-                <MaterialIcons name="insert-photo" size={25} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.icon} onPress={this.reset}>
-                <MaterialIcons name="autorenew" size={25} color="black" />
-              </TouchableOpacity>
-            </View>
-            <MenuDivider />
-            <TouchableOpacity
-              style={{ padding: 5, alignItems: "center" }}
-              onPress={this.hideMenuTwo}
-            >
-              <SimpleLineIcons
-                style={{ margin: 5 }}
-                name="close"
-                size={30}
-                color="black"
-              />
-            </TouchableOpacity>
-          </Menu>
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={this.activateDrawPolyTool}
+          >
+            <MaterialCommunityIcons name="drawing" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={this.openElementsPanel}
+          >
+            <MaterialIcons name="insert-photo" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.icon} onPress={this.reset}>
+            <MaterialIcons name="autorenew" size={25} color="white" />
+          </TouchableOpacity>
         </View>
 
         {this._renderColorPalette()}
@@ -694,6 +599,37 @@ export default class ImageEditor extends Component {
             </ImageBackground>
           </View>
         </View>
+        <View
+          style={[
+            styles.icons,
+            {
+              flexDirection: "row",
+              backgroundColor: "transparent",
+              justifyContent: "center",
+              marginTop: 2
+            }
+          ]}
+        >
+          <TouchableOpacity
+            style={[styles.icon, { paddingLeft: 15, paddingRight: 15 }]}
+            onPress={this._saveEditedImage}
+          >
+            <MaterialIcons name="file-download" size={25} color="white" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.icon, { paddingLeft: 15, paddingRight: 15 }]}
+            onPress={this._saveToDB}
+          >
+            <MaterialIcons name="send" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.icon, { paddingLeft: 15, paddingRight: 15 }]}
+            onPress={this._cancel}
+          >
+            <AntDesign name="closecircleo" size={25} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -722,13 +658,13 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   icons: {
-    padding: 6,
+    padding: 10,
     borderRadius: 6,
     flexDirection: "row"
   },
 
   icon: {
-    padding: 6
+    padding: 7
   },
   rotateIcon: {
     transform: [{ rotate: "-180deg" }]

@@ -29,8 +29,10 @@ export default class LoginAnimation extends React.Component {
         iterations: 2
       }
     ).start(async () => {
+      
       let tokenStorage = await AsyncStorage.getItem("id_token");
       this.props.navigation.navigate("Welcome", {
+        changeScreen:1,
         id_token: tokenStorage,
         avatar: this.props.navigation.getParam("avatar")
       });
