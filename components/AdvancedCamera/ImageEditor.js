@@ -132,7 +132,7 @@ export default class ImageEditor extends Component {
   };
 
   componentDidMount() {
-    console.log("component did mount", "ready");
+    console.log("component did mount", "ready", this.props.requestData);
     AppState.addEventListener("change", this.handleAppStateChangeAsync);
     this.setState({
       requestData: this.props.requestData
@@ -352,7 +352,7 @@ export default class ImageEditor extends Component {
 
     const formData = new FormData();
     formData.append("estimationRequest", {
-      user: "5ca4e986ae89663d22b2ea0b",
+      user: this.state.requestData.requestData.id,
       editedImages: {
         uri,
         name: "request-image-" + uid(),
@@ -397,7 +397,7 @@ export default class ImageEditor extends Component {
               })
               .then(
                 this.props.navigation.navigate("SendEmail", {
-                  id: "5ca4e986ae89663d22b2ea0b",
+                  id: this.state.requestData.requestData.id,
                   title: this.state.requestData.requestData.title
                 })
               );
@@ -503,7 +503,7 @@ export default class ImageEditor extends Component {
             flexDirection: "row",
             backgroundColor: "transparent",
             justifyContent: "center",
-            marginTop:40
+            marginTop: 40
           }}
         >
           <TouchableOpacity

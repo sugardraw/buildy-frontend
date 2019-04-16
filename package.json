@@ -11,6 +11,7 @@
 		"chalk": "^2.4.2",
 		"expo": "^32.0.0",
 		"expo-asset-utils": "^1.0.0",
+		"expo-jwt": "^1.1.1",
 		"expo-pixi": "^1.0.1",
 		"lodash": "^4.17.11",
 		"native": "^0.3.3",

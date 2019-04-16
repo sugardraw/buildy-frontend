@@ -61,7 +61,6 @@ const wbIcons = {
 };
 
 export default class CameraScreen extends React.Component {
-
   static navigationOptions = {
     header: null
   };
@@ -104,10 +103,10 @@ export default class CameraScreen extends React.Component {
     return ratios;
   };
 
-  toggleView = () =>{
-
-    console.log("navigationOptions)",this.navigationOptions)
-    this.setState({ showGallery: !this.state.showGallery, newPhotos: false });}
+  toggleView = () => {
+    console.log("navigationOptions)", this.navigationOptions);
+    this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
+  };
 
   toggleMoreOptions = () =>
     this.setState({ showMoreOptions: !this.state.showMoreOptions });
@@ -210,6 +209,7 @@ export default class CameraScreen extends React.Component {
   renderGallery() {
     const { navigation } = this.props;
     const requestData = this.props.navigation.state.params;
+    console.log(requestData);
     return (
       <GalleryScreen
         navigation={navigation}

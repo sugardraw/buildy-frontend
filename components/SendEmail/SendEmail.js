@@ -30,6 +30,8 @@ export default class SendEmail extends React.Component {
     const id = this.props.navigation.getParam("id", "no_id");
     const title = this.props.navigation.getParam("title", "no_title");
 
+    console.log("id", id, "title", title);
+
     return axios
       .get(api + "/api/user/request/showLast?id=" + id + "&title=" + title)
       .then(response => {
@@ -159,12 +161,12 @@ export default class SendEmail extends React.Component {
               onPress={this.sendAsEmail}
               color="#9FCBE5"
             />
-            <Button
+            {/* <Button
               style={styles.button}
               title="Send to several companies"
               onPress={this.sendAsEmailToMany}
               color="#9FCBE5"
-            />
+            /> */}
           </View>
         </View>
       );

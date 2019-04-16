@@ -128,8 +128,8 @@ class Welcome extends Component {
 
             <TouchableOpacity
               style={{
-                padding:3,
-                  borderRadius: 50,
+                padding: 3,
+                borderRadius: 50,
                 borderWidth: 4,
                 borderColor: "#85c4ea",
                 marginLeft: 180,
@@ -175,8 +175,6 @@ class Welcome extends Component {
       let tokenStorage = await AsyncStorage.getItem("id_token");
       let avatar = await AsyncStorage.getItem("avatar");
 
-      console.log("tokenStorage-------------", tokenStorage, avatar);
-
       if (tokenStorage !== null) {
         this.setState(
           {
@@ -199,10 +197,8 @@ class Welcome extends Component {
       this.props.navigation.state.params !== nextProps.navigation.state.params
     ) {
       let tokenStorage = await AsyncStorage.getItem("id_token");
-
       if (tokenStorage !== null) {
         let avatar = await AsyncStorage.getItem("avatar");
-        console.log("component will receive props", avatar);
         this.changeHeader(true, avatar);
       }
     }
