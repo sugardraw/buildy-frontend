@@ -28,6 +28,11 @@ export default class UsersignUp extends Component {
     this.setState({ [name]: value });
   };
 
+  getUri =(uri)=>{
+    this.setState({ avatar: uri });
+
+  }
+
   submitSignUp = () => {
     const options = {
       headers: {
@@ -40,7 +45,9 @@ export default class UsersignUp extends Component {
       .then(response => {
         deviceStorage.saveItem("id_token", response.data.token);
         this.props.navigation.navigate("LoginAnimation", {
-          id_token: response.data.token
+          id_token: response.data.token,
+          avatar:this.state.avatar
+
         });
       })
       .catch(error =>
@@ -50,30 +57,6 @@ export default class UsersignUp extends Component {
       );
   };
 
-  _uploadImageAsyncTest = async uri => {
-    const uriParts = uri.split(".");
-    const fileType = uriParts[uriParts.length - 1];
-
-    const formData = new FormData();
-    formData.append("estimationRequest", {
-      user: "5ca4e986ae89663d22b2ea0b",
-      editedImages: {
-        uri,
-        name: "requesting-image-" + uid(),
-        type: `image/${fileType}`
-      },
-      requestData: this.state.requestData
-    });
-
-    return await fetch(api + "/api/user/request/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
-    })
-      .then(response => console.log(response.json()))
-      .catch(err => console.log(err))
-      .done();
-  };
 
   render() {
     return (
@@ -81,7 +64,7 @@ export default class UsersignUp extends Component {
         <ScrollView contentComponentStyle={{ flex: 1 }}>
           <Wizard
             initialValues={{
-              avatar: {},
+              avatar: this.state.avatar,
               first_name: "",
               last_name: "",
               email: "",
@@ -97,6 +80,7 @@ export default class UsersignUp extends Component {
                 <View style={styles.container}>
                   <View style={{ marginTop: 30 }}>
                     <UploadAvatar
+                      getUri={this.getUri}
                       payloadKey="file"
                       endpoint={api + "/api/user/save_avatar"}
                       callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"

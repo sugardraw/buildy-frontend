@@ -355,7 +355,7 @@ export default class ImageEditor extends Component {
       user: "5ca4e986ae89663d22b2ea0b",
       editedImages: {
         uri,
-        name: "requesting-image-" + uid(),
+        name: "request-image-" + uid(),
         type: `image/${fileType}`
       },
       requestData: this.state.requestData

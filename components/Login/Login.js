@@ -20,7 +20,8 @@ export default class LoginView extends Component {
     this.state = {
       email: "",
       password: "",
-      userLoggedIn: false
+      userLoggedIn: false,
+      errors: ""
     };
   }
 
@@ -106,33 +107,56 @@ export default class LoginView extends Component {
   componentDidMount() {
     this.changeHeader(this.state.userLoggedIn);
   }
-
+  componentWillUnmount() {
+    this.setState({ errors: "" });
+  }
   onChangeText = (key, val) => {
     this.setState({ [key]: val });
   };
 
+
   login = () => {
-    return axios
-      .post(api + "/api/login", {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        if (response.status === 200) {
-          deviceStorage.saveItem("id_token", response.data.token);
-          this.props.navigation.navigate("LoginAnimation", {
-            id_token: response.data.token
-          });
-        }
-      })
-      .catch(error => {
-        throw error;
+    if (this.state.email !== "") {
+      return axios
+        .post(api + "/api/login", {
+          email: this.state.email,
+          password: this.state.password
+        })
+        .then(response => {
+          if (response.status === 200) {
+            if (response.data.token) {
+              deviceStorage.saveItem("id_token", response.data.token);
+              this.setState({
+                userLoggedIn: true
+              });
+              this.props.navigation.navigate("LoginAnimation", {
+                id_token: response.data.token
+              });
+            } else {
+              this.setState({
+                userLoggedIn: false,
+                errors: "You are not registered"
+              });
+              console.log("You are not registered");
+            }
+          }
+        })
+        .catch(error => {
+          throw error;
+        });
+    } else {
+      this.setState({
+        userLoggedIn: false,
+        errors: "Please, fill the inputs"
       });
+    }
   };
 
   render() {
     return (
       <View style={styles.container}>
+        <Text style={{ color: "red" }}>{this.state.errors}</Text>
+
         <View style={styles.inputContainer}>
           <Image
             style={styles.inputIcon}
@@ -146,7 +170,7 @@ export default class LoginView extends Component {
             keyboardType="email-address"
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            onChangeText={email => this.setState({ email })}
+            onChangeText={email => this.setState({ email, errors:"" })}
           />
         </View>
 
@@ -163,7 +187,7 @@ export default class LoginView extends Component {
             secureTextEntry={true}
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            onChangeText={password => this.setState({ password })}
+            onChangeText={password => this.setState({ password, errors:"" })}
           />
           {/* <ShowPassword /> */}
         </View>

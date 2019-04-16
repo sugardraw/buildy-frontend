@@ -10,6 +10,8 @@ import {
   YellowBox,
   AsyncStorage
 } from "react-native";
+import { FileSystem } from "expo";
+
 import { connect } from "react-redux";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
@@ -190,6 +192,7 @@ class Welcome extends Component {
       this.props.navigation.state.params !== nextProps.navigation.state.params
     ) {
       let tokenStorage = await AsyncStorage.getItem("id_token");
+      console.log(FileSystem.documentDirectory);
       if (tokenStorage !== null) {
         console.log("component will receive props");
         this.changeHeader(true);
