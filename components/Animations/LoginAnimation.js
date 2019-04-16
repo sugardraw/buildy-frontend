@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  AsyncStorage
-} from "react-native";
+import { View, StyleSheet, Text, Animated, AsyncStorage } from "react-native";
 import { Svg } from "expo"; // Supported builtin module
 const { Line, G, Path } = Svg;
 import { Font } from "expo";
@@ -36,7 +30,10 @@ export default class LoginAnimation extends React.Component {
       }
     ).start(async () => {
       let tokenStorage = await AsyncStorage.getItem("id_token");
-      this.props.navigation.navigate("Welcome", { id_token: tokenStorage });
+      this.props.navigation.navigate("Welcome", {
+        id_token: tokenStorage,
+        avatar: this.props.navigation.getParam("avatar")
+      });
     });
   };
 

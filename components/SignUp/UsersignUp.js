@@ -44,6 +44,7 @@ export default class UsersignUp extends Component {
       .post(api + "/api/user/save", this.state)
       .then(response => {
         deviceStorage.saveItem("id_token", response.data.token);
+        deviceStorage.saveItem("avatar", this.state.avatar);
         this.props.navigation.navigate("LoginAnimation", {
           id_token: response.data.token,
           avatar:this.state.avatar

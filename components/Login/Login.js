@@ -114,7 +114,6 @@ export default class LoginView extends Component {
     this.setState({ [key]: val });
   };
 
-
   login = () => {
     if (this.state.email !== "") {
       return axios
@@ -126,6 +125,7 @@ export default class LoginView extends Component {
           if (response.status === 200) {
             if (response.data.token) {
               deviceStorage.saveItem("id_token", response.data.token);
+              deviceStorage.saveItem("avatar", response.data.avatar);
               this.setState({
                 userLoggedIn: true
               });
@@ -170,7 +170,7 @@ export default class LoginView extends Component {
             keyboardType="email-address"
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            onChangeText={email => this.setState({ email, errors:"" })}
+            onChangeText={email => this.setState({ email, errors: "" })}
           />
         </View>
 
@@ -187,7 +187,7 @@ export default class LoginView extends Component {
             secureTextEntry={true}
             underlineColorAndroid="transparent"
             autoCapitalize="none"
-            onChangeText={password => this.setState({ password, errors:"" })}
+            onChangeText={password => this.setState({ password, errors: "" })}
           />
           {/* <ShowPassword /> */}
         </View>

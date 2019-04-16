@@ -18,6 +18,7 @@ import SendEmail from "../components/SendEmail/SendEmail";
 import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
+
 import Geo from "../components/Geolocation/Geo";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";
@@ -52,6 +53,9 @@ const LoginStack = createStackNavigator({
   },
   EditUserProfile: {
     screen: EditUserProfile
+  },
+  UserProfile: {
+    screen: UserProfile
   }
 });
 

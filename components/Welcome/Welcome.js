@@ -62,7 +62,7 @@ class Welcome extends Component {
     };
   }
 
-  changeHeader = isLogged => {
+  changeHeader = (isLogged, avatar) => {
     if (!isLogged) {
       this.props.navigation.setParams({
         HeaderTitle: (
@@ -128,18 +128,24 @@ class Welcome extends Component {
 
             <TouchableOpacity
               style={{
-                margin: 4,
-                padding: 5,
-                borderRadius: 6,
-                borderWidth: 2,
+                padding:3,
+                  borderRadius: 50,
+                borderWidth: 4,
                 borderColor: "#85c4ea",
-                maxHeight: 60,
-                alignSelf: "center",
-                marginLeft: 160
+                marginLeft: 180,
+                alignSelf: "center"
               }}
               onPress={() => this.props.navigation.navigate("UserProfile")}
             >
-              <Text style={{ color: "#85c4ea" }}>AVATAR</Text>
+              <Image
+                style={{
+                  borderRadius: 50,
+                  alignSelf: "center",
+                  width: 40,
+                  height: 40
+                }}
+                source={{ uri: avatar }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -167,8 +173,9 @@ class Welcome extends Component {
     this.props.dispatchGetPosts();
     try {
       let tokenStorage = await AsyncStorage.getItem("id_token");
+      let avatar = await AsyncStorage.getItem("avatar");
 
-      console.log("tokenStorage-------------", tokenStorage);
+      console.log("tokenStorage-------------", tokenStorage, avatar);
 
       if (tokenStorage !== null) {
         this.setState(
@@ -177,10 +184,10 @@ class Welcome extends Component {
             userLoggedIn: true,
             loading: false
           },
-          this.changeHeader(true)
+          this.changeHeader(true, avatar)
         );
       } else {
-        this.changeHeader(false);
+        this.changeHeader(false, null);
       }
     } catch (error) {
       console.log(error);
@@ -192,10 +199,11 @@ class Welcome extends Component {
       this.props.navigation.state.params !== nextProps.navigation.state.params
     ) {
       let tokenStorage = await AsyncStorage.getItem("id_token");
-      console.log(FileSystem.documentDirectory);
+
       if (tokenStorage !== null) {
-        console.log("component will receive props");
-        this.changeHeader(true);
+        let avatar = await AsyncStorage.getItem("avatar");
+        console.log("component will receive props", avatar);
+        this.changeHeader(true, avatar);
       }
     }
   };
@@ -203,9 +211,10 @@ class Welcome extends Component {
   logout = async () => {
     try {
       await AsyncStorage.removeItem("id_token");
+      await AsyncStorage.removeItem("avatar");
       console.log("token removed");
       this.props.navigation.navigate("LogOutAnimation");
-      this.changeHeader(false);
+      this.changeHeader(false, null);
     } catch (err) {
       console.log(`The error is: ${err}`);
     }

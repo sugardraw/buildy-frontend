@@ -3,12 +3,14 @@ import {
   View,
   TextInput,
   Text,
+  Picker,
   StyleSheet,
   Button,
   TouchableHighlight
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 /* import Camera from "../AdvancedCamera/AdvancedCamera"; */
+import { DatePicker } from "native-base";
 
 export default class RequestFormular extends React.Component {
   static navigationOptions = {
@@ -41,11 +43,15 @@ export default class RequestFormular extends React.Component {
           title: this.state.title,
           description: this.state.description,
           budget: this.state.budget,
-          date: this.state.date
+          date: this.state.date.toString().substr(4, 12)
         }
       });
     }
   };
+
+  callPicker() {
+    this.refs.datePicker.showDatePicker();
+  }
 
   render() {
     return (
@@ -55,13 +61,29 @@ export default class RequestFormular extends React.Component {
           <Text style={styles.required} />
 
           <Text style={{ color: "red" }}>{this.state.Error}</Text>
-          <Text>Give a title to your request</Text>
-          <TextInput
+          <Text>Title</Text>
+          <Picker
+            mode="dropdown"
             style={styles.inputs}
-            placeholder="Paint dinning room"
-            underlineColorAndroid="transparent"
-            onChangeText={editedText => this.setState({ title: editedText })}
-          />
+            selectedValue={this.state.title}
+            onValueChange={editedText => this.setState({ title: editedText })}
+          >
+            <Picker.Item
+              color="#d3d3d3"
+              label="please select a service"
+              value=""
+            />
+            <Picker.Item label="build" value="build" />
+            <Picker.Item label="paint" value="paint" />
+            <Picker.Item label="renovate" value="renovate" />
+            <Picker.Item label="buying" value="buying" />
+          </Picker>
+          {/* 	<TextInput
+						style={styles.inputs}
+						placeholder="Paint dinning room"
+						underlineColorAndroid="transparent"
+						onChangeText={(editedText) => this.setState({ title: editedText })}
+					/> */}
 
           <Text>Description</Text>
           <TextInput
@@ -90,33 +112,42 @@ export default class RequestFormular extends React.Component {
             underlineColorAndroid="transparent"
             onChangeText={editedText => this.setState({ budget: editedText })}
           />
-
-          <Text>Wenn will you start?</Text>
-          <TextInput
-            style={styles.inputs}
-            placeholder="03/05/2020"
-            underlineColorAndroid="transparent"
-            onChangeText={editedText => this.setState({ date: editedText })}
-          />
+          <View>
+            {/* <Text>Wenn will you start?</Text> */}
+            <Text>Start Date: {this.state.date.toString().substr(4, 12)}</Text>
+            <DatePicker
+              style={styles.inputs}
+              ref="datePicker"
+              defaultDate={new Date(2018, 4, 4)}
+              minimumDate={new Date(1960, 1, 1)}
+              maximumDate={new Date(2022, 12, 31)}
+              locale={"en"}
+              selected={this.state.date}
+              value={this.state.date}
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={true}
+              showTimeSelect
+              animationType={"fade"}
+              androidMode={"default"}
+              placeHolderText="Please select a date"
+              textStyle={{ color: "green" }}
+              placeHolderTextStyle={{ color: "#d3d3d3" }}
+              disabled={false}
+              onDateChange={editedText => this.setState({ date: editedText })}
+            />
+            {/* <TextInput
+						style={styles.inputs}
+						placeholder="03/05/2020"
+						underlineColorAndroid="transparent"
+						onChangeText={(editedText) => this.setState({ date: editedText })}
+					/> */}
+          </View>
 
           <Button
+            style={styles.buttonContainer}
             title="Add pictures to your request"
             onPress={this.takeAPicture}
           />
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate("Login")}
-          >
-            <Text>Login</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate("Register")}
-          >
-            <Text>Create an account</Text>
-          </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>
     );
