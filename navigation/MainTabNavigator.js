@@ -20,7 +20,7 @@ import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
 import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
 
-import Geo from "../components/Geolocation/Geo";
+// import Geo from "../components/Geolocation/GeoYelp";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";
 import LoginAnimation from "../components/Animations/LoginAnimation";
@@ -91,9 +91,6 @@ const WelcomeStack = createStackNavigator({
   },
   GalleryScreen: {
     screen: GalleryScreen
-  },
-  Geolocalitation: {
-    screen: Geo
   }
 });
 

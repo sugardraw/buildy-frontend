@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Text, AsyncStorage, StyleSheet } from "react-native";
+import { View, Text, AsyncStorage, StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
 import { api } from "../../api/api";
 import { Font } from "expo";
 import axios from "axios";
+import Geo from "../Geo/Geo";
 
 export default class ProfileCompany extends React.Component {
   constructor() {
@@ -51,115 +52,123 @@ export default class ProfileCompany extends React.Component {
     const { id_token } = this.state;
     const isEnabled = id_token !== null;
     return (
-      <KeyboardAwareScrollView
-        ref="scrollView"
-        contentContainerStyle={styles.scrollstyle}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            marginTop: 70
-          }}
-        >
-          <View style={styles.bodyContentProfile}>
-            {this.state._fontLoaded && this.state.professional.length > 0
-              ? this.state.professional.map((professional, i) => (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                    key={i}
-                  >
-                    <View style={styles.main}>
-                      <UploadAvatar
-                        payloadKey="file"
-                        endpoint={api + "/api/user/save_avatar"}
-                        callbackUrl={api + professional.avatar}
-                      />
-                      <View style={styles.headInfos} />
-                      <Text
-                        style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
-                      >
-                        {professional.name}
-                      </Text>
-                      <Text
-                        style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
-                      >
-                        {professional.shortDescription}
-                      </Text>
-                    </View>
-                    <View style={styles.paragraphText}>
-                      <Text
+      <View style={styles.scrollstyle}>
+        <ScrollView ref="scrollView">
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              marginTop: 220
+            }}
+          >
+            <View style={styles.bodyContentProfile}>
+              {this.state._fontLoaded && this.state.professional.length > 0
+                ? this.state.professional.map((professional, i) => (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      key={i}
+                    >
+                      <View style={styles.main}>
+                        <UploadAvatar
+                          payloadKey="file"
+                          endpoint={api + "/api/user/save_avatar"}
+                          callbackUrl={api + professional.avatar}
+                        />
+                        <View style={styles.headInfos} />
+                        <Text
+                          style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
+                        >
+                          {professional.name}
+                        </Text>
+                        <Text
+                          style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
+                        >
+                          {professional.shortDescription}
+                        </Text>
+                      </View>
+                      <View style={styles.paragraphText}>
+                        <Text
+                          style={[
+                            styles.servicesList,
+                            { fontSize: 20, marginTop: 10 }
+                          ]}
+                        >
+                          Services
+                        </Text>
+                        {professional.services.map((service, i) => (
+                          <Text key={i} style={styles.servicesList}>
+                            {service}
+                          </Text>
+                        ))}
+                      </View>
+                      <View
                         style={[
-                          styles.servicesList,
-                          { fontSize: 20, marginTop: 10 }
+                          styles.paragraphText,
+                          {
+                            fontFamily: "Roboto-Light"
+                          }
                         ]}
                       >
-                        Services
-                      </Text>
-                      {professional.services.map((service, i) => (
-                        <Text key={i} style={styles.servicesList}>
-                          {service}
+                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                          Description
                         </Text>
-                      ))}
-                    </View>
-                    <View
-                      style={[
-                        styles.paragraphText,
-                        {
-                          fontFamily: "Roboto-Light"
-                        }
-                      ]}
-                    >
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Description
-                      </Text>
-                      <Text>{professional.longDescription}</Text>
-                    </View>
-                    <View style={styles.paragraphText}>
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Contact
-                      </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.street}
-                      </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.zip}
-                      </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.city}
-                      </Text>
-                      <Text style={styles.infoText}>{professional.email}</Text>
-                    </View>
+                        <Text>{professional.longDescription}</Text>
+                      </View>
+                      <View style={styles.paragraphText}>
+                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                          Contact
+                        </Text>
+                        <Text style={styles.infoText}>
+                          {professional.address.street}
+                        </Text>
+                        <Text style={styles.infoText}>
+                          {professional.address.zip}
+                        </Text>
+                        <Text style={styles.infoText}>
+                          {professional.address.city}
+                        </Text>
+                        <Text style={styles.infoText}>
+                          {professional.email}
+                        </Text>
+                      </View>
 
-                    <View style={[styles.paragraphText, { paddingBottom: 10 }]}>
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Projects
-                      </Text>
+                      <View
+                        style={[styles.paragraphText, { paddingBottom: 10 }]}
+                      >
+                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                          Projects
+                        </Text>
+                      </View>
+                      <PortfolioGallery projects={professional.projectImages} />
                     </View>
-                    <PortfolioGallery projects={professional.projectImages} />
-                  </View>
-                ))
-              : null}
-          </View>
+                  ))
+                : null}
+            </View>
 
-          <View style={styles.button}>
-            <Button
-              disabled={!isEnabled}
-              buttonStyle={{
-                backgroundColor: "#85c4ea"
-              }}
-              title="SEND A REQUEST *"
-              onPress={() => this.props.navigation.navigate("RequestFormular")}
-            />
-            <View style={{ height: 40, padding: 10, marginBottom: 40 }}>
-              <Text>* Only for registered Users</Text>
+            <View style={styles.geo}>
+              <Geo />
+            </View>
+            <View style={styles.button}>
+              <Button
+                disabled={!isEnabled}
+                buttonStyle={{
+                  backgroundColor: "#85c4ea"
+                }}
+                title="SEND A REQUEST *"
+                onPress={() =>
+                  this.props.navigation.navigate("RequestFormular")
+                }
+              />
+              <View style={{ height: 40, padding: 10, marginBottom: 40 }}>
+                <Text>* Only for registered Users</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </KeyboardAwareScrollView>
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -176,12 +185,18 @@ const styles = StyleSheet.create({
     color: "#0ec485"
   },
   scrollStyle: {
-    flexGrow: 1
+    flexGrow: 2
+  },
+  geo: {
+    marginLeft: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    height: "40%",
+    marginTop: -60
   },
   button: {
     alignSelf: "center",
-    position: "relative",
-    bottom: 20,
     width: "90%"
   },
   main: {
