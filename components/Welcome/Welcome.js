@@ -200,7 +200,6 @@ class Welcome extends Component {
     console.log(param_1, param_2);
 
     if (param_1 !== param_2) {
-      console.log("componentWillReceiveProps_2");
       let tokenStorage = await AsyncStorage.getItem("id_token");
       if (tokenStorage !== null) {
         let avatar = await AsyncStorage.getItem("avatar");

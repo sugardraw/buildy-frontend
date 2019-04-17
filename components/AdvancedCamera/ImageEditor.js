@@ -390,9 +390,8 @@ export default class ImageEditor extends Component {
   };
 
   reset = async () => {
-    if(this.sketch){
-     await this.sketch.deleteAll();
-
+    if (this.sketch) {
+      await this.sketch.deleteAll();
     }
     this.strokeColor = 0xffffff;
     this.setState(state => {
