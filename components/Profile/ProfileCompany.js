@@ -58,7 +58,7 @@ export default class ProfileCompany extends React.Component {
             style={{
               flex: 1,
               justifyContent: "center",
-              marginTop: 220
+              marginTop: 140
             }}
           >
             <View style={styles.bodyContentProfile}>
@@ -149,6 +149,14 @@ export default class ProfileCompany extends React.Component {
             </View>
 
             <View style={styles.geo}>
+              <Text
+                style={[
+                  styles.servicesList,
+                  { fontSize: 20, marginBottom: 10 }
+                ]}
+              >
+                Location
+              </Text>
               <Geo />
             </View>
             <View style={styles.button}>
@@ -162,7 +170,14 @@ export default class ProfileCompany extends React.Component {
                   this.props.navigation.navigate("RequestFormular")
                 }
               />
-              <View style={{ height: 40, padding: 10, marginBottom: 40 }}>
+              <View
+                style={{
+                  height: 40,
+                  paddingTop: 10,
+                  paddingBottom: 40,
+                  marginBottom: 60
+                }}
+              >
                 <Text>* Only for registered Users</Text>
               </View>
             </View>
@@ -185,19 +200,20 @@ const styles = StyleSheet.create({
     color: "#0ec485"
   },
   scrollStyle: {
-    flexGrow: 2
+    flexGrow: 1
   },
   geo: {
     marginLeft: 20,
     justifyContent: "center",
-    alignItems: "center",
     width: "90%",
-    height: "40%",
-    marginTop: -60
+    height: 320,
+    marginTop: -280
   },
   button: {
+    marginTop: 40,
     alignSelf: "center",
-    width: "90%"
+    width: "90%",
+    marginBottom: 80
   },
   main: {
     alignItems: "center",

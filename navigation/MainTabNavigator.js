@@ -8,7 +8,7 @@ import {
 
 import Welcome from "../components/Welcome/Welcome";
 import Login from "../components/Login/Login";
-import SignUp from "../components/SignUp/SignUp";
+import ProfessionalSignUp from "../components/SignUp/ProfessionalSignUp";
 import UsersignUp from "../components/SignUp/UsersignUp";
 import UserProfile from "../components/Profile/UserProfile";
 import ProfileCompany from "../components/Profile/ProfileCompany";
@@ -43,8 +43,8 @@ const LoginStack = createStackNavigator({
   Profile: {
     screen: UserProfile
   },
-  SignUp: {
-    screen: SignUp
+  ProfessionalSignUp: {
+    screen: ProfessionalSignUp
   },
   UsersignUp: {
     screen: UsersignUp
