@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { ImagePicker, Permissions } from "expo";
 
 import MultiSelect from "react-native-multiple-select";
 import {
@@ -8,13 +9,15 @@ import {
   View,
   TextInput,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity,
+  Image
 } from "react-native";
+import uid from "uuid/v4";
 
 import { api } from "../../api/api";
 import { AntDesign } from "@expo/vector-icons";
 import Wizard from "./Wizard";
-import UploadAvatar from "../Profile/UploadAvatar";
 
 export default class ProfessionalSignUp extends Component {
   static navigationOptions = {
@@ -24,36 +27,20 @@ export default class ProfessionalSignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signedUp: false,
-      services: []
+      services: [],
+      projectImages: [],
+      avatar: null
     };
   }
 
-  signUp = values => {
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    };
-    console.log("thats mine", values);
-    return axios
-      .post(api + "/api/professional/save", values, config)
-      .then(response => {
-        this.setState({
-          signedUp: true
-        });
-        return response;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  collectData = (name, value) => {
+    this.setState({ [name]: value });
   };
 
   onSelectedItemsChange = item => {
-    console.log("item", item);
+    console.log("item", item[0]);
     this.setState(state => {
-      state.services.push(item);
+      state.services.push(item[0]);
       return state;
     });
   };
@@ -64,6 +51,102 @@ export default class ProfessionalSignUp extends Component {
       state.services.splice(index, 1);
       return state;
     });
+  };
+
+  _uploadAvatar = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    if (status !== "granted") {
+      if (Platform.OS === "ios") this.showAlert();
+      return;
+    }
+    Expo.ImagePicker.launchImageLibraryAsync({
+      mediaTypes: "Images"
+    }).then(result => {
+      if (result.uri !== "") {
+        const file = result.uri;
+        if (!result.cancelled) {
+          this.setState({
+            loading: true,
+            avatar: file
+          });
+        }
+      } else {
+        this.setState({
+          loading: true,
+          avatar:
+            "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
+        });
+      }
+    });
+  };
+
+  _launchGallery = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    if (status !== "granted") {
+      if (Platform.OS === "ios") this.showAlert();
+      return;
+    }
+    await Expo.ImagePicker.launchImageLibraryAsync({
+      mediaTypes: "Images"
+    }).then(result => {
+      const file = result.uri;
+      if (!result.cancelled) {
+        this.setState(state => {
+          state.loading = true;
+          state.projectImages.push(file);
+          return state;
+        });
+      }
+    });
+  };
+
+  signUp = async values => {
+    let formData = new FormData();
+    console.log(values);
+    values.avatar = this.state.avatar;
+
+    formData.append("company_data", values);
+
+    values.projectImages = this.state.projectImages;
+    values.services = this.state.services;
+
+    for (let u in values) {
+      formData.append(`${u}`, values[u]);
+    }
+    for (let i in values.projectImages) {
+      formData.append(`project_${i}`, values.projectImages[i]);
+    }
+    for (let j in values.services) {
+      formData.append(`service_${j}`, values.services[j]);
+    }
+
+    axios
+      .post(api + "/api/professional/save", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      .then(response => {
+        if (response.status === 200) {
+          console.log("eh");
+        }
+      });
+
+    // config = {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "multipart/form-data;"
+    //   },
+    //   body: values
+    // };
+
+    // return await fetch(api + "/api/professional/save", config)
+    //   .then(response => {
+    //     response.json().then(data => console.log(data));
+    //   })
+    //   .catch(err => console.log(err))
+    //   .done();
   };
 
   render() {
@@ -97,6 +180,15 @@ export default class ProfessionalSignUp extends Component {
       }
     ];
 
+    console.log(
+      "this.state.services",
+      this.state.services,
+      "projectImages",
+      this.state.projectImages,
+      " this.state.avatar",
+      this.state.avatar
+    );
+
     return (
       <View style={styles.container}>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
@@ -105,31 +197,40 @@ export default class ProfessionalSignUp extends Component {
               name: "",
               email: "",
               password: "",
-              address: {
-                city: "",
-                street: "",
-                zip: ""
-              },
-              projectImages: [],
-              avatar: ""
+              street: "",
+              city: "",
+              zip: ""
             }}
+            collectData={this.collectData}
           >
             <Wizard.Step>
               {({ onChangeValue, values }) => (
                 <View style={styles.container}>
                   <View style={{ marginTop: 30 }}>
-                    <UploadAvatar
-                      getUri={this.getUri}
-                      payloadKey="file"
-                      endpoint={api + "/api/user/save_avatar"}
-                      callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
-                    />
+                    <View style={styles.imageWrapper}>
+                      <TouchableOpacity
+                        style={styles.circleWrapper}
+                        onPress={() => {
+                          this._uploadAvatar();
+                        }}
+                      >
+                        <Image
+                          source={{
+                            uri: this.state.avatar
+                              ? this.state.avatar
+                              : "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
+                          }}
+                          style={{ width: 130, height: 130, borderRadius: 50 }}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={styles.inputContainer}>
                     <TextInput
+                      name="name"
                       style={styles.inputs}
                       onChangeText={text => onChangeValue("name", text)}
-                      placeholder="Company Name"
+                      placeholder="Name"
                       value={values.name}
                       underlineColorAndroid="transparent"
                     />
@@ -137,6 +238,7 @@ export default class ProfessionalSignUp extends Component {
 
                   <View style={styles.inputContainer}>
                     <TextInput
+                      name="email"
                       style={styles.inputs}
                       onChangeText={text => onChangeValue("email", text)}
                       placeholder="Email"
@@ -145,12 +247,18 @@ export default class ProfessionalSignUp extends Component {
                     />
                   </View>
                   <View>
-                    <Text style={styles.small}>
+                    <Text
+                      style={[
+                        styles.small,
+                        { paddingTop: 10, paddingBottom: 2 }
+                      ]}
+                    >
                       We'll never share your email with anyone else.
                     </Text>
                   </View>
                   <View style={styles.inputContainer}>
                     <TextInput
+                      name="password"
                       style={styles.inputs}
                       secureTextEntry
                       onChangeText={text => onChangeValue("password", text)}
@@ -168,7 +276,6 @@ export default class ProfessionalSignUp extends Component {
                       onSelectedItemsChange={item =>
                         this.onSelectedItemsChange(item)
                       }
-                      selectedItems={[]}
                       selectText="  Pick Services"
                       searchInputPlaceholderText="Search services..."
                       tagRemoveIconColor="#CCC"
@@ -183,8 +290,9 @@ export default class ProfessionalSignUp extends Component {
                     />
                     <View style={{ width: 250 }}>
                       {this.state.services !== [] &&
-                        this.state.services.map(item => (
+                        this.state.services.map((item, i) => (
                           <View
+                            key={i}
                             style={{
                               flexDirection: "row"
                             }}
@@ -193,7 +301,7 @@ export default class ProfessionalSignUp extends Component {
                               style={{
                                 padding: 5,
                                 textAlign: "left",
-								alignItems:"flex-start"
+                                alignItems: "flex-start"
                               }}
                             >
                               {item}
@@ -232,23 +340,16 @@ export default class ProfessionalSignUp extends Component {
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.inputs}
-                      /* onChangeText={(text) => onChangeValue('city', text)}
-										value={values.city} */
                       placeholder="City"
-                      value={values.address}
-                      onChangeText={text => {
-                        const newCity = Object.assign({}, values.address, {
-                          city: text
-                        });
-                        this.setState({ address: newCity });
-                      }}
+                      value={values.city}
+                      onChangeText={text => onChangeValue("city", text)}
                     />
                   </View>
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.inputs}
                       onChangeText={text => onChangeValue("street", text)}
-                      placeholder="Street and number"
+                      placeholder="Street"
                       value={values.street}
                     />
                   </View>
@@ -260,6 +361,15 @@ export default class ProfessionalSignUp extends Component {
                       value={values.zip}
                     />
                   </View>
+
+                  <TouchableHighlight
+                    style={[styles.buttonContainer, styles.signupButton]}
+                    onPress={() => this._launchGallery()}
+                  >
+                    <Text style={styles.signupText}>
+                      Upload your Project Images
+                    </Text>
+                  </TouchableHighlight>
 
                   <TouchableHighlight
                     style={[styles.buttonContainer, styles.signupButton]}
@@ -329,5 +439,17 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: "white"
+  },
+  imageWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 25,
+    padding: 10,
+    paddingLeft: 95,
+    paddingRight: 95
+  },
+  circleWrapper: {
+    borderRadius: 50,
+    marginTop: -10
   }
 });

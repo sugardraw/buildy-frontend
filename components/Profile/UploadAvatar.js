@@ -95,24 +95,31 @@ export default class UploadAvatar extends React.Component {
   };
 
   async uploadImageAsync(uri) {
-    console.log(uri);
+
     const endpoint = this.state.endpoint;
     const payloadKey = this.state.payloadKey;
     const uriParts = uri.split(".");
     const fileType = uriParts[uriParts.length - 1];
-
+    
     const formData = new FormData();
     formData.append(payloadKey, {
       uri,
       name: uid(),
       type: `image/${fileType}`
     });
-    this.props.getUri(uri)
+    if (this.props.getUri) {
+      this.props.getUri(uri);
+    }
+
+
 
     return await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      },
+      body: formData
     })
       .then(response => {
         response.json().then(data => console.log(data));
@@ -144,7 +151,6 @@ export default class UploadAvatar extends React.Component {
                   ? this.state.uploaded_photo
                   : this.props.callbackUrl
               }}
-            
               style={{ width: 130, height: 130, borderRadius: 50 }}
             />
           ) : (

@@ -29,7 +29,9 @@ export default class UsersignUp extends Component {
   };
 
   getUri =(uri)=>{
-    this.setState({ avatar: uri });
+
+    console.log(uri)
+    // this.setState({ avatar: uri });
 
   }
 
@@ -82,8 +84,8 @@ export default class UsersignUp extends Component {
                   <View style={{ marginTop: 30 }}>
                     <UploadAvatar
                       getUri={this.getUri}
-                      payloadKey="file"
-                      endpoint={api + "/api/user/save_avatar"}
+                      payloadKey="avatar"
+                      endpoint={api + "/api/user/save"}
                       callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
                     />
                   </View>
