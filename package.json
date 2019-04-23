@@ -34,6 +34,7 @@
 		"react-native-radio-buttons-group": "^1.0.7",
 		"react-native-router-flux": "^4.0.6",
 		"react-native-router-flux-cli": "0.0.1",
+		"react-native-svg-uri": "^1.2.3",
 		"react-native-vector-icons": "^6.4.1",
 		"react-navigation": "^3.3.2",
 		"react-navigation-stack": "^1.0.10",
@@ -44,6 +45,7 @@
 		"redux-promise-middleware": "^6.1.0",
 		"redux-saga": "^1.0.2",
 		"redux-thunk": "^2.3.0",
+		"svguri": "^1.0.0",
 		"validate.js": "^0.12.0",
 		"watchman": "^1.0.0",
 		"wretch": "^1.5.0"
