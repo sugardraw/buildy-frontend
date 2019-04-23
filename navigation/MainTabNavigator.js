@@ -19,7 +19,6 @@ import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
 import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
-
 // import Geo from "../components/Geolocation/GeoYelp";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";

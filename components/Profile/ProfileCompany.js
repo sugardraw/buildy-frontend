@@ -16,7 +16,9 @@ export default class ProfileCompany extends React.Component {
     this.state = {
       id_token: null,
       _fontLoaded: false,
-      professional: []
+      professional: [],
+      lat: "",
+      lon: ""
     };
   }
   static navigationOptions = {
@@ -40,11 +42,14 @@ export default class ProfileCompany extends React.Component {
       .get(api + "/api/professional/showDetails?id=" + id)
       .then(response => {
         this.setState({
-          professional: response.data
+          professional: response.data,
+          lat: response.data[0].location.coordinates[0],
+          lon: response.data[0].location.coordinates[1]
         });
       })
       .catch(error => {
-        dispatch({ type: GET_POST_FAILURE, payload: error });
+        // dispatch({ type: GET_POST_FAILURE, payload: error });
+        console.log(error)
       });
   };
 
@@ -77,6 +82,7 @@ export default class ProfileCompany extends React.Component {
                           endpoint={api + "/api/user/save_avatar"}
                           callbackUrl={api + professional.avatar}
                         />
+                             <Text>{professional.location.coordinates[0]}</Text>
                         <View style={styles.headInfos} />
                         <Text
                           style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
@@ -157,7 +163,11 @@ export default class ProfileCompany extends React.Component {
               >
                 Location
               </Text>
-              <Geo />
+{this.state.lat !== "" && (
+            <View >
+             <Geo lon={this.state.lon} lat={this.state.lat} />
+    </View>
+          )}
             </View>
             <View style={styles.button}>
               <Button
@@ -190,6 +200,7 @@ export default class ProfileCompany extends React.Component {
 
 const styles = StyleSheet.create({
   bodyContentProfile: {
+    flex: 1,
     margin: 10,
     marginTop: 25,
     alignItems: "center",
