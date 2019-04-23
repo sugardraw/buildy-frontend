@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { FileSystem } from "expo";
 
+import Geo from "../Geo/Geo";
+
 import { connect } from "react-redux";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
@@ -260,6 +262,7 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
+        {/* <Geo /> */}
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}

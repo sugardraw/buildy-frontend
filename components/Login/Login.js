@@ -214,7 +214,7 @@ export default class LoginView extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate("SignUp")}
+            onPress={() => this.props.navigation.navigate("ProfessionalSignUp")}
           >
             <Text style={{ color: "#85c4ea" }}>Register as professional</Text>
           </TouchableOpacity>

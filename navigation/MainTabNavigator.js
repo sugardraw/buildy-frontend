@@ -8,7 +8,7 @@ import {
 
 import Welcome from "../components/Welcome/Welcome";
 import Login from "../components/Login/Login";
-import SignUp from "../components/SignUp/SignUp";
+import ProfessionalSignUp from "../components/SignUp/ProfessionalSignUp";
 import UsersignUp from "../components/SignUp/UsersignUp";
 import UserProfile from "../components/Profile/UserProfile";
 import ProfileCompany from "../components/Profile/ProfileCompany";
@@ -19,8 +19,7 @@ import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
 import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
-
-import Geo from "../components/Geo/Geo";
+// import Geo from "../components/Geolocation/GeoYelp";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";
 import LoginAnimation from "../components/Animations/LoginAnimation";
@@ -43,8 +42,8 @@ const LoginStack = createStackNavigator({
   Profile: {
     screen: UserProfile
   },
-  SignUp: {
-    screen: SignUp
+  ProfessionalSignUp: {
+    screen: ProfessionalSignUp
   },
   UsersignUp: {
     screen: UsersignUp
@@ -91,9 +90,6 @@ const WelcomeStack = createStackNavigator({
   },
   GalleryScreen: {
     screen: GalleryScreen
-  },
-  Geolocalitation: {
-    screen: Geo
   }
 });
 
