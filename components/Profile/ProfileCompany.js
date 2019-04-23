@@ -48,8 +48,8 @@ export default class ProfileCompany extends React.Component {
         });
       })
       .catch(error => {
-        // dispatch({ type: GET_POST_FAILURE, payload: error });
-        console.log(error)
+        dispatch({ type: GET_POST_FAILURE, payload: error });
+        console.log(error);
       });
   };
 
@@ -163,11 +163,10 @@ export default class ProfileCompany extends React.Component {
               >
                 Location
               </Text>
-{this.state.lat !== "" && (
-            <View >
-             <Geo lon={this.state.lon} lat={this.state.lat} />
-    </View>
-          )}
+
+              {this.state.lat !== "" && (
+                <Geo lon={this.state.lon} lat={this.state.lat} />
+              )}
             </View>
             <View style={styles.button}>
               <Button
