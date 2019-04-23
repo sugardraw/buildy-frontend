@@ -18,11 +18,25 @@ export default class PortfolioGallery extends React.Component {
   state = {
     imageModal: "",
     visibleModal: false,
-    projectImages: this.props.projects
+    projectImages: []
   };
 
+  componentDidMount() {
+    for (let i in this.props.projects) {
+      if (typeof this.props.projects[i] === "string") {
+        this.setState({
+          projectImages: this.props.projects
+        });
+      } else {
+        this.setState(state => {
+          state.projectImages.push("/" + this.props.projects[i].path);
+          return state;
+        });
+      }
+    }
+  }
+
   setModalVisible(visible, imgKey) {
-    console.log("//////", this.state.projectImages[imgKey], imgKey);
 
     this.setState({ imageModal: this.state.projectImages[imgKey] });
     this.setState({ visibleModal: visible });

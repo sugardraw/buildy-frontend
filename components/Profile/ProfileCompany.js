@@ -75,7 +75,11 @@ export default class ProfileCompany extends React.Component {
                         <UploadAvatar
                           payloadKey="file"
                           endpoint={api + "/api/user/save_avatar"}
-                          callbackUrl={api + professional.avatar}
+                          callbackUrl={
+                            typeof professional.avatar == "string"
+                              ? api + professional.avatar
+                              : api + "/" + professional.avatar[0].path
+                          }
                         />
                         <View style={styles.headInfos} />
                         <Text
@@ -122,14 +126,10 @@ export default class ProfileCompany extends React.Component {
                           Contact
                         </Text>
                         <Text style={styles.infoText}>
-                          {professional.address.street}
+                          {professional.street}
                         </Text>
-                        <Text style={styles.infoText}>
-                          {professional.address.zip}
-                        </Text>
-                        <Text style={styles.infoText}>
-                          {professional.address.city}
-                        </Text>
+                        <Text style={styles.infoText}>{professional.zip}</Text>
+                        <Text style={styles.infoText}>{professional.city}</Text>
                         <Text style={styles.infoText}>
                           {professional.email}
                         </Text>

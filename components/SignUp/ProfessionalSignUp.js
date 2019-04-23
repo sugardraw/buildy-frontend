@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { ImagePicker, Permissions } from "expo";
+import deviceStorage from "../../services/deviceStorage";
 
 import MultiSelect from "react-native-multiple-select";
 import {
@@ -21,8 +22,8 @@ import Wizard from "./Wizard";
 
 export default class ProfessionalSignUp extends Component {
   static navigationOptions = {
-    headerTintColor: "#85c4ea",
-    headerTitleStyle: { color: "black" }
+    headerStyle: { backgroundColor: "#white" },
+    headerTintColor: "#85c4ea"
   };
   constructor(props) {
     super(props);
@@ -52,7 +53,7 @@ export default class ProfessionalSignUp extends Component {
       return state;
     });
   };
-  projectImages = item => {
+  clearProjectImages = item => {
     console.log("item", item);
     this.setState(state => {
       let index = state.projectImages.indexOf(item);
@@ -76,7 +77,7 @@ export default class ProfessionalSignUp extends Component {
         if (!result.cancelled) {
           this.setState({
             loading: true,
-            avatar: file
+            avatar: result
           });
         }
       } else {
@@ -101,13 +102,13 @@ export default class ProfessionalSignUp extends Component {
     }).then(result => {
       const file = result.uri;
 
-      const imgName= file.split("/ImagePicker/")[1];
-      console.log(imgName)
+      const imgName = file.split("/ImagePicker/")[1];
+      console.log(imgName);
 
       if (!result.cancelled) {
         this.setState(state => {
           state.loading = true;
-          state.projectImages.push(imgName);
+          state.projectImages.push(result);
           return state;
         });
       }
@@ -116,52 +117,65 @@ export default class ProfessionalSignUp extends Component {
 
   signUp = async values => {
     let formData = new FormData();
-    console.log(values);
-    values.avatar = this.state.avatar;
 
-    formData.append("company_data", values);
-
-    values.projectImages = this.state.projectImages;
     values.services = this.state.services;
 
-    for (let u in values) {
-      formData.append(`${u}`, values[u]);
-    }
-    for (let i in values.projectImages) {
-      formData.append(`project_${i}`, values.projectImages[i]);
-    }
-    for (let j in values.services) {
-      formData.append(`service_${j}`, values.services[j]);
+    for (let i in this.state.projectImages) {
+      let uriParts = this.state.projectImages[i].uri.split(".");
+      let fileType = uriParts[uriParts.length - 1];
+      let projectFormat = {
+        uri: this.state.projectImages[i].uri,
+        name: `project-images/${values.name}_${i}`,
+        type: "image/" + fileType
+      };
+
+      formData.append("projectImages", projectFormat);
     }
 
-    axios
-      .post(api + "/api/professional/save", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
+    const uriParts = this.state.avatar.uri.split(".");
+    const fileType = uriParts[uriParts.length - 1];
+
+    let avatarFormat = {
+      uri: this.state.avatar.uri,
+      name: `avatar/${values.name}`,
+      type: "image/" + fileType
+    };
+
+    formData.append("avatar", avatarFormat);
+    formData.append("professional", JSON.stringify(values));
+
+    console.log("formData", formData);
+
+    config = {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      }
+    };
+
+    return await fetch(api + "/api/professional/save", config)
       .then(response => {
-        if (response.status === 200) {
-          console.log("eh");
-        }
-      });
+        response.json().then(data => {
+          console.log("from server",data);
 
-    // config = {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "multipart/form-data;"
-    //   },
-    //   body: values
-    // };
 
-    // return await fetch(api + "/api/professional/save", config)
-    //   .then(response => {
-    //     response.json().then(data => console.log(data));
-    //   })
-    //   .catch(err => console.log(err))
-    //   .done();
+          deviceStorage.saveItem("id_token", data.token);
+          deviceStorage.saveItem("avatar", this.state.avatar.uri);
+          this.props.navigation.navigate("LoginAnimation", {
+            id_token: data.token,
+            avatar:this.state.avatar.uri
+  
+          });
+        });
+      })
+      .catch(err => console.log(err))
+      .done();
   };
 
   render() {
+    console.log(this.state.projectImages);
     const service = [
       {
         name: "building"
@@ -192,15 +206,6 @@ export default class ProfessionalSignUp extends Component {
       }
     ];
 
-    console.log(
-      "this.state.services",
-      this.state.services,
-      "projectImages",
-      this.state.projectImages,
-      " this.state.avatar",
-      this.state.avatar
-    );
-
     return (
       <View style={styles.container}>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
@@ -211,7 +216,9 @@ export default class ProfessionalSignUp extends Component {
               password: "",
               street: "",
               city: "",
-              zip: ""
+              zip: "",
+              longDescription: "",
+              shortDescription: ""
             }}
             collectData={this.collectData}
           >
@@ -229,7 +236,7 @@ export default class ProfessionalSignUp extends Component {
                         <Image
                           source={{
                             uri: this.state.avatar
-                              ? this.state.avatar
+                              ? this.state.avatar.uri
                               : "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
                           }}
                           style={{ width: 130, height: 130, borderRadius: 50 }}
@@ -349,6 +356,32 @@ export default class ProfessionalSignUp extends Component {
             <Wizard.Step>
               {({ onChangeValue, values, signUp }) => (
                 <View>
+                  <Text style={{ fontWeight: "bold", color: "#85c4ea" }}>
+                    Describe your Activity
+                  </Text>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.inputs}
+                      placeholder="Short Description"
+                      value={values.shortDescription}
+                      onChangeText={text =>
+                        onChangeValue("shortDescription", text)
+                      }
+                    />
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.inputs}
+                      placeholder="Long Description"
+                      value={values.longDescription}
+                      onChangeText={text =>
+                        onChangeValue("longDescription", text)
+                      }
+                    />
+                  </View>
+                  <Text style={{ fontWeight: "bold", color: "#85c4ea" }}>
+                    Contact
+                  </Text>
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.inputs}
@@ -388,22 +421,25 @@ export default class ProfessionalSignUp extends Component {
                         <View
                           key={i}
                           style={{
-                            flexDirection: "row"
+                            flexDirection: "row",
+                            justifyContent: "space-between"
                           }}
                         >
                           <Text
                             style={{
                               padding: 5,
                               textAlign: "left",
-                              alignItems: "flex-start"
+                              maxWidth: 160
                             }}
                           >
-                            {item}
+                            ...{item.uri.substring(120, item.uri.length)}
                           </Text>
                           <TouchableHighlight
                             onPress={item => this.clearProjectImages(item)}
                             style={{
-                              padding: 5
+                              padding: 5,
+                              right: 0,
+                              alignSelf: "flex-end"
                             }}
                           >
                             <AntDesign

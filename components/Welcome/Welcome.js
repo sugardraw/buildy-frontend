@@ -205,6 +205,14 @@ class Welcome extends Component {
       let tokenStorage = await AsyncStorage.getItem("id_token");
       if (tokenStorage !== null) {
         let avatar = await AsyncStorage.getItem("avatar");
+
+        if (avatar.includes("/uploads/")) {
+          let avatarPath = api + avatar;
+          this.props.dispatchGetPosts();
+          this.changeHeader(true, avatarPath);
+          this.forceUpdate();
+          return;
+        }
         this.changeHeader(true, avatar);
       }
     }
@@ -232,10 +240,18 @@ class Welcome extends Component {
         }
       >
         <Card title={item.name}>
-          <Image
-            style={{ width: 300, height: 300 }}
-            source={{ uri: api + item.avatar }}
-          />
+          {typeof item.avatar == "string" ? (
+            <Image
+              style={{ width: 300, height: 300 }}
+              source={{ uri: api + item.avatar }}
+            />
+          ) : (
+            <Image
+              style={{ width: 300, height: 300 }}
+              source={{ uri: api + "/" + item.avatar[0].path }}
+            />
+          )}
+
           <View>
             <Text>{item.email}</Text>
 
