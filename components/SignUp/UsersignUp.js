@@ -31,7 +31,7 @@ export default class UsersignUp extends Component {
   getUri =(uri)=>{
 
     console.log(uri)
-    // this.setState({ avatar: uri });
+    this.setState({ avatar: uri });
 
   }
 

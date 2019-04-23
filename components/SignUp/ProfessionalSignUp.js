@@ -52,6 +52,14 @@ export default class ProfessionalSignUp extends Component {
       return state;
     });
   };
+  projectImages = item => {
+    console.log("item", item);
+    this.setState(state => {
+      let index = state.projectImages.indexOf(item);
+      state.projectImages.splice(index, 1);
+      return state;
+    });
+  };
 
   _uploadAvatar = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -92,10 +100,14 @@ export default class ProfessionalSignUp extends Component {
       mediaTypes: "Images"
     }).then(result => {
       const file = result.uri;
+
+      const imgName= file.split("/ImagePicker/")[1];
+      console.log(imgName)
+
       if (!result.cancelled) {
         this.setState(state => {
           state.loading = true;
-          state.projectImages.push(file);
+          state.projectImages.push(imgName);
           return state;
         });
       }
@@ -370,6 +382,39 @@ export default class ProfessionalSignUp extends Component {
                       Upload your Project Images
                     </Text>
                   </TouchableHighlight>
+                  <View style={{ width: 250 }}>
+                    {this.state.projectImages !== [] &&
+                      this.state.projectImages.map((item, i) => (
+                        <View
+                          key={i}
+                          style={{
+                            flexDirection: "row"
+                          }}
+                        >
+                          <Text
+                            style={{
+                              padding: 5,
+                              textAlign: "left",
+                              alignItems: "flex-start"
+                            }}
+                          >
+                            {item}
+                          </Text>
+                          <TouchableHighlight
+                            onPress={item => this.clearProjectImages(item)}
+                            style={{
+                              padding: 5
+                            }}
+                          >
+                            <AntDesign
+                              name="closecircleo"
+                              size={20}
+                              color="red"
+                            />
+                          </TouchableHighlight>
+                        </View>
+                      ))}
+                  </View>
 
                   <TouchableHighlight
                     style={[styles.buttonContainer, styles.signupButton]}
