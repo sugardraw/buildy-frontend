@@ -7,6 +7,7 @@ import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
 import { api } from "../../api/api";
 import { Font } from "expo";
 import axios from "axios";
+import Geo from "../Geo/Geo";
 
 export default class ProfileCompany extends React.Component {
   constructor() {
@@ -15,7 +16,9 @@ export default class ProfileCompany extends React.Component {
     this.state = {
       id_token: null,
       _fontLoaded: false,
-      professional: []
+      professional: [],
+      lat: "",
+      lon: ""
     };
   }
   static navigationOptions = {
@@ -39,11 +42,14 @@ export default class ProfileCompany extends React.Component {
       .get(api + "/api/professional/showDetails?id=" + id)
       .then(response => {
         this.setState({
-          professional: response.data
+          professional: response.data,
+          lat: response.data[0].location.coordinates[0],
+          lon: response.data[0].location.coordinates[1]
         });
       })
       .catch(error => {
-        dispatch({ type: GET_POST_FAILURE, payload: error });
+        // dispatch({ type: GET_POST_FAILURE, payload: error });
+        console.log(error)
       });
   };
 
@@ -65,85 +71,95 @@ export default class ProfileCompany extends React.Component {
           <View style={styles.bodyContentProfile}>
             {this.state._fontLoaded && this.state.professional.length > 0
               ? this.state.professional.map((professional, i) => (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                    key={i}
-                  >
-                    <View style={styles.main}>
-                      <UploadAvatar
-                        payloadKey="file"
-                        endpoint={api + "/api/user/save_avatar"}
-                        callbackUrl={api + professional.avatar}
-                      />
-                      <View style={styles.headInfos} />
-                      <Text
-                        style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
-                      >
-                        {professional.name}
-                      </Text>
-                      <Text
-                        style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
-                      >
-                        {professional.shortDescription}
-                      </Text>
-                    </View>
-                    <View style={styles.paragraphText}>
-                      <Text
-                        style={[
-                          styles.servicesList,
-                          { fontSize: 20, marginTop: 10 }
-                        ]}
-                      >
-                        Services
-                      </Text>
-                      {professional.services.map((service, i) => (
-                        <Text key={i} style={styles.servicesList}>
-                          {service}
-                        </Text>
-                      ))}
-                    </View>
-                    <View
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                  key={i}
+                >
+                  <View style={styles.main}>
+                    <UploadAvatar
+                      payloadKey="file"
+                      endpoint={api + "/api/user/save_avatar"}
+                      callbackUrl={api + professional.avatar}
+                    />
+                    <Text>{professional.location.coordinates[0]}</Text>
+
+                    <View style={styles.headInfos} />
+                    <Text
+                      style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
+                    >
+                      {professional.name}
+                    </Text>
+                    <Text
+                      style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
+                    >
+                      {professional.shortDescription}
+                    </Text>
+                  </View>
+                  <View style={styles.paragraphText}>
+                    <Text
                       style={[
-                        styles.paragraphText,
-                        {
-                          fontFamily: "Roboto-Light"
-                        }
+                        styles.servicesList,
+                        { fontSize: 20, marginTop: 10 }
                       ]}
                     >
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Description
+                      Services
                       </Text>
-                      <Text>{professional.longDescription}</Text>
-                    </View>
-                    <View style={styles.paragraphText}>
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Contact
+                    {professional.services.map((service, i) => (
+                      <Text key={i} style={styles.servicesList}>
+                        {service}
                       </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.street}
-                      </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.zip}
-                      </Text>
-                      <Text style={styles.infoText}>
-                        {professional.address.city}
-                      </Text>
-                      <Text style={styles.infoText}>{professional.email}</Text>
-                    </View>
-
-                    <View style={[styles.paragraphText, { paddingBottom: 10 }]}>
-                      <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                        Projects
-                      </Text>
-                    </View>
-                    <PortfolioGallery projects={professional.projectImages} />
+                    ))}
                   </View>
-                ))
+                  <View
+                    style={[
+                      styles.paragraphText,
+                      {
+                        fontFamily: "Roboto-Light"
+                      }
+                    ]}
+                  >
+                    <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                      Description
+                      </Text>
+                    <Text>{professional.longDescription}</Text>
+                  </View>
+                  <View style={styles.paragraphText}>
+                    <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                      Contact
+                      </Text>
+                    <Text style={styles.infoText}>
+                      {professional.address.street}
+                    </Text>
+                    <Text style={styles.infoText}>
+                      {professional.address.zip}
+                    </Text>
+                    <Text style={styles.infoText}>
+                      {professional.address.city}
+                    </Text>
+                    <Text style={styles.infoText}>{professional.email}</Text>
+                  </View>
+
+                  <View style={[styles.paragraphText, { paddingBottom: 10 }]}>
+                    <Text style={[styles.servicesList, { fontSize: 20 }]}>
+                      Projects
+                      </Text>
+                  </View>
+                  <PortfolioGallery
+                    projects={professional.projectImages}
+                  />
+                </View>
+              ))
               : null}
           </View>
+
+          {this.state.lat !== "" && (
+            <View style={styles.main}>
+              <Geo lon={this.state.lon} lat={this.state.lat} />
+            </View>
+          )}
 
           <View style={styles.button}>
             <Button
@@ -166,6 +182,7 @@ export default class ProfileCompany extends React.Component {
 
 const styles = StyleSheet.create({
   bodyContentProfile: {
+    flex: 1,
     margin: 10,
     marginTop: 25,
     alignItems: "center",
@@ -177,6 +194,11 @@ const styles = StyleSheet.create({
   },
   scrollStyle: {
     flexGrow: 1
+  },
+  geo: {
+    width: 300,
+    height: 250,
+
   },
   button: {
     alignSelf: "center",
