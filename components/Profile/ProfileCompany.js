@@ -41,14 +41,24 @@ export default class ProfileCompany extends React.Component {
     axios
       .get(api + "/api/professional/showDetails?id=" + id)
       .then(response => {
-        this.setState({
-          professional: response.data,
-          lat: response.data[0].location.coordinates[0],
-          lon: response.data[0].location.coordinates[1]
-        });
+        if(response.data[0].hasOwnProperty("location")){
+
+          this.setState({
+            professional: response.data,
+            lat: response.data[0].location.coordinates[0],
+            lon: response.data[0].location.coordinates[1]
+          });
+        }else{
+          this.setState({
+            professional: response.data,
+            lat: 52.525549,
+            lon: 13.483673
+            });
+
+        }
       })
       .catch(error => {
-        dispatch({ type: GET_POST_FAILURE, payload: error });
+        // dispatch({ type: GET_POST_FAILURE, payload: error });
         console.log(error);
       });
   };
@@ -63,7 +73,7 @@ export default class ProfileCompany extends React.Component {
             style={{
               flex: 1,
               justifyContent: "center",
-              marginTop: 140
+              marginTop: 20
             }}
           >
             <View style={styles.bodyContentProfile}>
@@ -86,7 +96,7 @@ export default class ProfileCompany extends React.Component {
                               : api + "/" + professional.avatar[0].path
                           }
                         />
-                             <Text>{professional.location.coordinates[0]}</Text>
+            
                         <View style={styles.headInfos} />
                         <Text
                           style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
@@ -217,7 +227,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     height: 320,
-    marginTop: -280
+    marginTop: 10
   },
   button: {
     marginTop: 40,
