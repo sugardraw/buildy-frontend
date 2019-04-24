@@ -33,7 +33,8 @@ export default class RequestFormular extends React.Component {
       budget: "",
       date: "",
       height: 10,
-      renderCamera: false
+      renderCamera: false,
+      companiesIds: []
     };
   }
 
@@ -49,7 +50,6 @@ export default class RequestFormular extends React.Component {
     const { description, title } = this.state;
     const token = await AsyncStorage.getItem("id_token");
     const decodedJwt = JWT.decode(token, config.SECRET_TOKEN);
-    console.log(decodedJwt);
 
     if (description == "" || title == "") {
       this.setState({
@@ -63,7 +63,8 @@ export default class RequestFormular extends React.Component {
           description: this.state.description,
           budget: this.state.budget,
           date: this.state.date.toString().substr(4, 12),
-          id: decodedJwt.sub
+          id: decodedJwt.sub,
+          companyId: this.props.navigation.getParam("companyId", "no_companyId")
         }
       });
     }

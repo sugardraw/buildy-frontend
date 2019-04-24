@@ -18,7 +18,8 @@ export default class ProfileCompany extends React.Component {
       _fontLoaded: false,
       professional: [],
       lat: "",
-      lon: ""
+      lon: "",
+      companyId:null
     };
   }
   static navigationOptions = {
@@ -37,6 +38,9 @@ export default class ProfileCompany extends React.Component {
     this.setState({ _fontLoaded: true, id_token: tokenStorage });
 
     const id = this.props.navigation.state.params.id;
+    this.setState({
+      companyId:id
+    })
 
     axios
       .get(api + "/api/professional/showDetails?id=" + id)
@@ -186,7 +190,7 @@ export default class ProfileCompany extends React.Component {
                 }}
                 title="SEND A REQUEST *"
                 onPress={() =>
-                  this.props.navigation.navigate("RequestFormular")
+                  this.props.navigation.navigate("RequestFormular", {companyId:this.state.companyId})
                 }
               />
               <View

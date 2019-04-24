@@ -22,28 +22,53 @@ export default class SendEmail extends React.Component {
     super();
     this.state = {
       lastRequest: null,
-      uploaded: false
+      newRequest: null,
+      uploaded: false,
+      companyEmail: [],
+      userId: null
     };
   }
 
-  componentWillMount() {
+  componentDidMount = async () => {
     const id = this.props.navigation.getParam("id", "no_id");
-    const title = this.props.navigation.getParam("title", "no_title");
 
-    console.log("id", id, "title", title);
+    const data = this.props.navigation.getParam("data", "no_data");
 
-    return axios
-      .get(api + "/api/user/request/showLast?id=" + id + "&title=" + title)
+    console.log("id", id, "data", data);
+
+    await axios
+      .get(api + "/api/professional/showDetails?id=" + data.companyId)
+      .then(response => {
+        this.setState(state => {
+          state.companyEmail.push(response.data[0].email);
+          return state;
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    await axios
+      .get(api + "/api/user/request/showLast?id=" + id + "&title=" + data.title)
       .then(response => {
         this.setState(state => {
           state.lastRequest = response.data;
+          state.newRequest = data;
           //   state.uploaded = !state.uploaded;
+          return state;
+        });
+      });
+    await axios
+      .get(api + "/api/user/showDetails?id=" + id)
+      .then(response => {
+        this.setState(state => {
+          state.userData = response.data[0];
           return state;
         });
       })
 
       .catch(err => console.log(err));
-  }
+  };
 
   sendAsEmail = async () => {
     let uriArray = [];
@@ -63,8 +88,8 @@ export default class SendEmail extends React.Component {
      */
 
     await MailComposer.composeAsync({
-      recipients: ["sergiousle@gmail.com"],
-      subject: "estimation request from USER-TEST",
+      recipients: ["sergiousle@gmail.com", ...this.state.companyEmail],
+      subject: `estimation request from ${this.state.userData.first_name}`,
       body: `To Whom It May Concern,
       
       I would like to ask for a price estimation for an inner reform 
@@ -79,7 +104,7 @@ export default class SendEmail extends React.Component {
       my expectation.
       I look forward to have news from you,
       Thanks in advance, 
-      TEST USER
+      ${this.state.userData.first_name}  ${this.state.userData.last_name}
 
 
       ________________________________________________
@@ -99,6 +124,7 @@ export default class SendEmail extends React.Component {
   keyExtractor = (item, index) => String(item._id);
 
   render() {
+    console.log(this.state.companyEmail);
     if (this.state.lastRequest !== null) {
       return (
         <View style={styles.container}>
@@ -110,23 +136,33 @@ export default class SendEmail extends React.Component {
               <Card style={styles.infos}>
                 <Text style={styles.title}>Your estimation request</Text>
                 <Text style={[styles.title, styles.tagline]}>
-                  review your information before you send it
+                  review your information before you send it!
                 </Text>
 
-                <View style={styles.infos}>
+                <View style={[styles.infos, styles.paragraphText]}>
                   <Text>
                     Title: {this.state.lastRequest.data.requestData.title}
                   </Text>
                   <Text>
                     Description:{" "}
-                    {this.state.lastRequest.data.requestData.description}
+                    {this.state.newRequest.description !==
+                    this.state.lastRequest.data.requestData.description
+                      ? this.state.newRequest.description
+                      : this.state.lastRequest.data.requestData.description}
                   </Text>
                   <Text>
-                    Budget: {this.state.lastRequest.data.requestData.budget}
+                    Budget:{" "}
+                    {this.state.newRequest.budget !==
+                    this.state.lastRequest.data.requestData.budget
+                      ? this.state.newRequest.budget
+                      : this.state.lastRequest.data.requestData.budget}
                   </Text>
                   <Text>
                     Starting Date:{" "}
-                    {this.state.lastRequest.data.requestData.date}
+                    {this.state.newRequest.date !==
+                    this.state.lastRequest.data.requestData.date
+                      ? this.state.newRequest.date
+                      : this.state.lastRequest.data.requestData.date}
                   </Text>
                 </View>
               </Card>
@@ -187,8 +223,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white"
   },
+  paragraphText: {
+    textAlign: "left",
+    alignSelf: "flex-start",
+    padding: 10
+  },
   title: {
-    fontSize: 24
+    fontSize: 24,
+    color: "#0ec485"
   },
   tagline: {
     fontSize: 12

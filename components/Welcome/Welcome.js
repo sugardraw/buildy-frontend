@@ -139,6 +139,7 @@ class Welcome extends Component {
               }}
               onPress={() => this.props.navigation.navigate("UserProfile")}
             >
+              {console.log(avatar)}
               <Image
                 style={{
                   borderRadius: 50,
@@ -207,13 +208,15 @@ class Welcome extends Component {
         let avatar = await AsyncStorage.getItem("avatar");
 
         if (avatar.includes("/uploads/")) {
+          console.log("avatar includes upload", avatar);
           let avatarPath = api + avatar;
           this.props.dispatchGetPosts();
           this.changeHeader(true, avatarPath);
           this.forceUpdate();
-          return;
         }
+        console.log("avatar not includes upload", avatar);
         this.changeHeader(true, avatar);
+        this.forceUpdate();
       }
     }
   };
@@ -278,7 +281,6 @@ class Welcome extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <Geo /> */}
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}

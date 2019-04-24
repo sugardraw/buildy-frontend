@@ -6,7 +6,7 @@ import * as ExpoPixi from "expo-pixi";
 
 import ExpoPIXI, { PIXI } from "expo-pixi";
 import React, { Component } from "react";
-import axios from "axios";
+
 
 import {
   Image,
@@ -374,7 +374,7 @@ export default class ImageEditor extends Component {
               .then(
                 this.props.navigation.navigate("SendEmail", {
                   id: this.state.requestData.requestData.id,
-                  title: this.state.requestData.requestData.title
+                  data: this.state.requestData.requestData
                 })
               );
           }
