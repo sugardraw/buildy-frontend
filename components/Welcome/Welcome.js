@@ -214,8 +214,10 @@ class Welcome extends Component {
           this.props.dispatchGetPosts();
           this.changeHeader(true, avatarPath);
           this.forceUpdate();
+          return;
         }
-        this.changeHeader(true, avatar);
+        console.log("avatar NOT includes upload", avatar);
+        await this.changeHeader(true, avatar);
       }
     }
   };
@@ -243,7 +245,7 @@ class Welcome extends Component {
       >
         <Card style={{ marginTop: 10 }}>
           <CardItem cardBody>
-            {console.log("item avatar_______", api + item.avatar)}
+
             {typeof item.avatar == "string" ? (
               <View>
                 <Image

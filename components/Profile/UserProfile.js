@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Image,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Button } from "react-native-elements";
 import { Font } from "expo";
@@ -29,7 +30,8 @@ export default class UserProfile extends React.Component {
       id_token: null,
       _fontLoaded: false,
       user: [],
-      avatar: ""
+      avatar: "",
+      estimations: []
     };
   }
 
@@ -49,7 +51,7 @@ export default class UserProfile extends React.Component {
     console.log(decodedJwt.sub);
     const id = decodedJwt.sub;
     this.setState({ _fontLoaded: true, id_token: id });
-    axios
+    await axios
       .get(api + "/api/user/showDetails?id=" + id)
       .then(response => {
         this.setState({
@@ -59,13 +61,21 @@ export default class UserProfile extends React.Component {
       .catch(error => {
         console.log(error);
       });
+
+    await axios
+      .get(api + "/api/user/request/getAll?id=" + id)
+      .then(response => {
+        this.setState({
+          estimations: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   render() {
     return (
-      <KeyboardAwareScrollView
-        ref="scrollView"
-        contentContainerStyle={styles.container}
-      >
+      <ScrollView >
         <View style={styles.main}>
           {this.state._fontLoaded && this.state.user.length > 0
             ? this.state.user.map((user, i) => (
@@ -117,7 +127,48 @@ export default class UserProfile extends React.Component {
                   </View>
 
                   <View style={[styles.paragraphText, styles.infoText]}>
-                    <Text>No Estimations done</Text>
+                    <Text
+                      style={[
+                        styles.infoText,
+                        { fontWeight: "bold", fontSize: 20 }
+                      ]}
+                    >
+                      Your Requests
+                    </Text>
+                    {this.state.estimations.length > 0 ? (
+                      this.state.estimations.map((estimation, i) => (
+                        <View
+                          key={i}
+                          style={{
+                            paddingRight: 2,
+                            marginRight: 2,
+                            marginBottom: 5
+                          }}
+                        >
+                          <Text style={styles.estimationsList}>
+                            Title:{estimation.requestData.title}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Description:{estimation.requestData.description}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Budget:{estimation.requestData.budget}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Start date:{estimation.requestData.date}
+                          </Text>
+
+                          <Text style={styles.estimationsList}>
+                            Send To:
+                            <Text style={{ fontWeight: "bold" }}>
+                              {" " + estimation.sendTo}
+                            </Text>
+                          </Text>
+                        </View>
+                      ))
+                    ) : (
+                      <Text>No estimations requested</Text>
+                    )}
                   </View>
                   <View style={styles.buttons}>
                     <View style={styles.button}>
@@ -133,28 +184,20 @@ export default class UserProfile extends React.Component {
                         />
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.button}>
-                      <TouchableOpacity onPress={this.logOut}>
-                        <AntDesign name="logout" size={30} color="white" />
-                      </TouchableOpacity>
-                    </View>
                   </View>
                 </View>
               ))
             : null}
         </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    marginTop: 30
-  },
+
   main: {
+    margin:10,
     borderRadius: 10,
     borderColor: "#85c4ea",
     borderWidth: 2
@@ -189,5 +232,9 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     width: 300,
     margin: 10
+  },
+  estimationsList: {
+    textAlign: "left",
+    color: "#0ec485"
   }
 });

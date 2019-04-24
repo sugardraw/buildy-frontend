@@ -323,6 +323,8 @@ export default class ImageEditor extends Component {
   };
 
   _uploadImageAsyncTest = async uri => {
+
+    console.log(this.state.requestData.companyId)
     const uriParts = uri.split(".");
     const fileType = uriParts[uriParts.length - 1];
 
@@ -334,7 +336,8 @@ export default class ImageEditor extends Component {
         name: "request-image-" + uid(),
         type: `image/${fileType}`
       },
-      requestData: this.state.requestData
+      requestData: this.state.requestData,
+      companyId:this.state.requestData.requestData.companyId
     });
 
     return await fetch(api + "/api/user/request/save", {
