@@ -12,10 +12,12 @@ import {
 } from "react-native";
 import { FileSystem } from "expo";
 
+import { Card, CardItem, Body, Header } from "native-base";
+
 import Geo from "../Geo/Geo";
 
 import { connect } from "react-redux";
-import { Card, ListItem, Button, Icon } from "react-native-elements";
+//  import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { getPosts } from "../../actions";
 import Home from "../Home/Home";
 import { api } from "../../api/api";
@@ -207,12 +209,11 @@ class Welcome extends Component {
         let avatar = await AsyncStorage.getItem("avatar");
 
         if (avatar.includes("/uploads/")) {
-          console.log("avatar includes upload", avatar)
+          console.log("avatar includes upload", avatar);
           let avatarPath = api + avatar;
           this.props.dispatchGetPosts();
           this.changeHeader(true, avatarPath);
           this.forceUpdate();
-
         }
         this.changeHeader(true, avatar);
       }
@@ -240,38 +241,40 @@ class Welcome extends Component {
           this.props.navigation.navigate("ProfileCompany", { id: item._id })
         }
       >
-        <Card title={item.name}>
-          {typeof item.avatar == "string" ? (
-            <Image
-              style={{ width: 300, height: 300 }}
-              source={{ uri: api + item.avatar }}
-            />
-          ) : (
-            <Image
-              style={{ width: 300, height: 300 }}
-              source={{ uri: api + "/" + item.avatar[0].path }}
-            />
-          )}
+        <Card style={{ marginTop: 10 }}>
+          <CardItem cardBody>
+            {console.log("item avatar_______", api + item.avatar)}
+            {typeof item.avatar == "string" ? (
+              <View>
+                <Image
+                  style={{ width: 350, height: 300 }}
+                  source={{ uri: api + item.avatar }}
+                />
+              </View>
+            ) : (
+              <View>
+                <Image
+                  style={{ width: 350, height: 300 }}
+                  source={{ uri: api + "/" + item.avatar[0].path }}
+                />
+              </View>
+            )}
+          </CardItem>
+          <CardItem>
+            <Body style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+                {item.name}
+              </Text>
 
-          <View>
-            <Text>{item.email}</Text>
-
-            <Button
-              buttonStyle={{
-                borderRadius: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                marginBottom: 0,
-                backgroundColor: "#85c4ea"
-              }}
-              title="READ MORE"
-              onPress={() =>
-                this.props.navigation.navigate("ProfileCompany", {
-                  id: item._id
-                })
-              }
-            />
-          </View>
+              <View style={{ flexDirection: "row" }}>
+                {item.services.map((service, i) => (
+                  <View key={i} style={{ paddingRight: 2, marginRight: 2 }}>
+                    <Text style={styles.servicesList}>{service}</Text>
+                  </View>
+                ))}
+              </View>
+            </Body>
+          </CardItem>
         </Card>
       </TouchableWithoutFeedback>
     );
@@ -309,6 +312,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2
+  },
+  servicesList: {
+    textAlign: "left",
+    color: "#0ec485"
   }
 });
 

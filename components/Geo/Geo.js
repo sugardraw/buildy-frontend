@@ -32,7 +32,7 @@ export default class Geo extends Component {
 
   render() {
     return (
-      <View style={{ height: 100 + "%", width: 100 + "%" }}>
+      <View style={{ height: 60 + "%", width: 100 + "%" }}>
         <MapView
           onRegionChangeComplete={region => {
             this.setState({ currentView: region });

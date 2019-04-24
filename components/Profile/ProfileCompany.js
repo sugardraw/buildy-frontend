@@ -172,7 +172,7 @@ export default class ProfileCompany extends React.Component {
               <Text
                 style={[
                   styles.servicesList,
-                  { fontSize: 20, marginBottom: 10 }
+                  { fontSize: 20, marginBottom: 20, marginLeft:20 }
                 ]}
               >
                 Location
@@ -227,26 +227,21 @@ const styles = StyleSheet.create({
     flexGrow: 1
   },
   geo: {
-    marginLeft: 20,
+    margin:0,
     justifyContent: "center",
-    width: "90%",
+    width: "100%",
     height: 320,
-    marginTop: 10
+    marginTop: -40
   },
   button: {
-    marginTop: 40,
     alignSelf: "center",
     width: "90%",
     marginBottom: 80
   },
   main: {
     alignItems: "center",
-    borderRadius: 10,
-    shadowColor: "#85c4ea",
-    shadowOffset: { width: 10, height: 10 },
-    shadowOpacity: 0.6,
-    shadowRadius: 20,
-    elevation: 4
+    borderRadius: 10
+
   },
   headInfos: {
     marginTop: -10,

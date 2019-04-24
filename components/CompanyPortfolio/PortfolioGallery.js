@@ -82,7 +82,13 @@ export default class PortfolioGallery extends React.Component {
             <ImageElement imgSource={{ uri: api + this.state.imageModal }} />
           </View>
         </Modal>
+
+        <View style={{flex:1, flexDirection:"row", justifyContent:"space-between", flexWrap:"wrap"}}>
+
+
         {images}
+        </View>
+      
       </View>
     );
   }
@@ -98,9 +104,8 @@ const styles = StyleSheet.create({
   imgWrapper: {
     margin: 2,
     padding: 1,
-    width: Dimensions.get("window").width / 3 - 4,
-    height: Dimensions.get("window").height / 5 - 12,
-    backgroundColor: "white"
+    width: Dimensions.get("window").width *(1/4),
+    height: Dimensions.get("window").height *(1/6)
   },
   modal: {
     flex: 1,

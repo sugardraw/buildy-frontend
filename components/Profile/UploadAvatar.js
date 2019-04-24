@@ -180,8 +180,14 @@ const style = StyleSheet.create({
     paddingLeft: 95,
     paddingRight: 95
   },
+
   circleWrapper: {
     borderRadius: 50,
-    marginTop: -10
+    marginTop: -10,
+    shadowColor: "#85c4ea",
+    shadowOffset: { width: 20, height: 20 },
+    shadowOpacity: 0.6,
+    shadowRadius: 40,
+    elevation: 6
   }
 });
