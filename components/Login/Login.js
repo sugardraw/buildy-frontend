@@ -29,83 +29,29 @@ export default class LoginView extends Component {
     return {
       headerTitle: navigation.getParam("HeaderTitle", "BUILDY"),
       headerStyle: {
-        backgroundColor: navigation.getParam("BackgroundColor", "#E050FB")
+        backgroundColor: navigation.getParam("BackgroundColor", "#85c4ea")
       },
-      headerTintColor: navigation.getParam("HeaderTintColor", "#fff"),
+      headerTintColor: navigation.getParam("HeaderTintColor", "blue"),
       headerTitleStyle: {
         color: navigation.getParam("Color", "#fff")
       }
     };
   };
 
-  changeHeader = isLogged => {
-    if (!isLogged) {
-      this.props.navigation.setParams({
-        HeaderTitle: (
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Welcome")}
-          >
-            <Image
-              style={{
-                width: 50,
-                height: 50,
-                margin: 10,
-                marginTop: 15,
-                marginBottom: 15
-              }}
-              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
-            />
-          </TouchableOpacity>
-        ),
-        BackgroundColor: "#fff",
-        HeaderTintColor: "#fff"
-      });
-    } else {
-      this.props.navigation.setParams({
-        HeaderTitle: (
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between"
-            }}
-          >
-            <Image
-              style={{
-                width: 50,
-                height: 50,
-                margin: 10,
-                marginLeft: 12,
-                marginTop: 15,
-                marginBottom: 15
-              }}
-              source={require("../../assets/logo/buildy-logo-final_header-2.png")}
-            />
-            <TouchableOpacity
-              style={{
-                margin: 4,
-                padding: 5,
-                borderRadius: 50,
-                borderWidth: 2,
-                borderColor: "#85c4ea",
-                maxHeight: 100,
-                alignSelf: "center",
-                marginLeft: 228
-              }}
-              onPress={() => this.props.navigation.navigate("UserProfile")}
-            >
-              <Text style={{ color: "#85c4ea" }}>AVATAR</Text>
-            </TouchableOpacity>
-          </View>
-        ),
-        BackgroundColor: "#fff",
-        HeaderTintColor: "#fff"
-      });
-    }
+  changeHeader = () => {
+    this.props.navigation.setParams({
+      HeaderTitle: (
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Welcome")}
+        />
+      ),
+      BackgroundColor: "#fff",
+      HeaderTintColor: "#85c4ea"
+    });
   };
 
   componentDidMount() {
-    this.changeHeader(this.state.userLoggedIn);
+    this.changeHeader(true);
   }
   componentWillUnmount() {
     this.setState({ errors: "" });
@@ -129,7 +75,7 @@ export default class LoginView extends Component {
               this.setState({
                 userLoggedIn: true
               });
- 
+
               this.props.navigation.navigate("LoginAnimation", {
                 id_token: response.data.token
               });
@@ -156,6 +102,16 @@ export default class LoginView extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image
+          style={{
+            width: 80,
+            height: 80,
+            margin: 10,
+            marginTop: 15,
+            marginBottom: 15
+          }}
+          source={require("../../assets/logo/buildy-logo-final_header_1.png")}
+        />
         <Text style={{ color: "red" }}>{this.state.errors}</Text>
 
         <View style={styles.inputContainer}>
@@ -190,7 +146,6 @@ export default class LoginView extends Component {
             autoCapitalize="none"
             onChangeText={password => this.setState({ password, errors: "" })}
           />
-          {/* <ShowPassword /> */}
         </View>
         <TouchableHighlight
           style={[styles.buttonContainer, styles.loginButton]}

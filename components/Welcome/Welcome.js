@@ -66,7 +66,7 @@ class Welcome extends Component {
     };
   }
 
-  changeHeader = (isLogged, avatar) => {
+  changeHeader = (isLogged, avatar, param) => {
     if (!isLogged) {
       this.props.navigation.setParams({
         HeaderTitle: (
@@ -139,7 +139,11 @@ class Welcome extends Component {
                 marginLeft: 180,
                 alignSelf: "center"
               }}
-              onPress={() => this.props.navigation.navigate("UserProfile")}
+              onPress={() =>
+                this.props.navigation.navigate("UserProfile", {
+                  changeScreen: param
+                })
+              }
             >
               <Image
                 style={{
@@ -209,15 +213,16 @@ class Welcome extends Component {
         let avatar = await AsyncStorage.getItem("avatar");
 
         if (avatar.includes("/uploads/")) {
-          console.log("avatar includes upload", avatar);
           let avatarPath = api + avatar;
           this.props.dispatchGetPosts();
-          this.changeHeader(true, avatarPath);
-          this.forceUpdate();
+          this.changeHeader(true, avatarPath, param_2);
+
           return;
         }
+
         console.log("avatar NOT includes upload", avatar);
-        await this.changeHeader(true, avatar);
+        await this.changeHeader(true, avatar, param_2);
+        console.log(param_1, param_2);
       }
     }
   };
@@ -245,7 +250,6 @@ class Welcome extends Component {
       >
         <Card style={{ marginTop: 10 }}>
           <CardItem cardBody>
-
             {typeof item.avatar == "string" ? (
               <View>
                 <Image

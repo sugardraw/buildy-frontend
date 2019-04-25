@@ -48,7 +48,6 @@ export default class UserProfile extends React.Component {
     });
     const token = await AsyncStorage.getItem("id_token");
     const decodedJwt = JWT.decode(token, config.SECRET_TOKEN);
-    console.log(decodedJwt.sub);
     const id = decodedJwt.sub;
     this.setState({ _fontLoaded: true, id_token: id });
     await axios
@@ -73,9 +72,10 @@ export default class UserProfile extends React.Component {
         console.log(error);
       });
   };
+
   render() {
     return (
-      <ScrollView >
+      <ScrollView>
         <View style={styles.main}>
           {this.state._fontLoaded && this.state.user.length > 0
             ? this.state.user.map((user, i) => (
@@ -174,7 +174,11 @@ export default class UserProfile extends React.Component {
                     <View style={styles.button}>
                       <TouchableOpacity
                         onPress={() =>
-                          this.props.navigation.navigate("EditUserProfile")
+                          this.props.navigation.navigate("EditUserProfile", {
+                            changeScreen: this.props.navigation.getParam(
+                              "changeScreen"
+                            )
+                          })
                         }
                       >
                         <MaterialIcons
@@ -195,9 +199,8 @@ export default class UserProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
   main: {
-    margin:10,
+    margin: 10,
     borderRadius: 10,
     borderColor: "#85c4ea",
     borderWidth: 2

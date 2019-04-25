@@ -35,30 +35,6 @@ const Icon = ({ name, focused }) => (
   />
 );
 
-const LoginStack = createStackNavigator({
-  Login: {
-    screen: Login
-  },
-  Profile: {
-    screen: UserProfile
-  },
-  ProfessionalSignUp: {
-    screen: ProfessionalSignUp
-  },
-  UsersignUp: {
-    screen: UsersignUp
-  },
-  Register: {
-    screen: Register
-  },
-  EditUserProfile: {
-    screen: EditUserProfile
-  },
-  UserProfile: {
-    screen: UserProfile
-  }
-});
-
 const WelcomeStack = createStackNavigator({
   Welcome: {
     screen: Welcome
@@ -90,6 +66,27 @@ const WelcomeStack = createStackNavigator({
   },
   GalleryScreen: {
     screen: GalleryScreen
+  },
+  Login: {
+    screen: Login
+  },
+  Profile: {
+    screen: UserProfile
+  },
+  ProfessionalSignUp: {
+    screen: ProfessionalSignUp
+  },
+  UsersignUp: {
+    screen: UsersignUp
+  },
+  Register: {
+    screen: Register
+  },
+  EditUserProfile: {
+    screen: EditUserProfile
+  },
+  UserProfile: {
+    screen: UserProfile
   }
 });
 
@@ -103,22 +100,11 @@ WelcomeStack.navigationOptions = ({ navigation }) => {
     tabBarVisible
   };
 };
-LoginStack.navigationOptions = ({ navigation }) => {
-  let tabBarVisible = false;
-  if (navigation.state.index > 0) {
-    tabBarVisible = false;
-  }
-
-  return {
-    tabBarVisible
-  };
-};
 
 export default createBottomTabNavigator(
   {
     Intro: WelcomeAnimation,
-    Home: WelcomeStack,
-    Users: LoginStack
+    Home: WelcomeStack
   },
   {
     initialRouteName: "Intro",

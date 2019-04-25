@@ -16,6 +16,7 @@ import { api } from "../../api/api";
 import axios from "axios";
 import JWT from "expo-jwt";
 const config = require("../../config/config.js");
+import deviceStorage from "../../services/deviceStorage";
 
 export default class EditUserProfile extends React.Component {
   static navigationOptions = {
@@ -32,40 +33,50 @@ export default class EditUserProfile extends React.Component {
       email: "",
       city: "",
       street: "",
-      zip: ""
+      zip: "",
+      id: ""
     };
-    this.id = null;
+    this.updatedUser = null;
   }
 
   componentDidMount = async () => {
+    let value = this.props.navigation.getParam("changeScreen");
+    console.log(value);
     const token = await AsyncStorage.getItem("id_token");
     const decodedJwt = JWT.decode(token, config.SECRET_TOKEN);
     const id = decodedJwt.sub;
-    this.id = id;
-
-    axios
-      .post(api + "/api/user/updateDetails?id=" + id, this.state)
-      .then(response => {
-        if (response.data) {
-          this.props.navigation.navigate("UserProfile", {
-            data: response.data
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.setState({
+      id: id
+    });
+  };
+  onChangeValue = (key, val) => {
+    console.log(this.props.navigation.getParam("changeScreen"));
+    this.setState({ [key]: val });
   };
 
   submit = () => {
-    const id = this.id;
+    const user = this.state;
+    const id = this.state.id;
     axios
-      .post(api + `/api/user/update?id=${id}`, this.state)
-      .then(response =>
-        this.setState({
-          response: response
-        })
-      )
+      .post(api + `/api/user/update?id=${id}`, user)
+      .then(response => {
+        this.updatedUser = response.data;
+        deviceStorage.deleteItem("avatar");
+        deviceStorage.saveItem("avatar", response.data.data.avatar);
+        let param = this.props.navigation.getParam("changeScreen");
+        if (param === 1) {
+          this.props.navigation.navigate("Welcome", {
+            updatedUser: response,
+            changeScreen: 0
+          });
+        }
+        if (param === 0) {
+          this.props.navigation.navigate("Welcome", {
+            updatedUser: response,
+            changeScreen: 1
+          });
+        }
+      })
       .catch(err =>
         this.setState({
           error: err
@@ -73,26 +84,9 @@ export default class EditUserProfile extends React.Component {
       );
   };
 
-  _uploadImageAsyncTest = async uri => {
-    const uriParts = uri.split(".");
-    const fileType = uriParts[uriParts.length - 1];
-    const takeAvatar = new takeAvatar();
-    takeAvatar.append("uploadAvatar", {
-      user: this.id,
-      editedAvatar: {
-        uri,
-        name: "updating-avatar" + uid(),
-        type: `image/${filetype}`
-      },
-      avatar: this.state.avatar
-    });
-    return await fetch(api + "/api/user/update", {
-      method: "POST",
-      body: JSON.stringify(formData)
-    })
-      .then(response => console.log("returned something"))
-      .catch(err => console.log(err))
-      .done();
+  getUri = uri => {
+    console.log(uri);
+    this.setState({ avatar: uri });
   };
 
   render() {
@@ -102,59 +96,68 @@ export default class EditUserProfile extends React.Component {
         contentContainerStyle={styles.scrollstyle}
       >
         <View style={styles.bodyContentProfile}>
-          <View>
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: -20
+            }}
+          >
             <UploadAvatar
-              payloadKey="file"
-              endpoint={api + "/api/user/save_avatar"}
+              getUri={this.getUri}
+              payloadKey="avatar"
+              endpoint={api + "/api/user/update?id=" + this.state.id}
               callbackUrl="https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
             />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Firstname"
-              underlineColorAndroid="transparent"
-              value={this.state.first_name}
-              onChangeText={editedText =>
-                this.setState({ first_name: editedText })
-              }
-            />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Lastname"
-              underlineColorAndroid="transparent"
-              value={this.state.last_name}
-              onChangeText={editedText =>
-                this.setState({ last_name: editedText })
-              }
-            />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Email"
-              underlineColorAndroid="transparent"
-              value={this.state.email}
-              onChangeText={editedText => this.setState({ email: editedText })}
-            />
-            <TextInput
-              style={styles.inputField}
-              placeholder="City"
-              underlineColorAndroid="transparent"
-              value={this.state.city}
-              onChangeText={editedText => this.setState({ city: editedText })}
-            />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Street"
-              underlineColorAndroid="transparent"
-              value={this.state.street}
-              onChangeText={editedText => this.setState({ street: editedText })}
-            />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Zip"
-              underlineColorAndroid="transparent"
-              value={this.state.zip}
-              onChangeText={editedText => this.setState({ zip: editedText })}
-            />
+
+            <View style={styles.inputsBlock}>
+              <TextInput
+                placeholder="first name"
+                style={styles.inputField}
+                underlineColorAndroid="transparent"
+                value={this.state.first_name}
+                onChangeText={value => this.onChangeValue("first_name", value)}
+              />
+              <TextInput
+                style={styles.inputField}
+                placeholder="last name"
+                underlineColorAndroid="transparent"
+                value={this.state.last_name}
+                onChangeText={value => this.onChangeValue("last_name", value)}
+              />
+              <TextInput
+                style={styles.inputField}
+                placeholder="email"
+                underlineColorAndroid="transparent"
+                value={this.state.email}
+                onChangeText={value => this.onChangeValue("email", value)}
+              />
+              <TextInput
+                style={styles.inputField}
+                placeholder="city"
+                underlineColorAndroid="transparent"
+                value={this.state.city}
+                onChangeText={value => this.onChangeValue("city", value)}
+              />
+              <TextInput
+                style={styles.inputField}
+                underlineColorAndroid="transparent"
+                placeholder="street"
+                value={this.state.street}
+                onChangeText={value => this.onChangeValue("street", value)}
+              />
+              <TextInput
+                style={styles.inputField}
+                underlineColorAndroid="transparent"
+                placeholder="zip"
+                value={this.state.zip}
+                onChangeText={value => this.onChangeValue("zip", value)}
+              />
+            </View>
           </View>
+          {/* 		))
+					) : null} */}
 
           <TouchableOpacity onPress={this.submit} style={styles.button}>
             <Text style={styles.text}>SAVE</Text>
@@ -168,11 +171,13 @@ export default class EditUserProfile extends React.Component {
 const styles = StyleSheet.create({
   bodyContentProfile: {
     margin: 20,
-    padding: 20,
-    alignItems: "center"
+    padding: 20
   },
   scrollStyle: {
     flexGrow: 1
+  },
+  inputsBlock: {
+    marginTop: 20
   },
   button: {
     width: "100%",
@@ -187,11 +192,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#85c4ea",
     marginBottom: 10
   },
-  text: {
+  value: {
     color: "white"
   },
   inputField: {
-    width: 200,
+    width: 250,
     fontSize: 14,
     fontWeight: "800",
     margin: 5,
