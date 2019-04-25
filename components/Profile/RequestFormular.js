@@ -13,9 +13,10 @@ console.disableYellowBox = true;
 
 export default class RequestFormular extends React.Component {
 	static navigationOptions = {
-		headerTitle      : ' REQUEST AN ESTIMATION',
-		headerTintColor  : '#85c4ea',
-		headerTitleStyle : { color: 'black' }
+		headerTitleStyle : { color: 'black' },
+		headerTitle      : ' REQUEST',
+		headerStyle      : { backgroundColor: '#white' },
+		headerTintColor  : '#85c4ea'
 	};
 	constructor(props) {
 		super(props);
@@ -71,15 +72,6 @@ export default class RequestFormular extends React.Component {
 		return (
 			<KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
 				<View style={styles.container}>
-					<Text
-						style={[
-							styles.titles,
-							{
-								fontFamily : 'Roboto-Black',
-								fontSize   : 20
-							}
-						]}
-					/>
 					<Text style={styles.required} />
 
 					<Text style={{ color: 'red' }}>{this.state.errors}</Text>

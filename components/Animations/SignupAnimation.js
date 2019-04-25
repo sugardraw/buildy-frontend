@@ -6,10 +6,7 @@ import { Font } from 'expo';
 
 export default class SignupAnimation extends React.Component {
 	static navigationOptions = {
-		headerMode        : 'none',
-		navigationOptions : {
-			headerVisible : false
-		}
+		header : null
 	};
 	constructor() {
 		super();

@@ -6,11 +6,9 @@ import { Font } from 'expo';
 
 export default class LoginAnimation extends React.Component {
 	static navigationOptions = {
-		headerMode        : 'none',
-		navigationOptions : {
-			headerVisible : false
-		}
+		header : null
 	};
+
 	constructor() {
 		super();
 		this.state = {
