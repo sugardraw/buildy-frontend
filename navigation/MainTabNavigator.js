@@ -23,6 +23,7 @@ import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";
 import LoginAnimation from "../components/Animations/LoginAnimation";
+import SignupAnimation from "../components/Animations/SignupAnimation";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -63,6 +64,9 @@ const WelcomeStack = createStackNavigator({
   },
   LoginAnimation: {
     screen: LoginAnimation
+  },
+  SignupAnimation: {
+    screen: SignupAnimation
   },
   GalleryScreen: {
     screen: GalleryScreen

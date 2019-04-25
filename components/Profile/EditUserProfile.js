@@ -159,10 +159,55 @@ export default class EditUserProfile extends React.Component {
           {/* 		))
 					) : null} */}
 
-          <TouchableOpacity onPress={this.submit} style={styles.button}>
-            <Text style={styles.text}>SAVE</Text>
-          </TouchableOpacity>
+          <View style={styles.paragraphText}>
+            <TextInput
+              placeholder="first name"
+              style={styles.inputField}
+              underlineColorAndroid="transparent"
+              value={this.state.first_name}
+              onChangeText={value => this.onChangeValue("first_name", value)}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder="last name"
+              underlineColorAndroid="transparent"
+              value={this.state.last_name}
+              onChangeText={value => this.onChangeValue("last_name", value)}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder="email"
+              underlineColorAndroid="transparent"
+              value={this.state.email}
+              onChangeText={value => this.onChangeValue("email", value)}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder="city"
+              underlineColorAndroid="transparent"
+              value={this.state.city}
+              onChangeText={value => this.onChangeValue("city", value)}
+            />
+            <TextInput
+              style={styles.inputField}
+              underlineColorAndroid="transparent"
+              placeholder="street"
+              value={this.state.street}
+              onChangeText={value => this.onChangeValue("street", value)}
+            />
+            <TextInput
+              style={styles.inputField}
+              underlineColorAndroid="transparent"
+              placeholder="zip"
+              value={this.state.zip}
+              onChangeText={value => this.onChangeValue("zip", value)}
+            />
+          </View>
         </View>
+
+        <TouchableOpacity onPress={this.submit} style={styles.button}>
+          <Text style={styles.text}>SAVE</Text>
+        </TouchableOpacity>
       </KeyboardAwareScrollView>
     );
   }
