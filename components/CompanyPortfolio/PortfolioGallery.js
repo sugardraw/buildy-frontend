@@ -67,7 +67,7 @@ export default class PortfolioGallery extends React.Component {
           animationType={"fade"}
           visible={this.state.visibleModal}
           transparent={true}
-          onRequestClose={() => {}}
+          onRequestClose={() => { }}
         >
           <View style={styles.modal}>
             <TouchableOpacity
@@ -83,12 +83,10 @@ export default class PortfolioGallery extends React.Component {
           </View>
         </Modal>
 
-        <View style={{flex:1, flexDirection:"row", justifyContent:"space-between", flexWrap:"wrap"}}>
-
-
-        {images}
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
+          {images}
         </View>
-      
+
       </View>
     );
   }
@@ -99,13 +97,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     flexDirection: "row",
-    margin: 10
+    margin: "auto" //changed from 10
   },
   imgWrapper: {
     margin: 2,
-    padding: 1,
-    width: Dimensions.get("window").width *(1/4),
-    height: Dimensions.get("window").height *(1/6)
+    width: Dimensions.get("window").width * (1 / 4),
+    height: Dimensions.get("window").height * (1 / 6)
   },
   modal: {
     flex: 1,

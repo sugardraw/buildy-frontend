@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
 
-
-
 export default class Geo extends Component {
   constructor() {
     super();
@@ -55,14 +53,6 @@ export default class Geo extends Component {
                 description={marker.description}
                 addresse={marker.addresse}
               >
-                {/* <MapView.Callout
-                                    style={styles.callout}
-                                    title={marker.title}
-                                >
-                                    <Callout>
-                                     <Image source={require('../../assets/logo/logo')} />
-                                    </Callout>
-                                </MapView.Callout> */}
               </Marker>
             );
           })}
@@ -74,7 +64,7 @@ export default class Geo extends Component {
 
 const styles = StyleSheet.create({
   marker: {
-    width: 90,
+    width: 100,
     height: 100
   }
 })

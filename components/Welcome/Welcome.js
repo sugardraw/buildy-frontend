@@ -23,7 +23,7 @@ import { api } from '../../api/api';
 import { AntDesign } from '@expo/vector-icons';
 import { LOGOUT } from '../../actions/types';
 
-YellowBox.ignoreWarnings([ 'Require cycle:' ]);
+YellowBox.ignoreWarnings(['Require cycle:']);
 
 const mapStateToProps = (state) => {
 	const { posts, userLoggedIn, loading, error, post, postLoading } = state.posts;
@@ -32,19 +32,19 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-	dispatchGetPosts : getPosts
+	dispatchGetPosts: getPosts
 };
 
 class Welcome extends Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
-			headerTitle      : navigation.getParam('HeaderTitle', 'TEST'),
-			headerStyle      : {
-				backgroundColor : navigation.getParam('BackgroundColor', '#E050FB')
+			headerTitle: navigation.getParam('HeaderTitle', 'TEST'),
+			headerStyle: {
+				backgroundColor: navigation.getParam('BackgroundColor', '#E050FB')
 			},
-			headerTintColor  : navigation.getParam('HeaderTintColor', '#fff'),
-			headerTitleStyle : {
-				color : navigation.getParam('Color', '#fff')
+			headerTintColor: navigation.getParam('HeaderTintColor', '#fff'),
+			headerTitleStyle: {
+				color: navigation.getParam('Color', '#fff')
 			}
 		};
 	};
@@ -52,44 +52,44 @@ class Welcome extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			token        : '',
-			loading      : true,
-			userLoggedIn : false
+			token: '',
+			loading: true,
+			userLoggedIn: false
 		};
 	}
 
 	changeHeader = (isLogged, avatar) => {
 		if (!isLogged) {
 			this.props.navigation.setParams({
-				HeaderTitle     : (
+				HeaderTitle: (
 					<View
 						style={{
-							display        : 'flex',
-							flexDirection  : 'row',
-							justifyContent : 'space-between'
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between'
 						}}
 					>
 						<Image
 							style={{
-								width        : 50,
-								height       : 50,
-								margin       : 10,
-								marginTop    : 15,
-								marginBottom : 15
+								width: 50,
+								height: 50,
+								margin: 10,
+								marginTop: 15,
+								marginBottom: 15
 							}}
 							source={require('../../assets/logo/buildy-logo-final_header-2.png')}
 						/>
 
 						<TouchableOpacity
 							style={{
-								margin       : 4,
-								padding      : 5,
-								borderRadius : 6,
-								borderWidth  : 2,
-								borderColor  : '#85c4ea',
-								maxHeight    : 60,
-								alignSelf    : 'center',
-								marginLeft   : 238
+								margin: 4,
+								padding: 5,
+								borderRadius: 6,
+								borderWidth: 2,
+								borderColor: '#85c4ea',
+								maxHeight: 60,
+								alignSelf: 'center',
+								marginLeft: 238
 							}}
 							onPress={() => this.props.navigation.navigate('Login')}
 						>
@@ -97,62 +97,62 @@ class Welcome extends Component {
 						</TouchableOpacity>
 					</View>
 				),
-				BackgroundColor : '#fff',
-				HeaderTintColor : '#fff'
+				BackgroundColor: '#fff',
+				HeaderTintColor: '#fff'
 			});
 		} else {
 			this.props.navigation.setParams({
-				HeaderTitle     : (
+				HeaderTitle: (
 					<View
 						style={{
-							display        : 'flex',
-							flexDirection  : 'row',
-							justifyContent : 'space-between'
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between'
 						}}
 					>
 						<Image
 							style={{
-								width        : 50,
-								height       : 50,
-								margin       : 10,
-								marginLeft   : 12,
-								marginTop    : 15,
-								marginBottom : 15
+								width: 50,
+								height: 50,
+								margin: 10,
+								marginLeft: 12,
+								marginTop: 15,
+								marginBottom: 15
 							}}
 							source={require('../../assets/logo/buildy-logo-final_header-2.png')}
 						/>
 
 						<TouchableOpacity
 							style={{
-								padding      : 3,
-								borderRadius : 50,
-								borderWidth  : 2,
-								borderColor  : '#85c4ea',
-								marginLeft   : 90,
-								alignSelf    : 'center'
+								padding: 3,
+								borderRadius: 50,
+								borderWidth: 2,
+								borderColor: '#85c4ea',
+								marginLeft: 90,
+								alignSelf: 'center'
 							}}
 							onPress={() => this.props.navigation.navigate('UserProfile')}
 						>
 							<Image
 								style={{
-									borderRadius : 50,
-									alignSelf    : 'center',
-									width        : 40,
-									height       : 40
+									borderRadius: 50,
+									alignSelf: 'center',
+									width: 40,
+									height: 40
 								}}
 								source={{ uri: avatar }}
 							/>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={{
-								marginLeft   : 90,
-								margin       : 4,
-								padding      : 5,
-								borderRadius : 6,
-								borderWidth  : 2,
-								borderColor  : '#85c4ea',
-								maxHeight    : 60,
-								alignSelf    : 'center'
+								marginLeft: 90,
+								margin: 4,
+								padding: 5,
+								borderRadius: 6,
+								borderWidth: 2,
+								borderColor: '#85c4ea',
+								maxHeight: 60,
+								alignSelf: 'center'
 							}}
 							onPress={() => this.logout()}
 						>
@@ -160,8 +160,8 @@ class Welcome extends Component {
 						</TouchableOpacity>
 					</View>
 				),
-				BackgroundColor : '#fff',
-				HeaderTintColor : '#fff'
+				BackgroundColor: '#fff',
+				HeaderTintColor: '#fff'
 			});
 		}
 	};
@@ -176,9 +176,9 @@ class Welcome extends Component {
 			if (tokenStorage !== null) {
 				this.setState(
 					{
-						token        : tokenStorage,
-						userLoggedIn : true,
-						loading      : false
+						token: tokenStorage,
+						userLoggedIn: true,
+						loading: false
 					},
 					this.changeHeader(true, avatar)
 				);
@@ -248,13 +248,13 @@ class Welcome extends Component {
 								<Image style={{ width: 350, height: 300 }} source={{ uri: api + item.avatar }} />
 							</View>
 						) : (
-							<View>
-								<Image
-									style={{ width: 350, height: 300 }}
-									source={{ uri: api + '/' + item.avatar[0].path }}
-								/>
-							</View>
-						)}
+								<View>
+									<Image
+										style={{ width: 350, height: 300 }}
+										source={{ uri: api + '/' + item.avatar[0].path }}
+									/>
+								</View>
+							)}
 					</CardItem>
 					<CardItem>
 						<Body style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -288,28 +288,28 @@ class Welcome extends Component {
 }
 
 const styles = StyleSheet.create({
-	container    : {
-		flex            : 1,
-		justifyContent  : 'center',
-		alignItems      : 'center',
-		backgroundColor : '#ebebeb'
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#ebebeb'
 	},
-	card         : {
-		backgroundColor   : '#fff',
-		padding           : 8,
-		margin            : 12,
-		borderWidth       : 1,
-		borderRadius      : 2,
-		borderColor       : '#ddd',
-		borderBottomWidth : 0,
-		shadowColor       : '#000',
-		shadowOffset      : { width: 0, height: 2 },
-		shadowOpacity     : 0.1,
-		shadowRadius      : 2
+	card: {
+		backgroundColor: '#fff',
+		padding: 8,
+		margin: 12,
+		borderWidth: 1,
+		borderRadius: 2,
+		borderColor: '#ddd',
+		borderBottomWidth: 0,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2
 	},
-	servicesList : {
-		textAlign : 'left',
-		color     : '#0ec485'
+	servicesList: {
+		textAlign: 'left',
+		color: '#0ec485'
 	}
 });
 

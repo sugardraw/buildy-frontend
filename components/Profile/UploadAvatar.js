@@ -147,17 +147,17 @@ export default class UploadAvatar extends React.Component {
                   ? this.state.uploaded_photo
                   : this.props.callbackUrl
               }}
-              style={{ width: 130, height: 130, borderRadius: 50 }}
+              style={{ width: 130, height: 130, borderRadius: 70 }}
             />
           ) : (
-            <Image
-              source={{
-                uri:
-                  "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
-              }}
-              style={{ width: 130, height: 130, borderRadius: 50 }}
-            />
-          )}
+              <Image
+                source={{
+                  uri:
+                    "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
+                }}
+                style={{ width: 130, height: 130, borderRadius: 70 }}
+              />
+            )}
         </TouchableOpacity>
       </View>
     );
@@ -167,7 +167,6 @@ export default class UploadAvatar extends React.Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "yellow",
     height: 30,
     width: 30
   },
@@ -175,14 +174,10 @@ const style = StyleSheet.create({
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 25,
-    padding: 10,
-    paddingLeft: 95,
-    paddingRight: 95
+    margin: 25
   },
 
   circleWrapper: {
-    borderRadius: 50,
     marginTop: -10,
     shadowColor: "#85c4ea",
     shadowOffset: { width: 20, height: 20 },
