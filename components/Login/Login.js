@@ -16,34 +16,13 @@ export default class LoginView extends Component {
 		};
 	}
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: navigation.getParam("HeaderTitle", "BUILDY"),
-      headerStyle: {
-        backgroundColor: navigation.getParam("BackgroundColor", "#85c4ea")
-      },
-      headerTintColor: navigation.getParam("HeaderTintColor", "blue"),
-      headerTitleStyle: {
-        color: navigation.getParam("Color", "#fff")
-      }
-    };
-  };
+	static navigationOptions = {
+		headerTitle     : ' Login',
+		headerStyle     : { backgroundColor: '#white' },
+		headerTintColor : '#85c4ea'
+	};
 
-  changeHeader = () => {
-    this.props.navigation.setParams({
-      HeaderTitle: (
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Welcome")}
-        />
-      ),
-      BackgroundColor: "#fff",
-      HeaderTintColor: "#85c4ea"
-    });
-  };
 
-  componentDidMount() {
-    this.changeHeader(true);
-  }
   componentWillUnmount() {
     this.setState({ errors: "" });
   }
@@ -93,6 +72,7 @@ export default class LoginView extends Component {
   render() {
     return (
       <View style={styles.container}>
+			<TouchableOpacity onPress={() => this.props.navigation.navigate('Welcome')}>
         <Image
           style={{
             width: 80,
@@ -102,7 +82,7 @@ export default class LoginView extends Component {
             marginBottom: 15
           }}
           source={require("../../assets/logo/buildy-logo-final_header_1.png")}
-        />
+        /></TouchableOpacity>
         <Text style={{ color: "red" }}>{this.state.errors}</Text>
 
 				<View style={styles.inputContainer}>

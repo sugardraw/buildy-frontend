@@ -17,8 +17,9 @@ import { Card, CardItem, Body, Header } from "native-base";
 import Geo from "../Geo/Geo";
 
 import { connect } from "react-redux";
-//  import { Card, ListItem, Button, Icon } from "react-native-elements";
+
 import { getPosts } from "../../actions";
+
 import { api } from "../../api/api";
 import { AntDesign } from "@expo/vector-icons";
 import { LOGOUT } from "../../actions/types";
@@ -65,7 +66,7 @@ class Welcome extends Component {
     };
   }
 
-  changeHeader = (isLogged, avatar) => {
+  changeHeader = (isLogged, avatar, param) => {
     if (!isLogged) {
       this.props.navigation.setParams({
         HeaderTitle: (
@@ -133,12 +134,16 @@ class Welcome extends Component {
               style={{
                 padding: 3,
                 borderRadius: 50,
-                borderWidth: 2,
+                borderWidth: 4,
                 borderColor: "#85c4ea",
-                marginLeft: 90,
+                marginLeft: 85,
                 alignSelf: "center"
               }}
-              onPress={() => this.props.navigation.navigate("UserProfile")}
+              onPress={() =>
+                this.props.navigation.navigate("UserProfile", {
+                  changeScreen: param
+                })
+              }
             >
               <Image
                 style={{
@@ -187,6 +192,7 @@ class Welcome extends Component {
             userLoggedIn: true,
             loading: false
           },
+
           this.changeHeader(true, avatar)
         );
       } else {
@@ -208,24 +214,17 @@ class Welcome extends Component {
         let avatar = await AsyncStorage.getItem("avatar");
 
         if (avatar.includes("/uploads/")) {
-          console.log("avatar includes upload", avatar);
           let avatarPath = api + avatar;
           this.props.dispatchGetPosts();
-          this.changeHeader(true, avatarPath);
-          this.forceUpdate();
+          this.changeHeader(true, avatarPath, param_2);
+
           return;
         }
-        console.log("avatar NOT includes upload", avatar);
-        await this.changeHeader(true, avatar);
-      }
-    }
-  };
 
-  avatarImage = async () => {
-    if (avatar !== null) {
-      return avatar;
-    } else {
-      return "https://banner2.kisspng.com/20180327/ssq/kisspng-computer-icons-user-profile-avatar-profile-5ab9e3b05772c0.6947928615221318883582.jpg";
+        console.log("avatar NOT includes upload", avatar);
+        await this.changeHeader(true, avatar, param_2);
+        console.log(param_1, param_2);
+      }
     }
   };
 

@@ -18,6 +18,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { api } from "../../api/api";
 
 export default class SendEmail extends React.Component {
+  static navigationOptions = {
+    headerTitleStyle: { color: "#85c4ea" },
+    headerTitle: "SEND YOUR REQUEST",
+    headerStyle: { backgroundColor: "#white" },
+    headerTintColor: "#85c4ea"
+  };
   constructor() {
     super();
     this.state = {
@@ -31,11 +37,7 @@ export default class SendEmail extends React.Component {
 
   componentDidMount = async () => {
     const id = this.props.navigation.getParam("id", "no_id");
-
     const data = this.props.navigation.getParam("data", "no_data");
-
-    console.log("id", id, "data", data);
-
     await axios
       .get(api + "/api/professional/showDetails?id=" + data.companyId)
       .then(response => {
@@ -54,7 +56,7 @@ export default class SendEmail extends React.Component {
         this.setState(state => {
           state.lastRequest = response.data;
           state.newRequest = data;
-          //   state.uploaded = !state.uploaded;
+     
           return state;
         });
       });
