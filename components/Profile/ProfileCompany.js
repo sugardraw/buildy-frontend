@@ -90,7 +90,6 @@ export default class ProfileCompany extends React.Component {
                             : api + "/" + professional.avatar[0].path
                         }
                       />
-                      <View style={styles.headInfos} />
                       <Text
                         style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
                       >
@@ -191,9 +190,6 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   main: {
-    alignItems: 'center'
-  },
-  headInfos: {
     alignItems: 'center'
   },
   servicesList: {
