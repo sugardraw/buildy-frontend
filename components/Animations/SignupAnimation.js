@@ -4,7 +4,7 @@ import { Svg } from 'expo'; // Supported builtin module
 const { Line, G, Path } = Svg;
 import { Font } from 'expo';
 
-export default class LoginAnimation extends React.Component {
+export default class SignupAnimation extends React.Component {
 	static navigationOptions = {
 		headerMode        : 'none',
 		navigationOptions : {
@@ -93,7 +93,7 @@ export default class LoginAnimation extends React.Component {
 							alignContent   : 'center'
 						}}
 					>
-						YOU LOGGED IN
+						YOU SIGNED UP
 					</Text>
 				) : null}
 			</View>
