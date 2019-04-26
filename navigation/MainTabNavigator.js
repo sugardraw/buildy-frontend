@@ -37,12 +37,10 @@ const Icon = ({ name, focused }) => (
 );
 
 const WelcomeStack = createStackNavigator({
-  // Welcome: {
-  //   screen: Welcome
-  // },
   Welcome: {
-    screen: SelectCompanies
+    screen: Welcome
   },
+
   ProfileCompany: {
     screen: ProfileCompany
   },
