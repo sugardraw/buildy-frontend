@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, AsyncStorage, StyleSheet, ScrollView } from "react-native";
-import { Card, CardItem, Tooltip, Button } from "react-native-elements";
+import { Tooltip, Button } from "react-native-elements";
 
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
@@ -173,7 +173,6 @@ export default class ProfileCompany extends React.Component {
                 </Tooltip>
               </View>
             </View>
-
           </View>
         </ScrollView>
       </View>
@@ -200,11 +199,8 @@ const styles = StyleSheet.create({
     color: "#0ec485"
   },
   paragraphText: {
-    // textAlign: "center",
-    // alignSelf: "flex-start",
     textAlign: "justify",
-    marginTop: 20,
-    // padding: 10,
+    marginTop: 20
   },
   geo: {
     margin: 0,
