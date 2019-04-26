@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, AsyncStorage, StyleSheet, ScrollView } from "react-native";
-import { Card, CardItem, Tooltip, Button } from "react-native-elements";
+import { Tooltip, Button } from "react-native-elements";
 
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
@@ -157,21 +157,21 @@ export default class ProfileCompany extends React.Component {
                   Location
                 </Text>
               </View>
-            </View>
-            <View style={styles.geo}>
-              {this.state.lat !== "" && (
-                <Geo lon={this.state.lon} lat={this.state.lat} />
-              )}
-              <Tooltip popover={<Text>Please SignUp</Text>} overlayColor={'rgba(0, 0, 0, 0.6)'}>
-                <Button
-                  disabled={!isEnabled}
-                  style={styles.button}
-                  title="SEND A REQUEST"
-                  onPress={() =>
-                    this.props.navigation.navigate("RequestFormular", { companyId: this.state.companyId })
-                  }
-                />
-              </Tooltip>
+              <View style={styles.geo}>
+                {this.state.lat !== "" && (
+                  <Geo lon={this.state.lon} lat={this.state.lat} />
+                )}
+                <Tooltip popover={<Text>Please SignUp</Text>} overlayColor={'rgba(0, 0, 0, 0.6)'}>
+                  <Button
+                    disabled={!isEnabled}
+                    style={styles.button}
+                    title="SEND A REQUEST"
+                    onPress={() =>
+                      this.props.navigation.navigate("RequestFormular", { companyId: this.state.companyId })
+                    }
+                  />
+                </Tooltip>
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -199,18 +199,15 @@ const styles = StyleSheet.create({
     color: "#0ec485"
   },
   paragraphText: {
-    // textAlign: "center",
-    // alignSelf: "flex-start",
     textAlign: "justify",
-    marginTop: 20,
-    // padding: 10,
+    marginTop: 20
   },
   geo: {
     margin: 0,
     justifyContent: 'center',
     width: '100%',
     height: 320,
-    marginTop: -70
+    marginTop: -20
   },
   button: {
     alignSelf: "center",
