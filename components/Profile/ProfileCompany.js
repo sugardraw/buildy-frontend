@@ -157,22 +157,23 @@ export default class ProfileCompany extends React.Component {
                   Location
                 </Text>
               </View>
+              <View style={styles.geo}>
+                {this.state.lat !== "" && (
+                  <Geo lon={this.state.lon} lat={this.state.lat} />
+                )}
+                <Tooltip popover={<Text>Please SignUp</Text>} overlayColor={'rgba(0, 0, 0, 0.6)'}>
+                  <Button
+                    disabled={!isEnabled}
+                    style={styles.button}
+                    title="SEND A REQUEST"
+                    onPress={() =>
+                      this.props.navigation.navigate("RequestFormular", { companyId: this.state.companyId })
+                    }
+                  />
+                </Tooltip>
+              </View>
             </View>
-            <View style={styles.geo}>
-              {this.state.lat !== "" && (
-                <Geo lon={this.state.lon} lat={this.state.lat} />
-              )}
-              <Tooltip popover={<Text>Please SignUp</Text>} overlayColor={'rgba(0, 0, 0, 0.6)'}>
-                <Button
-                  disabled={!isEnabled}
-                  style={styles.button}
-                  title="SEND A REQUEST"
-                  onPress={() =>
-                    this.props.navigation.navigate("RequestFormular", { companyId: this.state.companyId })
-                  }
-                />
-              </Tooltip>
-            </View>
+
           </View>
         </ScrollView>
       </View>
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: 320,
-    marginTop: -70
+    marginTop: -20
   },
   button: {
     alignSelf: "center",
