@@ -8,7 +8,7 @@ import {
   Text,
   Button,
   ScrollView,
-  Linking
+  TouchableOpacity
 } from "react-native";
 import { FileSystem, MailComposer } from "expo";
 import { Card } from "react-native-elements";
@@ -56,7 +56,7 @@ export default class SendEmail extends React.Component {
         this.setState(state => {
           state.lastRequest = response.data;
           state.newRequest = data;
-     
+
           return state;
         });
       });
@@ -72,6 +72,13 @@ export default class SendEmail extends React.Component {
       .catch(err => console.log(err));
   };
 
+  sendAsEmailToMany = () => {
+    this.props.navigation.navigate("SelectCompanies");
+
+  };
+  createNewReq = () => {
+    this.props.navigation.navigate("RequestFormular");
+  };
   sendAsEmail = async () => {
     let uriArray = [];
 
@@ -115,24 +122,15 @@ export default class SendEmail extends React.Component {
     });
   };
 
-  sendAsEmailToMany = () => {
-    console.log("send to many");
-  };
-
-  createNewReq = () => {
-    this.props.navigation.navigate("RequestFormular");
-  };
-
   keyExtractor = (item, index) => String(item._id);
 
   render() {
-    console.log(this.state.companyEmail);
     if (this.state.lastRequest !== null) {
       return (
         <View style={styles.container}>
           <View style={styles.request_data}>
             <ScrollView
-              style={{ flex: 1, marginTop: 20 }}
+              style={{ flex: 1, marginTop: 90 }}
               contentContainerStyle={{ width: "100%", alignItems: "center" }}
             >
               <Card style={styles.infos}>
@@ -185,33 +183,32 @@ export default class SendEmail extends React.Component {
             </ScrollView>
           </View>
 
-          <View style={styles.buttonsField}>
-            <Button
+          <View style={styles.buttons}>
+            <TouchableOpacity
               style={styles.button}
-              onPress={this.createNewReq}
-              title="Create a new Request"
-              color="#9FCBE5"
-            />
-
-            <Button
+              onPress={() => this.createNewReq()}
+            >
+              <MaterialIcons name="mode-edit" size={30} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
               style={styles.button}
-              title="Send"
-              onPress={this.sendAsEmail}
-              color="#9FCBE5"
-            />
-            {/* <Button
+              onPress={() => this.sendAsEmail()}
+            >
+              <MaterialIcons name="send" size={30} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
               style={styles.button}
-              title="Send to several companies"
-              onPress={this.sendAsEmailToMany}
-              color="#9FCBE5"
-            /> */}
+              onPress={() => this.sendAsEmailToMany()}
+            >
+              <MaterialIcons name="share" size={30} color="white" />
+            </TouchableOpacity>
           </View>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text> No data found...</Text>
+          <Text> Waiting for data...</Text>
         </View>
       );
     }
@@ -238,23 +235,27 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   infos: {
+    marginTop: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 }
   },
-  buttonsField: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginTop: -30,
+  buttons: {
     flexDirection: "row",
-    width: "100%",
-    flex: 1,
-    justifyContent: "space-around"
+    alignSelf: "center",
+    marginBottom: 60
   },
   button: {
-    margin: 3,
-    borderBottomColor: "black",
-    borderBottomWidth: 2,
-    backgroundColor: "white"
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    borderWidth: 1,
+    borderRadius: 50,
+    margin: 10,
+    width: 50,
+    height: 50,
+    backgroundColor: "#85c4ea",
+    marginBottom: 10,
+    borderColor: "#85c4ea"
   },
   request_card: {
     backgroundColor: "#fff",

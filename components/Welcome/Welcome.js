@@ -8,7 +8,9 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   YellowBox,
-  AsyncStorage
+  AsyncStorage,
+  ScrollView,
+  RefreshControl
 } from "react-native";
 import { FileSystem } from "expo";
 
@@ -62,7 +64,8 @@ class Welcome extends Component {
     this.state = {
       token: "",
       loading: true,
-      userLoggedIn: false
+      userLoggedIn: false,
+      refreshing: false
     };
   }
 
@@ -288,14 +291,23 @@ class Welcome extends Component {
   };
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.componentDidMount}
+            progressViewOffset={120}
+          />
+        }
+      >
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={this.props.posts}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
         />
-      </View>
+      </ScrollView>
     );
   }
 }

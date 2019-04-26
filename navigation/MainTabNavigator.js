@@ -19,11 +19,11 @@ import ImageEditor from "../components/AdvancedCamera/ImageEditor";
 import Register from "../components/Profile/Register";
 import EditUserProfile from "../components/Profile/EditUserProfile";
 import GalleryScreen from "../components/AdvancedCamera/GalleryScreen";
-// import Geo from "../components/Geolocation/GeoYelp";
 import WelcomeAnimation from "../components/Animations/LoadingAni";
 import LogOutAnimation from "../components/Animations/LogOutAnimation";
 import LoginAnimation from "../components/Animations/LoginAnimation";
 import SignupAnimation from "../components/Animations/SignupAnimation";
+import SelectCompanies from "../components/SendEmail/SelectCompanies";
 
 const ACTIVE_TAB_COLOR = "#69A6F7";
 const INACTIVE_TAB_COLOR = "#aaa";
@@ -37,13 +37,15 @@ const Icon = ({ name, focused }) => (
 );
 
 const WelcomeStack = createStackNavigator({
+  // Welcome: {
+  //   screen: Welcome
+  // },
   Welcome: {
-    screen: Welcome
+    screen: SelectCompanies
   },
   ProfileCompany: {
     screen: ProfileCompany
   },
-
   RequestFormular: {
     screen: RequestFormular
   },
@@ -91,6 +93,9 @@ const WelcomeStack = createStackNavigator({
   },
   UserProfile: {
     screen: UserProfile
+  },
+  SelectCompanies: {
+    screen: SelectCompanies
   }
 });
 

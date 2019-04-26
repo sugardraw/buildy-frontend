@@ -163,7 +163,7 @@ export default class ProfessionalSignUp extends Component {
 
           deviceStorage.saveItem("id_token", data.token);
           deviceStorage.saveItem("avatar", this.state.avatar.uri);
-          this.props.navigation.navigate("LoginAnimation", {
+          this.props.navigation.navigate("SignupAnimation", {
             id_token: data.token,
             avatar:this.state.avatar.uri
   
