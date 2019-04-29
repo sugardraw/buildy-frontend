@@ -5,10 +5,8 @@
 
 team: Ansumana Darboe, Gaia Cicaloni and Sergio Usle
 
+![BUILDY_presentation_min_new](https://user-images.githubusercontent.com/39328915/56850201-817e5480-68ff-11e9-8a91-2f90373db70a.gif)
 
-
-
-![buildy_gif_presentation](https://user-images.githubusercontent.com/39328915/56802329-085c0000-6820-11e9-990f-da9082ddbd6d.gif)
 
 
 ## To run this project:
