@@ -103,11 +103,11 @@ export default class RequestFormular extends React.Component {
               label="please select a service"
               value=""
             />
-            <Picker.Item label="build" value="build" />
-            <Picker.Item label="paint" value="paint" />
-            <Picker.Item label="renovate" value="renovate" />
-            <Picker.Item label="buying" value="buying" />
-            <Picker.Item label="carpentry" value="carpentry" />
+            <Picker.Item label="Build" value="Build" />
+            <Picker.Item label="Paint" value="Paint" />
+            <Picker.Item label="Renovate" value="Renovate" />
+            <Picker.Item label="Buying" value="Buying" />
+            <Picker.Item label="Carpentry" value="Carpentry" />
           </Picker>
           <Text
             style={[

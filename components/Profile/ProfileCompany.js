@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, AsyncStorage, StyleSheet, ScrollView } from "react-native";
-import { Button } from "react-native-elements";
+import { Tooltip, Button } from "react-native-elements";
 
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
@@ -22,10 +22,9 @@ export default class ProfileCompany extends React.Component {
       companyId: null
     };
   }
-
   static navigationOptions = {
-    headerStyle: { backgroundColor: "#white" },
-    headerTintColor: "#85c4ea"
+    headerTintColor: "#85c4ea",
+    headerTitleStyle: { color: "black" }
   };
 
   componentDidMount = async () => {
@@ -41,12 +40,13 @@ export default class ProfileCompany extends React.Component {
     const id = this.props.navigation.state.params.id;
     this.setState({
       companyId: id
-    });
+    })
 
     axios
       .get(api + "/api/professional/showDetails?id=" + id)
       .then(response => {
         if (response.data[0].hasOwnProperty("location")) {
+
           this.setState({
             professional: response.data,
             lat: response.data[0].location.coordinates[0],
@@ -58,6 +58,7 @@ export default class ProfileCompany extends React.Component {
             lat: 52.525549,
             lon: 13.483673
           });
+
         }
       })
       .catch(error => {
@@ -72,137 +73,104 @@ export default class ProfileCompany extends React.Component {
     return (
       <View style={styles.scrollstyle}>
         <ScrollView ref="scrollView">
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              marginTop: 20
-            }}
-          >
+          <View>
             <View style={styles.bodyContentProfile}>
               {this.state._fontLoaded && this.state.professional.length > 0
                 ? this.state.professional.map((professional, i) => (
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                      key={i}
-                    >
-                      <View style={styles.main}>
-                        <UploadAvatar
-                          payloadKey="file"
-                          endpoint={api + "/api/user/save_avatar"}
-                          callbackUrl={
-                            typeof professional.avatar == "string"
-                              ? api + professional.avatar
-                              : api + "/" + professional.avatar[0].path
-                          }
-                        />
-
-                        <View style={styles.headInfos} />
-                        <Text
-                          style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
-                        >
-                          {professional.name}
-                        </Text>
-                        <Text
-                          style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
-                        >
-                          {professional.shortDescription}
-                        </Text>
-                      </View>
-                      <View style={styles.paragraphText}>
-                        <Text
-                          style={[
-                            styles.servicesList,
-                            { fontSize: 20, marginTop: 10 }
-                          ]}
-                        >
-                          Services
-                        </Text>
+                  <View
+                    key={i}
+                  >
+                    <View style={styles.main}>
+                      <UploadAvatar
+                        payloadKey="file"
+                        endpoint={api + "/api/user/save_avatar"}
+                        callbackUrl={
+                          typeof professional.avatar == "string"
+                            ? api + professional.avatar
+                            : api + "/" + professional.avatar[0].path
+                        }
+                      />
+                      <Text
+                        style={{ fontFamily: "Roboto-Black", fontSize: 22 }}
+                      >
+                        {professional.name}
+                      </Text>
+                      <Text
+                        style={{ fontFamily: "Roboto-Medium", fontSize: 14 }}
+                      >
+                        {professional.shortDescription}
+                      </Text>
+                    </View>
+                    <View style={styles.paragraphText}>
+                      <Text style={styles.servicesList}>
+                        Services
+                      </Text>
+                      <View style={{ flexDirection: 'row' }}>
                         {professional.services.map((service, i) => (
-                          <Text key={i} style={styles.servicesList}>
+                          <Text key={i} style={{ marginRight: 2, paddingRight: 2 }}>
                             {service}
                           </Text>
                         ))}
                       </View>
-                      <View
-                        style={[
-                          styles.paragraphText,
-                          {
-                            fontFamily: "Roboto-Light"
-                          }
-                        ]}
-                      >
-                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                          Description
-                        </Text>
-                        <Text>{professional.longDescription}</Text>
-                      </View>
-                      <View style={styles.paragraphText}>
-                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                          Contact
-                        </Text>
-                        <Text style={styles.infoText}>
-                          {professional.street}
-                        </Text>
-                        <Text style={styles.infoText}>{professional.zip}</Text>
-                        <Text style={styles.infoText}>{professional.city}</Text>
-                        <Text style={styles.infoText}>
-                          {professional.email}
-                        </Text>
-                      </View>
-
-                      <View
-                        style={[styles.paragraphText, { paddingBottom: 10 }]}
-                      >
-                        <Text style={[styles.servicesList, { fontSize: 20 }]}>
-                          Projects
-                        </Text>
-                      </View>
-                      <PortfolioGallery projects={professional.projectImages} />
                     </View>
-                  ))
+                    <View style={styles.paragraphText}>
+                      <Text style={styles.servicesList}>
+                        Description
+                        </Text>
+                      <Text>{professional.longDescription}</Text>
+                    </View>
+                    <View style={styles.paragraphText}>
+                      <Text style={styles.servicesList}>
+                        Contact
+                        </Text>
+                      <Text>
+                        {professional.street}
+                      </Text>
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text
+                          style={{ marginRight: 2, paddingRight: 2 }}
+                        >
+                          {professional.zip}
+                        </Text>
+                        <Text>
+                          {professional.city}
+                        </Text>
+                      </View>
+                      <Text>
+                        {professional.email}
+                      </Text>
+                    </View>
+                    <View
+                      style={styles.paragraphText}
+                    >
+                      <Text style={styles.servicesList}>
+                        Projects
+                        </Text>
+                    </View>
+                    <PortfolioGallery projects={professional.projectImages} />
+                  </View>
+                ))
                 : null}
-            </View>
-
-            <View style={styles.geo}>
-              <Text
-                style={[
-                  styles.servicesList,
-                  { fontSize: 20, marginBottom: 20, marginLeft: 20 }
-                ]}
-              >
-                Location
-              </Text>
-
-              {this.state.lat !== "" && (
-                <Geo lon={this.state.lon} lat={this.state.lat} />
-              )}
-            </View>
-            <View style={styles.button}>
-              <Button
-                disabled={!isEnabled}
-                buttonStyle={{
-                  backgroundColor: "#85c4ea"
-                }}
-                title="SEND A REQUEST *"
-                onPress={() =>
-                  this.props.navigation.navigate("RequestFormular", {
-                    companyId: this.state.companyId
-                  })
-                }
-              />
-              <View
-                style={{
-                  height: 40,
-                  paddingTop: 10,
-                  paddingBottom: 40,
-                  marginBottom: 60
-                }}
-              >
-                <Text>* Only for registered Users</Text>
+              <View style={styles.paragraphText}>
+                <Text style={styles.servicesList}>
+                  Location
+                </Text>
+              </View>
+              <View style={styles.geo}>
+                {this.state.lat !== "" && (
+                  <Geo lon={this.state.lon} lat={this.state.lat} />
+                )}
+                <Tooltip backgroundColor="yellow"  popover={<Text>Please SignUp</Text>}>
+                  <Button
+                    disabled={!isEnabled}
+                    style={styles.button}
+                    title="SEND A REQUEST"
+                    onPress={() =>
+                      this.props.navigation.navigate("RequestFormular", { companyId: this.state.companyId })
+                    }
+                  />
+                </Tooltip>
               </View>
             </View>
           </View>
@@ -213,49 +181,38 @@ export default class ProfileCompany extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  bodyContentProfile: {
-    flex: 1,
-    margin: 10,
-    marginTop: 25,
-    alignItems: "center",
-    backgroundColor: "white"
-  },
-  servicesList: {
-    textAlign: "left",
-    color: "#0ec485"
-  },
   scrollStyle: {
     flexGrow: 1
   },
+  bodyContentProfile: {
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  main: {
+    alignItems: 'center'
+  },
+  servicesList: {
+    textAlign: "left",
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "#0ec485"
+  },
+  paragraphText: {
+    textAlign: "justify",
+    marginTop: 20
+  },
   geo: {
     margin: 0,
-    justifyContent: "center",
-    width: "100%",
+    justifyContent: 'center',
+    width: '100%',
     height: 320,
-    marginTop: -40
+    marginTop: -20
   },
   button: {
     alignSelf: "center",
-    width: "90%",
+    backgroundColor: "#85c4ea",
+    width: "80%",
     marginBottom: 80
-  },
-  main: {
-    alignItems: "center",
-    borderRadius: 10
-  },
-  headInfos: {
-    marginTop: -10,
-    marginBottom: 10,
-    alignItems: "center"
-  },
-  paragraphText: {
-    textAlign: "left",
-    alignSelf: "flex-start",
-    padding: 10
-  },
-  infoText: {
-    fontFamily: "Roboto-Light",
-    textAlign: "left",
-    alignSelf: "flex-start"
   }
 });

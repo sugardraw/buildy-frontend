@@ -8,15 +8,13 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import { Button } from "react-native-elements";
 import { Font } from "expo";
 import axios from "axios";
 const config = require("../../config/config.js");
 import { api } from "../../api/api";
-
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import JWT from "expo-jwt";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons/";
+import { MaterialIcons } from "@expo/vector-icons/";
+import { Divider } from 'react-native-elements';
 
 export default class UserProfile extends React.Component {
   static navigationOptions = {
@@ -48,6 +46,7 @@ export default class UserProfile extends React.Component {
     });
     const token = await AsyncStorage.getItem("id_token");
     const decodedJwt = JWT.decode(token, config.SECRET_TOKEN);
+    console.log(decodedJwt.sub);
     const id = decodedJwt.sub;
     this.setState({ _fontLoaded: true, id_token: id });
     await axios
@@ -72,172 +71,166 @@ export default class UserProfile extends React.Component {
         console.log(error);
       });
   };
-
   render() {
     return (
-      <ScrollView>
-        <View style={styles.main}>
-          {this.state._fontLoaded && this.state.user.length > 0
-            ? this.state.user.map((user, i) => (
+      <View>
+        <ScrollView ref="scrollView">
+          <View style={styles.bodyContentProfile}>
+            {this.state._fontLoaded && this.state.user.length > 0
+              ? this.state.user.map((user, i) => (
                 <View
-                  style={{
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
                   key={i}
                 >
-                  <View>
+                  <View style={styles.main}>
                     <Image
                       source={{ uri: user.avatar }}
                       style={{
                         width: 130,
                         height: 130,
-                        borderRadius: 50,
-                        margin: 30
+                        borderRadius: 70,
+                        shadowOffset: { width: 1, height: 1 },
+                        shadowRadius: 2,
+                        shadowOpacity: 0.5,
                       }}
                     />
-                  </View>
-                  <View>
-                    <Text
-                      style={{
-                        fontFamily: "Roboto-Black",
-                        fontSize: 22,
-                        padding: 3
-                      }}
-                    >
-                      {user.first_name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: "Roboto-Medium",
-                        fontSize: 14,
-                        padding: 3
-                      }}
-                    >
-                      {user.last_name}
-                    </Text>
+                    <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                      <Text
+                        style={{ fontFamily: "Roboto-Black", fontSize: 20, marginRight: 2, paddingRight: 2 }}
+                      >
+                        {user.first_name}
+                      </Text>
+                      <Text
+                        style={{ fontFamily: "Roboto-Black", fontSize: 20, marginRight: 2, paddingRight: 2 }}
+                      >
+                        {user.last_name}
+                      </Text>
+                    </View>
                   </View>
 
                   <View style={styles.paragraphText}>
-                    <Text style={styles.infoText}>{user.street}</Text>
-                    <Text style={styles.infoText}>{user.zip}</Text>
-                    <Text style={styles.infoText}>{user.city}</Text>
-                    <Text style={styles.infoText}>{user.email}</Text>
+                    <Text style={styles.servicesList}>
+                      Contact
+                        </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text
+                        style={{ marginRight: 2, paddingRight: 2 }}
+                      >
+                        {user.street}
+                      </Text>
+                      <Text>{user.zip}</Text>
+                      <Text>{user.city}</Text>
+                    </View>
+                    <Text>{user.email}</Text>
                   </View>
 
-                  <View style={[styles.paragraphText, styles.infoText]}>
-                    <Text
-                      style={[
-                        styles.infoText,
-                        { fontWeight: "bold", fontSize: 20 }
-                      ]}
-                    >
+                  <View style={styles.paragraphText}>
+                    <Text style={styles.servicesList}>
                       Your Requests
                     </Text>
                     {this.state.estimations.length > 0 ? (
                       this.state.estimations.map((estimation, i) => (
                         <View
                           key={i}
-                          style={{
-                            paddingRight: 2,
-                            marginRight: 2,
-                            marginBottom: 5
-                          }}
                         >
-                          <Text style={styles.estimationsList}>
-                            Title:{estimation.requestData.title}
-                          </Text>
-                          <Text style={styles.estimationsList}>
-                            Description:{estimation.requestData.description}
-                          </Text>
-                          <Text style={styles.estimationsList}>
-                            Budget:{estimation.requestData.budget}
-                          </Text>
-                          <Text style={styles.estimationsList}>
-                            Start date:{estimation.requestData.date}
-                          </Text>
-
                           <Text style={styles.estimationsList}>
                             Send To:
                             <Text style={{ fontWeight: "bold" }}>
                               {" " + estimation.sendTo}
                             </Text>
                           </Text>
+                          <Text style={styles.estimationsList}>
+                            Title: {estimation.requestData.title}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Description: {estimation.requestData.description}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Budget: {estimation.requestData.budget}
+                          </Text>
+                          <Text style={styles.estimationsList}>
+                            Start date: {estimation.requestData.date}
+                          </Text>
+                          <Divider style={styles.divider} />
                         </View>
                       ))
                     ) : (
-                      <Text>No estimations requested</Text>
-                    )}
-                  </View>
-                  <View style={styles.buttons}>
-                    <View style={styles.button}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.props.navigation.navigate("EditUserProfile", {
-                            changeScreen: this.props.navigation.getParam(
-                              "changeScreen"
-                            )
-                          })
-                        }
-                      >
-                        <MaterialIcons
-                          name="mode-edit"
-                          size={30}
-                          color="white"
-                        />
-                      </TouchableOpacity>
-                    </View>
+                        <Text>No estimations requested</Text>
+                      )}
                   </View>
                 </View>
               ))
-            : null}
+              : null}
+          </View>
+        </ScrollView>
+
+        <View style={styles.buttons}>
+          <View style={styles.buttonEdit}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("EditUserProfile")
+              }
+            >
+              <MaterialIcons
+                name="mode-edit"
+                size={30}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  main: {
-    margin: 10,
-    borderRadius: 10,
-    borderColor: "#85c4ea",
-    borderWidth: 2
+  scrollStyle: {
+    flexGrow: 1
   },
-  infoText: {
-    fontFamily: "Roboto-Light",
-    textAlign: "left",
-    color: "#0ec485",
-    fontSize: 16
+  bodyContentProfile: {
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+    margin: 0
+  },
+  main: {
+    alignItems: 'center'
+  },
+  servicesList: {
+    textAlign: "justify",
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "#0ec485"
+  },
+  paragraphText: {
+    textAlign: "justify",
+    marginTop: 15
   },
   buttons: {
     flexDirection: "row",
-    marginRight: 15,
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
+    position: "absolute",
+    marginTop: 490,
+    marginRight: 10
   },
-  button: {
+  buttonEdit: {
     alignItems: "center",
     justifyContent: "center",
-    position: "relative",
-    borderWidth: 1,
+    marginRight: 10,
     borderRadius: 50,
-    margin: 5,
-    marginTop: 30,
     width: 50,
     height: 50,
-    bottom: 10,
-    backgroundColor: "#85c4ea",
-    marginBottom: 10,
-    borderColor: "#85c4ea"
-  },
-  paragraphText: {
-    marginLeft: 20,
-    width: 300,
-    margin: 10
+    backgroundColor: "#85c4ea"
   },
   estimationsList: {
     textAlign: "left",
-    color: "#0ec485"
+    color: "#000000"
+  },
+  divider: {
+    height: 3,
+    width: 100,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#0ec485"
   }
 });

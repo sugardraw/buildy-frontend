@@ -158,15 +158,13 @@ export default class ProfessionalSignUp extends Component {
     return await fetch(api + "/api/professional/save", config)
       .then(response => {
         response.json().then(data => {
-          console.log("from server",data);
-
+          console.log("from server", data);
 
           deviceStorage.saveItem("id_token", data.token);
           deviceStorage.saveItem("avatar", this.state.avatar.uri);
           this.props.navigation.navigate("SignupAnimation", {
             id_token: data.token,
-            avatar:this.state.avatar.uri
-  
+            avatar: this.state.avatar.uri
           });
         });
       })
@@ -178,7 +176,7 @@ export default class ProfessionalSignUp extends Component {
     console.log(this.state.projectImages);
     const service = [
       {
-        name: "building"
+        name: "Building"
       },
       {
         name: "Lighting"
@@ -187,7 +185,7 @@ export default class ProfessionalSignUp extends Component {
         name: "Power Supply"
       },
       {
-        name: "paint"
+        name: "Paint"
       },
       {
         name: "Refrigeration"
@@ -196,7 +194,7 @@ export default class ProfessionalSignUp extends Component {
         name: "Gas Supply Systems"
       },
       {
-        name: "selling"
+        name: "Selling"
       },
       {
         name: "Escalators and lifts"

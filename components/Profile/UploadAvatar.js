@@ -95,8 +95,8 @@ export default class UploadAvatar extends React.Component {
   };
 
   async uploadImageAsync(uri) {
-    const endpoint = this.props.endpoint;
-    const payloadKey = this.props.payloadKey;
+    const endpoint = this.state.endpoint;
+    const payloadKey = this.state.payloadKey;
     const uriParts = uri.split(".");
     const fileType = uriParts[uriParts.length - 1];
 
@@ -108,7 +108,6 @@ export default class UploadAvatar extends React.Component {
     });
 
     this.props.getUri(uri);
-    console.log("endpoint",endpoint)
 
     return await fetch(endpoint, {
       method: "POST",
@@ -148,7 +147,7 @@ export default class UploadAvatar extends React.Component {
                   ? this.state.uploaded_photo
                   : this.props.callbackUrl
               }}
-              style={{ width: 130, height: 130, borderRadius: 50 }}
+              style={{ width: 130, height: 130, borderRadius: 70 }}
             />
           ) : (
             <Image
@@ -156,7 +155,7 @@ export default class UploadAvatar extends React.Component {
                 uri:
                   "https://cdn.pixabay.com/photo/2017/08/16/00/29/add-person-2646097_960_720.png"
               }}
-              style={{ width: 130, height: 130, borderRadius: 50 }}
+              style={{ width: 130, height: 130, borderRadius: 70 }}
             />
           )}
         </TouchableOpacity>
@@ -168,7 +167,6 @@ export default class UploadAvatar extends React.Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "yellow",
     height: 30,
     width: 30
   },
@@ -176,14 +174,11 @@ const style = StyleSheet.create({
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 25,
-    padding: 10,
-    paddingLeft: 95,
-    paddingRight: 95
+    margin: 25
   },
 
   circleWrapper: {
-    borderRadius: 50,
+    borderRadius: 70,
     marginTop: -10,
     shadowColor: "#85c4ea",
     shadowOffset: { width: 20, height: 20 },
