@@ -73,12 +73,17 @@ export default class SendEmail extends React.Component {
   };
 
   sendAsEmailToMany = () => {
-    this.props.navigation.navigate("SelectCompanies");
-
+    let uriArray = [];
+    for (let i in this.state.lastRequest.data.editedImages) {
+      uriArray.push(this.state.lastRequest.data.editedImages[i].uri);
+    }
+    this.props.navigation.navigate("SelectCompanies", { uriArray: uriArray, userData:this.state.userData, requestData:this.state.lastRequest.data.requestData});
   };
+
   createNewReq = () => {
     this.props.navigation.navigate("RequestFormular");
   };
+
   sendAsEmail = async () => {
     let uriArray = [];
 
