@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 31984,
+  "expoServerNgrokUrl": "https://kt-zaa.gaiadci.buildy-frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.kt-zaa.gaiadci.buildy-frontend.exp.direct",
+  "ngrokPid": 32028,
   "webpackServerPort": null
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, AsyncStorage, StyleSheet, ScrollView } from "react-native";
-import { Card, CardItem, Tooltip, Button } from "react-native-elements";
+import { Tooltip, Button } from "react-native-elements";
 
 import UploadAvatar from "./UploadAvatar";
 import PortfolioGallery from "../CompanyPortfolio/PortfolioGallery";
@@ -62,7 +62,6 @@ export default class ProfileCompany extends React.Component {
         }
       })
       .catch(error => {
-        // dispatch({ type: GET_POST_FAILURE, payload: error });
         console.log(error);
       });
   };
@@ -71,7 +70,7 @@ export default class ProfileCompany extends React.Component {
     const { id_token } = this.state;
     const isEnabled = id_token !== null;
     return (
-      <View style={styles.scrollstyle}>
+      <View>
         <ScrollView ref="scrollView">
           <View>
             <View style={styles.bodyContentProfile}>
@@ -200,11 +199,8 @@ const styles = StyleSheet.create({
     color: "#0ec485"
   },
   paragraphText: {
-    // textAlign: "center",
-    // alignSelf: "flex-start",
     textAlign: "justify",
-    marginTop: 20,
-    // padding: 10,
+    marginTop: 20
   },
   geo: {
     margin: 0,
